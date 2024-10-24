@@ -1,7 +1,7 @@
 ---
 name: User Story Template
 about: A template to add user stories to the project
-title: "[STORY]"
+title: ''
 labels: ''
 assignees: jbillcliffe
 
