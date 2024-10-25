@@ -1,7 +1,7 @@
 import os
 import dj_database_url
 
-from django_countries.widgets import LazyChoicesMixin
+# from django_countries.widgets import LazyChoicesMixin
 from pathlib import Path
 
 """
@@ -19,7 +19,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -29,7 +28,7 @@ SECRET_KEY = (
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '8000-jbillcliffe-portfolio5r-prmccqurny4.ws.codeinstitute-ide.net'
@@ -55,6 +54,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'menu',
 
     # Other
     'django_countries',
@@ -84,7 +84,10 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'templates', 'allauth'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,13 +123,13 @@ ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
 ACCOUNT_RATE_LIMITS = {
     'login': 5,  # To prevent brute force attacks
-}  
+}
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/accounts/login'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/accounts/login'
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_URL = '/accounts/login/'  # location to login
 LOGIN_REDIRECT_URL = '/'  # redirect after successful login
-
+LOGOUT_REDIRECT_URL = '/'  # redirect after successful logout
 WSGI_APPLICATION = 'renterprise.wsgi.application'
 
 
