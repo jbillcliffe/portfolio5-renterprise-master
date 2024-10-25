@@ -67,6 +67,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -117,7 +118,9 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
-ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5  # To prevent brute force attacks
+ACCOUNT_RATE_LIMITS = {
+    'login': 5,  # To prevent brute force attacks
+}  
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/accounts/login'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/accounts/login'
 ACCOUNT_USERNAME_MIN_LENGTH = 4
@@ -228,10 +231,10 @@ DEFAULT_FROM_EMAIL = 'info@renterprise.com'
 for django-countries "monkey patch"
 https://code.djangoproject.com/ticket/35046#comment:4
 """
-LazyChoicesMixin.get_choices = lambda self: self._choices
-LazyChoicesMixin.choices = property(
-    LazyChoicesMixin.get_choices,
-    LazyChoicesMixin.set_choices)
+# LazyChoicesMixin.get_choices = lambda self: self._choices
+# LazyChoicesMixin.choices = property(
+#     LazyChoicesMixin.get_choices,
+#     LazyChoicesMixin.set_choices)
 
 
 # Default primary key field type
