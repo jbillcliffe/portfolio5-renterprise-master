@@ -1,29 +1,94 @@
+/* Include padding + margin in width (recommended by Bootstrap) */
 * {
     box-sizing: border-box;
 }
 
+/* Apply flex across body elements. Add divs in a column. */
 body {
     display: flex;
     flex-direction: column;
 }
 
+/* Make the document full height */
 html {
     height: 100%;
 }
 
+/* Set header to be full page width and fixed height */
 .main-header {
     width: 100%;
     height: 100px;
     background-color: #2D8B60;
 }
 
+/* Divs to be used to hold the app below the header */
 .app-container {
     width:100%;
 }
 
+/* --- Allauth form formatting ----
+   Boutique Ado tutorial as guidance */
 
+/* Styling for <p> tags in allauth */
+.allauth-form-inner-content p {
+    margin-top: 1.5rem;
+    color: #6C757D;
+}
 
-/* Media Queries */
+/* Input Field styling */
+.allauth-form-inner-content input {
+    border-color: #000000;
+    border-radius: 0;
+}
+
+/* Hide form labels (except remember me for screen readers)
+as placeholders show the user required input data */
+.allauth-form-inner-content label:not([for='id_remember']) {
+    display: none;
+}
+
+/* Muted text styling for placeholders */
+.allauth-form-inner-content input::placeholder {
+    color: #AAB7C4;
+}
+
+/* Form buttons + Submit Button styles */
+.allauth-form-inner-content button,
+.allauth-form-inner-content input[type='submit'] {
+	display: inline-block;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #2D8B60;
+    border: 1px solid #000000;
+    padding: .375rem 2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0;
+
+    /* standard bootstrap button transitions */
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+/* Form Button and Submit Button hover-over styles */
+.allauth-form-inner-content button:hover,
+.allauth-form-inner-content input[type='submit']:hover {	
+	color: #FFFFFF;
+    background-color: #154D33;
+    border-color: #000000;
+}
+
+/* <a> styling, such as "Forgot Password" */
+.allauth-form-inner-content a {
+	color: #17A2B8;
+}
+
+/* --- Media Queries --- */
 
 /* For High Resolution Desktop Screens */
 @media (min-width: 1200px) {
