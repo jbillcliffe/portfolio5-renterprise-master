@@ -95,6 +95,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'renterprise.contexts.system_emails',
             ],
             'builtins': [
                 'crispy_forms.templatetags.crispy_forms_tags',
@@ -122,8 +123,9 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
+# To prevent brute force attacks 10 attempts per minute per ip
 ACCOUNT_RATE_LIMITS = {
-    'login': 5,  # To prevent brute force attacks
+    'login': "10/m/ip",
 }
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/accounts/login'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/accounts/login'
@@ -230,6 +232,9 @@ else:
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
 DEFAULT_FROM_EMAIL = 'info@renterprise.com'
+
+FROM_EMAIL = 'Renterprise <info@renterprise.com>'
+HELP_EMAIL = 'Renterprise Support <admin@renterprise.com>'
 
 """
 for django-countries "monkey patch"

@@ -7,7 +7,10 @@
 <hr>
 	<h2 class="logo-font mb-4">{% trans "Log Out" %}</h2>
 <hr>
-<form class="logout" method="post" action="{% url 'account_logout' %}">
+
+<p>{% blocktrans %}Are you sure that you wish to log out?{% endblocktrans %}</p>
+
+<form method="post" action="{% url 'account_logout' %}">
     {% csrf_token %}
     {{ form|crispy }}
     {% if redirect_field_value %}
@@ -17,3 +20,4 @@
 </form>
 
 {% endblock inner_content %}
+

@@ -1,2 +1,14 @@
 {% extends "allauth/layouts/base.html" %}
-{% block content %}{% endblock %}
+{% block content %}
+    <div class="container-fluid app-container">
+        <!--<div class="overlay"></div>-->
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="allauth-form-inner-content">
+                    {% block inner_content %}
+                    {% endblock inner_content %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
