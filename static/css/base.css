@@ -21,33 +21,48 @@ html {
     background-color: #2D8B60;
 }
 
-/* Set the user welcome message to be right aligned */
-.renterprise-dropdown {
+/* Set the user welcome message to be right aligned and non dropdown options */
+.renterprise-dropdown,
+.renterprise-non-user {
     display: flex;
     justify-content: flex-end;
 }
 
-.renterprise-dropdown * {
+/* Remove bullet points from non-user list and set list options to be right aligned */
+.renterprise-non-user {
+    list-style-type: none;
+    flex-direction: column;
+    /*align-items: flex-end;*/
+}
+
+/* base settings for dropdown in header for user control */
+.renterprise-dropdown *,
+.renterprise-non-user * {
     color:#FFFFFF;
     background-color: #2D8B60;
     border: none;
 }
 
+/* Set the "Welcome, X" message to have larger text than the dropdown options */
 .renterprise-dropdown .login-dropdown {
     font-size:larger;
 }
 
+/* Styling for mouse over on header dropdown elements and
+   header non-user elements */
 .renterprise-dropdown button:hover,
-.renterprise-dropdown-menu li:hover {
+.renterprise-dropdown-menu li:hover,
+.renterprise-non-user li:hover {
     color:#FFFFFF;
     text-decoration: underline;
+    cursor: pointer;
 }
 
+/* Styling for active link on header dropdown */
 .renterprise-dropdown .login-dropdown:active {
     text-decoration: none;
     color:#FFFFFF;
 }
-
 
 /* Divs to be used to hold the app below the header */
 .app-container {
@@ -138,4 +153,20 @@ as placeholders show the user required input data */
 /* For Mobile Devices */
 @media (max-width: 991px) {
 
+}
+
+/* For Bootstrap XS sizing for header menu */
+@media (max-width: 575px) {
+    .main-header {
+        height: 135px;
+    }
+}
+
+/* For Small resolution phones */
+@media (max-width: 380px) {
+    /* Set the "Welcome, X" message to have larger text than the dropdown options */
+    .renterprise-dropdown .login-dropdown,
+    .renterprise-dropdown-menu {
+        font-size:smaller;
+    }
 }
