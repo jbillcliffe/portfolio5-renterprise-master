@@ -65,33 +65,40 @@
                 </div>
                 <div class="col">
                     <!-- Navigation bar within the header (to be used on all pages)-->
-                    <nav class="header-menu">
+                    <nav class="header-menu pt-1.75">
                         <!-- Unordered list for the menu options, each list item is a link to its respective page -->
-                        <ul class="navigation-list">
-                            {% if user.is_authenticated %}
-                            <li>
-                                <a>Welcome, {{ user.username }}</a>
-                            </li>
-                            <div class="dropdown-menu border-0" aria-labelledby="user-options">
-                                <li class="nav-item">
+                        {% if user.is_authenticated %}
+                        <div class="dropdown renterprise-dropdown">
+                            <button class="btn login-dropdown dropdown-toggle pb-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Welcome, {{ user.username }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end renterprise-dropdown-menu pt-0" aria-labelledby="dropdownMenuButton" style>
+                                <li class="nav-item text-end pe-2">
+                                    <a class="nav-link"
+                                    aria-current="page"
+                                    href=""> Profile <i class="fa-solid fa-user"></i></a>
+                                </li>
+                                <li class="nav-item text-end pe-2">
                                     <a class="nav-link"
                                     aria-current="page"
                                     href="{% url 'account_logout' %}"> Log Out <i class="fa-solid fa-user-slash"></i></a>
                                 </li>
-                            {% else %}
-                                <li class="nav-item">
-                                    <a class="nav-link"
-                                    aria-current="page"
-                                    href="{% url 'account_signup' %}"> Register <i class="fa-solid fa-user-plus"></i></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link "
-                                    aria-current="page"
-                                    href="{% url 'account_login' %}"> Log In <i class="fa-solid fa-user-pen"></i></a>
-                                </li>
-                            {% endif %}
-                            </div>
+                            </ul>
+                        </div>
+                        {% else %}
+                        <ul>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                aria-current="page"
+                                href="{% url 'account_login' %}"> Log In <i class="fa-solid fa-user-plus"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link "
+                                aria-current="page"
+                                href="{% url 'account_signup' %}"> Sign Up <i class="fa-solid fa-user-pen"></i></a>
+                            </li>
                         </ul>
+                        {% endif %}
                     </nav>
                 </div>
             </div>

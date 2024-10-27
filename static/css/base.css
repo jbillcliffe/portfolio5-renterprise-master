@@ -21,6 +21,34 @@ html {
     background-color: #2D8B60;
 }
 
+/* Set the user welcome message to be right aligned */
+.renterprise-dropdown {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.renterprise-dropdown * {
+    color:#FFFFFF;
+    background-color: #2D8B60;
+    border: none;
+}
+
+.renterprise-dropdown .login-dropdown {
+    font-size:larger;
+}
+
+.renterprise-dropdown button:hover,
+.renterprise-dropdown-menu li:hover {
+    color:#FFFFFF;
+    text-decoration: underline;
+}
+
+.renterprise-dropdown .login-dropdown:active {
+    text-decoration: none;
+    color:#FFFFFF;
+}
+
+
 /* Divs to be used to hold the app below the header */
 .app-container {
     width:100%;
