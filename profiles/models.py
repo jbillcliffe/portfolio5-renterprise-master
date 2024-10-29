@@ -65,7 +65,7 @@ class Profile(models.Model):
         max_length=40, null=True, blank=True
     )
     county = models.CharField(
-        max_length=50, choices=GB_REGION_CHOICES
+        max_length=50, null=True, blank=True, choices=GB_REGION_CHOICES
     )
     country = CountryField(
         blank_label='Country', null=True, blank=True, default="GB"
