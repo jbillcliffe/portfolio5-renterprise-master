@@ -1,25 +1,19 @@
 {% extends "account/base_manage.html" %}
 {% load i18n %}
 {% load allauth %}
-{% block head_title %}
-    {% trans "Verify Your Email Address" %}
-{% endblock head_title %}
-{% block content %}
-    {% element h1 %}
-        {% trans "Verify Your Email Address" %}
-    {% endelement %}
-    {% url 'account_email' as email_url %}
-    {% element p %}
-        {% blocktrans %}This part of the site requires us to verify that
-you are who you claim to be. For this purpose, we require that you
-verify ownership of your email address. {% endblocktrans %}
-    {% endelement %}
-    {% element p %}
-        {% blocktrans %}We have sent an email to you for
-verification. Please click on the link inside that email. If you do not see the verification email in your main inbox, check your spam folder. Otherwise
-contact us if you do not receive it within a few minutes.{% endblocktrans %}
-    {% endelement %}
-    {% element p %}
-        {% blocktrans %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your email address</a>.{% endblocktrans %}
-    {% endelement %}
-{% endblock content %}
+{% block extra_title %}{% blocktrans %}Accounts | Email Verification Required{% endblocktrans %}{% endblock extra_title %}
+{% url 'account_email' as email_url %}
+
+{% block inner_content %}
+
+    <hr>
+        <h2>{% trans "Email Verification Required" %}</h2>
+    <hr>
+
+    <p>{% blocktrans %}To access this part of the program, a verified email is required.{% endblocktrans %}</p>
+    <p>{% blocktrans %}Check your inbox for a verification email and if necessary check your spam folder. 
+        If you still cannot locate a verification email then <a href="mailto:{{ HELP_EMAIL }}">contact support</a>{% endblocktrans %}</p>
+    
+    <button type="button" class="white-text" onclick="location.href='{% url 'menu' %}'" value="Return To Menu">{% trans "Return To Menu" %}</button>
+
+{% endblock inner_content %}

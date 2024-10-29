@@ -1,43 +1,41 @@
 {% extends "account/base_entrance.html" %}
 {% load i18n %}
 {% load allauth account %}
-{% block extra_title %}Accounts | Log In{% endblock extra_title %}
+{% block extra_title %}{% blocktrans %}Accounts | Log In{% endblocktrans %}{% endblock extra_title %}
 
 {% block inner_content %}
 
-<hr>
-	<h2 class="logo-font mb-4">{% trans "Sign In" %}</h2>
-<hr>
+    <hr>
+        <h2>{% trans "Sign In" %}</h2>
+    <hr>
 
-{% url 'account_email' as email_url_ %}
-{% url 'socialaccount_connections' as socialaccount_url_ %}
+    {% url 'account_email' as email_url_ %}
+    {% url 'socialaccount_connections' as socialaccount_url_ %}
 
-{% if email_url_ or socialaccount_url_ %}
-	<p>{% blocktrans %}Please sign in with the email or username created:{% endblocktrans %}</p>
+    {% if email_url_ or socialaccount_url_ %}
+        <p>{% blocktrans %}Please sign in with the email or username created:{% endblocktrans %}</p>
+        <!--<div class="socialaccount_ballot">
 
-	<!--<div class="socialaccount_ballot">
+        <ul class="socialaccount_providers">
+            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+        </ul>
+        </div>
 
-	<ul class="socialaccount_providers">
-		{% include "socialaccount/snippets/provider_list.html" with process="login" %}
-	</ul>
-	</div>
-
-	{% include "socialaccount/snippets/login_extra.html" %}-->
-
-{% else %}
-    <p>{% blocktrans %}If you have not created an account yet, then please
-    <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
-{% endif %}
-
-<form method="post" action="{% url 'account_login' %}">
-    {% csrf_token %}
-    {{ form|crispy }}
-    {% if redirect_field_value %}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% include "socialaccount/snippets/login_extra.html" %}-->
+    {% else %}
+        <p>{% blocktrans %}If you have not created an account yet, then please
+        <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
     {% endif %}
-    <button type="submit" class="white-text">{% trans "Sign In" %}</button>
-</form>
-<p>{% blocktrans %}Or, <a href="{{ signup_url }}">sign up</a>
-for an account and sign in below:{% endblocktrans %}</p>
+
+    <form method="post" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button type="submit" class="white-text">{% trans "Sign In" %}</button>
+    </form>
+    <p>{% blocktrans %}Or, <a href="{{ signup_url }}">sign up</a>
+    for an account and sign in below:{% endblocktrans %}</p>
 
 {% endblock inner_content %}

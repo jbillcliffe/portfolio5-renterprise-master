@@ -1,0 +1,1 @@
+https://docs.allauth.org/en/latest/common/admin.html -- !!!! Make Django admin login requires allauth 

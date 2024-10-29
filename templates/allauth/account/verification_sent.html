@@ -1,17 +1,20 @@
 {% extends "account/base_entrance.html" %}
 {% load i18n %}
 {% load allauth account %}
-{% block extra_title %}Accounts | Email Verification Sent{% endblock extra_title %}
+{% block extra_title %}{% blocktrans %}Accounts | Email Verification Sent{% endblocktrans %}{% endblock extra_title %}
 {% url 'account_email' as email_url %}
 
 {% block inner_content %}
-<hr>
-	<h2>{% trans "Verify Your Email Address" %}</h2>
-<hr>
 
-<p>{% blocktrans %}An email verification has been sent to the email address provided. Follow the link contained to complete the sign up process.{% endblocktrans %}</p>
-<p>{% blocktrans %}If necessary, check your spam folder and if you still cannot locate a verification email then <a href="mailto:{{ HELP_EMAIL }}">contact support</a>{% endblocktrans %}</p>
+	<hr>
+		<h2>{% trans "Verify Your Email Address" %}</h2>
+	<hr>
 
-<button type="button" class="white-text" onclick="location.href='{% url 'menu' %}'" value="Return To Menu">Return To Menu</button>
+	<p>{% blocktrans %}An email verification has been sent to the email address provided. 
+		Follow the link contained to complete the sign up process.{% endblocktrans %}</p>
+	<p>{% blocktrans %}If necessary, check your spam folder and if you still cannot locate a verification email then 
+		<a href="mailto:{{ HELP_EMAIL }}">contact support</a>{% endblocktrans %}</p>
+
+	<button type="button" class="white-text" onclick="location.href='{% url 'menu' %}'" value="Return To Menu">{% trans "Return To Menu" %}</button>
 
 {% endblock inner_content %}

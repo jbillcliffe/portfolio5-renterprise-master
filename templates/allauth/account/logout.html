@@ -1,23 +1,24 @@
 {% extends "account/base_manage.html" %}
 {% load i18n %}
 {% load allauth account %}
-{% block extra_title %}Accounts | Log Out{% endblock extra_title %}
+{% block extra_title %}{% blocktrans %}Accounts | Log Out{% endblocktrans %}{% endblock extra_title %}
 
 {% block inner_content %}
-<hr>
-	<h2 class="logo-font mb-4">{% trans "Log Out" %}</h2>
-<hr>
 
-<p>{% blocktrans %}Are you sure that you wish to log out?{% endblocktrans %}</p>
+    <hr>
+        <h2>{% trans "Log Out" %}</h2>
+    <hr>
 
-<form method="post" action="{% url 'account_logout' %}">
-    {% csrf_token %}
-    {{ form|crispy }}
-    {% if redirect_field_value %}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-    {% endif %}
-    <button type="submit" class="white-text">{% trans "Log Out" %}</button>
-</form>
+    <p>{% blocktrans %}Are you sure that you wish to log out?{% endblocktrans %}</p>
+
+    <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button type="submit" class="white-text">{% trans "Log Out" %}</button>
+    </form>
 
 {% endblock inner_content %}
 
