@@ -14,11 +14,22 @@ html {
     height: 100%;
 }
 
+/* Text shadow on white text emphasises it */
+.white-text {
+    color:#FFFFFF;
+    text-shadow: 0px 1px 5px #000000;
+}
+
+.no-decoration {
+    text-decoration: none;
+}
+
 /* Set header to be full page width and fixed height */
 .main-header {
     width: 100%;
     height: 100px;
     background-color: #2D8B60;
+    box-shadow: -2px -2px 3px 3px rgba(57, 61, 63, 0.8);
 }
 
 /* Set the user welcome message to be right aligned and non dropdown options */
@@ -81,7 +92,7 @@ html {
 /* Input Field styling */
 .allauth-form-inner-content input {
     border-color: #000000;
-    border-radius: 0;
+    border-radius: 5px;
 }
 
 /* Hide form labels (except remember me for screen readers)
@@ -112,7 +123,7 @@ as placeholders show the user required input data */
     padding: .375rem 2rem;
     font-size: 1rem;
     line-height: 1.5;
-    border-radius: 0;
+    border-radius: 5px;
 
     /* standard bootstrap button transitions */
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
@@ -129,6 +140,32 @@ as placeholders show the user required input data */
 /* <a> styling, such as "Forgot Password" */
 .allauth-form-inner-content a {
 	color: #17A2B8;
+}
+
+/* For buttons that are not a submit button*/
+.allauth-form-inner-content a.not-submit {
+    display: inline-block;
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+    padding: .375rem 2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 5px;
+
+    /* standard bootstrap button transitions */
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.allauth-form-inner-content a.not-submit:hover {
+    background-color: #C9F0FF;
 }
 
 /* --- Media Queries --- */

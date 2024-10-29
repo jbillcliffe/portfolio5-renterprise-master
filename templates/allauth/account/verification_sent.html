@@ -12,6 +12,6 @@
 <p>{% blocktrans %}An email verification has been sent to the email address provided. Follow the link contained to complete the sign up process.{% endblocktrans %}</p>
 <p>{% blocktrans %}If necessary, check your spam folder and if you still cannot locate a verification email then <a href="mailto:{{ HELP_EMAIL }}">contact support</a>{% endblocktrans %}</p>
 
-<button type="button" onclick="location.href='{% url 'menu' %}'" value="Return To Menu">Return To Menu</button>
+<button type="button" class="white-text" onclick="location.href='{% url 'menu' %}'" value="Return To Menu">Return To Menu</button>
 
 {% endblock inner_content %}
