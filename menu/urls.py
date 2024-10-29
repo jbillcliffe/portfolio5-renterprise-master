@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 """
 --- CREDIT TO PORTFOLIO 4 :
     https://github.com/jbillcliffe/django-renterprise/blob/main/menu/urls.py
@@ -10,6 +11,7 @@ URLs relating to menu navigation
 the rest of the program
 - This is the root page for the project.
 """
+
 
 urlpatterns = [
     path('', views.main_menu, name="menu"),

@@ -50,13 +50,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # The following apps are required:
+    # Apps
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'menu',
+    'profiles',
 
-    # Other
+    # Add On Packages
     'django_countries',
     'crispy_forms',
     'crispy_bootstrap5',
@@ -172,7 +173,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-gb'
 TIME_ZONE = 'UTC'
 USE_I18N = True
