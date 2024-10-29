@@ -1,5 +1,5 @@
 {% load static %}
-<header class="container-fluid main-header d-block d-s-none">
+<div id="mobile-header" class="container-fluid main-header d-block d-sm-none">
     <div class="row">
         <div class="col">
             <!-- Logo to be a return link to home page (index)-->
@@ -13,43 +13,41 @@
         </div>
     </div>
     <div class="row">
-        <div class="col">
-            <!-- Navigation bar within the header (to be used on all pages)-->
-            <nav class="header-menu">
-                <!-- Unordered list for the menu options, each list item is a link to its respective page -->
-                {% if user.is_authenticated %}
-                <div class="dropdown renterprise-dropdown">
-                    <button class="btn login-dropdown dropdown-toggle pb-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        Welcome, {{ user.username }}
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end renterprise-dropdown-menu pt-0" aria-labelledby="dropdownMenuButton" style>
-                        <li class="nav-item text-center">
-                            <a class="nav-link"
-                            aria-current="page"
-                            href=""> Profile <i class="fa-solid fa-user"></i></a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-link"
-                            aria-current="page"
-                            href="{% url 'account_logout' %}"> Log Out <i class="fa-solid fa-user-slash"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                {% else %}
-                <ul class="renterprise-non-user pt-3">
-                    <li class="nav-item text-center">
+        <!-- Navigation bar within the header (to be used on all pages)-->
+        <nav class="header-menu">
+            <!-- Unordered list for the menu options, each list item is a link to its respective page -->
+            {% if user.is_authenticated %}
+            <div class="dropdown renterprise-dropdown">
+                <button class="btn login-dropdown dropdown-toggle mb-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    Welcome, {{ user.username }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end renterprise-dropdown-menu pt-0" aria-labelledby="dropdownMenuButton" style>
+                    <li class="nav-item text-end px-3">
                         <a class="nav-link"
                         aria-current="page"
-                        href="{% url 'account_login' %}"> Log In <i class="fa-solid fa-user-plus"></i></a>
+                        href=""> Profile <i class="fa-solid fa-user"></i></a>
                     </li>
-                    <li class="nav-item text-center">
-                        <a class="nav-link "
+                    <li class="nav-item text-end px-3">
+                        <a class="nav-link"
                         aria-current="page"
-                        href="{% url 'account_signup' %}"> Sign Up <i class="fa-solid fa-user-pen"></i></a>
+                        href="{% url 'account_logout' %}"> Log Out <i class="fa-solid fa-user-slash"></i></a>
                     </li>
                 </ul>
-                {% endif %}
-            </nav>
-        </div>
+            </div>
+            {% else %}
+            <ul class="renterprise-non-user mb-0">
+                <li class="nav-item text-center px-3">
+                    <a class="nav-link"
+                    aria-current="page"
+                    href="{% url 'account_login' %}"> Log In <i class="fa-solid fa-user-plus"></i></a>
+                </li>
+                <li class="nav-item text-center">
+                    <a class="nav-link "
+                    aria-current="page"
+                    href="{% url 'account_signup' %}"> Sign Up <i class="fa-solid fa-user-pen"></i></a>
+                </li>
+            </ul>
+            {% endif %}
+        </nav>
     </div>
-</header>
+</div>

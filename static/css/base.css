@@ -160,6 +160,15 @@ as placeholders show the user required input data */
     .main-header {
         height: 135px;
     }
+
+    .renterprise-dropdown .login-dropdown,
+    .renterprise-dropdown-menu {
+        font-size:medium;
+    }
+
+    .renterprise-non-user {
+        flex-direction: row;
+    }
 }
 
 /* For Small resolution phones */

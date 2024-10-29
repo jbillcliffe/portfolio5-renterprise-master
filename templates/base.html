@@ -49,8 +49,10 @@
         <title>Renterprise | {% block extra_title %}{% endblock extra_title %}</title>
     </head>
     <body>
-        {% include "includes/small-header.html" %}
-        {% include "includes/main-header.html" %}
+        <header>
+            {% include "includes/small-header.html" %}
+            {% include "includes/main-header.html" %}
+        </header>
         <!-- Header from each app page -->
         {% block page_header %}
         {% endblock page_header %}
