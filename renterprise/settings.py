@@ -233,8 +233,12 @@ else:
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
 DEFAULT_FROM_EMAIL = 'info@renterprise.com'
 
+
+# CUSTOM SETTINGS
+
 FROM_EMAIL = 'Renterprise <info@renterprise.com>'
 HELP_EMAIL = 'Renterprise Support <admin@renterprise.com>'
+NULL_VALUES = [None, 'None', 'none', 'null', 'Null']
 
 """
 for django-countries "monkey patch"

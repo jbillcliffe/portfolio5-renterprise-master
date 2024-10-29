@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from profiles.models import Profile
+
 
 def main_menu(request):
     """
