@@ -184,6 +184,9 @@ DATE_INPUT_FORMATS = ['%d/%m/%Y']
 DATETIME_FORMAT = '%d/%m/%Y : %H:%M'
 DATETIME_INPUT_FORMATS = ['%d/%m/%Y : %H:%M']
 
+# Django Countries
+COUNTRIES_ONLY = ["GB"]
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 STATIC_URL = 'static/'
@@ -239,6 +242,7 @@ DEFAULT_FROM_EMAIL = 'info@renterprise.com'
 FROM_EMAIL = 'Renterprise <info@renterprise.com>'
 HELP_EMAIL = 'Renterprise Support <admin@renterprise.com>'
 NULL_VALUES = [None, 'None', 'none', 'null', 'Null']
+
 
 """
 for django-countries "monkey patch"
