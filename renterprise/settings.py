@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'menu',
-    'profiles',
 
     # Add On Packages
     'django_countries',
