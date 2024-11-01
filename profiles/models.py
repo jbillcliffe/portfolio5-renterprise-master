@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
 
 from django_countries.fields import CountryField
 from localflavor.gb.gb_regions import GB_REGION_CHOICES
@@ -103,12 +103,12 @@ class Profile(models.Model):
             return f"{self.user.first_name} {self.user.last_name}"
 
 
-@receiver(post_save, sender=User)
-def create_or_update_user_profile(sender, instance, created, **kwargs):
-    """
-    Create or update user profile
-    """
-    if created:
-        Profile.objects.create(user=instance)
-    # Existing user will just save profile
-    instance.userprofile.save()
+# @receiver(post_save, sender=User)
+# def create_or_update_user_profile(sender, instance, created, **kwargs):
+#     """
+#     Create or update user profile
+#     """
+#     if created:
+#         Profile.objects.create(user=instance)
+#     # Existing user will just save profile
+#     instance.userprofile.save()

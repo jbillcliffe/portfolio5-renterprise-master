@@ -8,5 +8,6 @@ Path navigation for user profiles.
 
 
 urlpatterns = [
-    path('<pk:id>/', views.user_profile, name="user_profile"),
+    # path('', views.profile_list, name="profile_list"),
+    path('user/', views.profile, name="profile"),
 ]
