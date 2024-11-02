@@ -18,12 +18,88 @@ html {
     height: 100%;
 }
 
+/* Styling for <p> tags - dark grey font */
+p {
+    margin-top: 1.5rem;
+    color: #42494E;
+}
+
+/* Styling for all inputs, black border and rounded corners */
+input {
+    border-color: #000000;
+    border-radius: 5px;
+}
+
+/* Muted text styling for placeholders */
+.allauth-form-inner-content input::placeholder {
+    color: #AAB7C4;
+}
+
+/* Program wide buttons + Submit Button styles */
+button,
+input[type='submit'] {
+	display: inline-block;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #2D8B60;
+    border: 1px solid #000000;
+    padding: .375rem 2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 5px;
+
+    /* standard bootstrap button transitions */
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+/* Program wide buttons + Submit Button styles for hover over */
+button:hover,
+input[type='submit']:hover {	
+	color: #FFFFFF;
+    background-color: #154D33;
+    border-color: #000000;
+}
+
+/* For program wide a tag buttons */
+a.not-submit {
+    display: inline-block;
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+    padding: .375rem 2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 5px;
+
+    /* standard bootstrap button transitions */
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+/* For program wide a tag buttons hover over style */
+a.not-submit:hover {
+    background-color: #C9F0FF;
+}
+
 /* Text shadow on white text emphasises it */
 .white-text {
     color:#FFFFFF;
     text-shadow: 0px 1px 5px #000000;
 }
 
+/* Removes underline on text */
 .no-decoration {
     text-decoration: none;
 }
@@ -56,6 +132,7 @@ html {
     color:#FFFFFF;
     background-color: #2D8B60;
     border: none;
+    font-size: large;
 }
 
 /* Set the "Welcome, X" message to have larger text than the dropdown options */
@@ -84,20 +161,8 @@ html {
     width:100%;
 }
 
-/* --- Allauth form formatting ----
+/* --- Specific Allauth form formatting ----
    Boutique Ado tutorial as guidance */
-
-/* Styling for <p> tags in allauth */
-.allauth-form-inner-content p {
-    margin-top: 1.5rem;
-    color: #6C757D;
-}
-
-/* Input Field styling */
-.allauth-form-inner-content input {
-    border-color: #000000;
-    border-radius: 5px;
-}
 
 /* Hide form labels (except remember me for screen readers)
 as placeholders show the user required input data */
@@ -105,71 +170,9 @@ as placeholders show the user required input data */
     display: none;
 }
 
-/* Muted text styling for placeholders */
-.allauth-form-inner-content input::placeholder {
-    color: #AAB7C4;
-}
-
-/* Form buttons + Submit Button styles */
-.allauth-form-inner-content button,
-.allauth-form-inner-content input[type='submit'] {
-	display: inline-block;
-    font-weight: 400;
-    color: #FFFFFF;
-    text-align: center;
-    vertical-align: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-color: #2D8B60;
-    border: 1px solid #000000;
-    padding: .375rem 2rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 5px;
-
-    /* standard bootstrap button transitions */
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-
-/* Form Button and Submit Button hover-over styles */
-.allauth-form-inner-content button:hover,
-.allauth-form-inner-content input[type='submit']:hover {	
-	color: #FFFFFF;
-    background-color: #154D33;
-    border-color: #000000;
-}
-
 /* <a> styling, such as "Forgot Password" */
 .allauth-form-inner-content a {
 	color: #17A2B8;
-}
-
-/* For buttons that are not a submit button*/
-.allauth-form-inner-content a.not-submit {
-    display: inline-block;
-    font-weight: 400;
-    color: #000000;
-    text-align: center;
-    vertical-align: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-color: #FFFFFF;
-    border: 1px solid #000000;
-    padding: .375rem 2rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 5px;
-
-    /* standard bootstrap button transitions */
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-
-.allauth-form-inner-content a.not-submit:hover {
-    background-color: #C9F0FF;
 }
 
 /* --- Media Queries --- */

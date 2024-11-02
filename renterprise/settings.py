@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'django_countries',
     'crispy_forms',
     'crispy_bootstrap5',
+    'django_bootstrap5',
     'localflavor',
     'storages',
 ]
@@ -78,9 +79,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'renterprise.urls'
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 TEMPLATES = [
     {

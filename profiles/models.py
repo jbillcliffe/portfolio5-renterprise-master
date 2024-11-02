@@ -5,11 +5,7 @@ from django.db import models
 # from django.dispatch import receiver
 
 from django_countries.fields import CountryField
-# from localflavor.gb.gb_regions import GB_REGION_CHOICES
-from localflavor.gb.gb_regions import (
-    ENGLAND_REGION_CHOICES,
-    WALES_REGION_CHOICES,
-    SCOTTISH_REGION_CHOICES)
+from localflavor.gb.gb_regions import GB_REGION_CHOICES
 
 """
 Profiles Model
@@ -50,12 +46,6 @@ class Profile(models.Model):
         (ADMINISTRATOR, 'Administrator'),
     )
 
-    COUNTIES = ( 
-        ENGLAND_REGION_CHOICES +
-        WALES_REGION_CHOICES +
-        SCOTTISH_REGION_CHOICES
-    )
-
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     account_type = models.IntegerField(
         choices=ACCOUNT_TYPE, default=CUSTOMER
@@ -73,7 +63,7 @@ class Profile(models.Model):
         max_length=40, null=True, blank=True
     )
     county = models.CharField(
-        max_length=50, null=True, blank=True, choices=COUNTIES
+        max_length=50, null=True, blank=True, choices=GB_REGION_CHOICES
     )
     country = CountryField(
         blank_label='Country', null=True, blank=True, default="GB"
