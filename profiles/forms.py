@@ -60,3 +60,4 @@ class ProfileForm(forms.ModelForm):
             FloatingField("postcode"),
             FloatingField("phone_number")
         )
+

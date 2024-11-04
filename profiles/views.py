@@ -13,42 +13,62 @@ def profile(request):
     """
     Display Profile
     """
-    profile = get_object_or_404(Profile, user=request.user)
     user = request.user
 
-    # if request.method == "post":
+    """
+    If no profile yet, create a new blank one.
 
-    # if form.is_valid():
-    #    form.save()
-    #    messages.success(request, 'Profile updated successfully')
-    # else:
-    #    messages.error(request, 'Update failed. Form is not valid')
-    # else:
+    If one is found by its "user" (unique). Then it will load that
+    data into the Profile object instance
+    """
+    profile, created = Profile.objects.get_or_create(
+        user=user,
+        defaults={
+            "account_type": 0,
+            "address_line_1": "",
+            "address_line_2": "",
+            "address_line_3": "",
+            "town": "",
+            "county": "",
+            "country": "GB",
+            "postcode": "",
+            "phone_number": ""
+        },
+    )
+
+    # When form is submitted
     if request.method == "POST":
-        # Do some validating and saving
         user_form = UserForm(request.POST, prefix="user")
         profile_form = ProfileForm(request.POST, prefix="profile")
 
+        # If both the user form and profile form are valid
         if user_form.is_valid() and profile_form.is_valid():
 
             profile = profile_form.save(commit=False)
+            # profile.user = user
+            #profile = get_object_or_404(Profile, user=user)
+            #print("PROFILE")
+            #print(profile)
+            #print(profile_form)
+            #profile = profile_form
+            profile.user_id = user.id
 
-            try:
-                user_object = User.objects.get(request.user)
-                user_object.first_name = user_form.first_name
-                user_object.last_name = user_form.last_name
-                user_object.email = user_form.email
-                user_object.save()
-            except User.DoesNotExist:
-                messages.add_message(
-                    request, messages.ERROR,
-                    'User Account Does Not Exist!'
-                )
+            # Update the User object.
+            user.first_name = request.POST['user-first_name']
+            user.last_name = request.POST['user-last_name']
+            user.email = request.POST['user-email']
+            user.save()
+
+            # Save the profile
+            profile.save()
+            messages.success(
+                request,
+                'Profile successfully updated'
+            )
             print(messages)
 
-            return redirect(reverse('profile'))
+            # return redirect(reverse('profile'))
     else:
-
         user_form = UserForm(instance=user, prefix="user")
         profile_form = ProfileForm(instance=profile, prefix="profile")
 

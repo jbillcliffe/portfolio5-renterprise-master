@@ -158,7 +158,8 @@ a.not-submit:hover {
 
 /* Divs to be used to hold the app below the header */
 .app-container {
-    width:100%;
+    width:90%;
+    margin: 1rem auto;
 }
 
 /* --- Specific Allauth form formatting ----
@@ -181,7 +182,8 @@ as placeholders show the user required input data */
 @media (min-width: 1200px) {
 
     /* Margins created at edges */
-    .main-header, .app-container {
+    .main-header,
+    .app-container {
         width: 80%;
     }
 }
@@ -212,6 +214,14 @@ as placeholders show the user required input data */
 
     .renterprise-non-user {
         flex-direction: row;
+    }
+
+    form>button,
+    form>input[type='submit'],
+    form>a.not-submit {
+        width: 100%;
+        margin-top: 0.25rem;
+        margin: 0 auto 0.75rem auto;
     }
 }
 
