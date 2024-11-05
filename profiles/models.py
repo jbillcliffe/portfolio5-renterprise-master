@@ -35,6 +35,7 @@ class Profile(models.Model):
      update their account type.
     """
 
+    # Human readable values for int values relating to the account type
     CUSTOMER = 0
     STAFF = 1
     HR = 2
@@ -75,6 +76,7 @@ class Profile(models.Model):
         max_length=20, null=True, blank=True
     )
 
+    # Visual representation of this model is the username
     def __str__(self):
         return self.user.username
 
