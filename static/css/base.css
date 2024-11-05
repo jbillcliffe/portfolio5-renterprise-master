@@ -160,14 +160,6 @@ a.not-submit:hover {
     color: #FFFFFF;
 }
 
-/* Container for the toasts */
-.message-container {
-    position: fixed;
-    top: 100px;
-    width: 100%;
-    z-index: 9999999999;
-}
-
 .program-holder {
     display:flex;
     flex-direction: row;
@@ -212,7 +204,7 @@ as placeholders show the user required input data */
 @media (min-width: 992px) {
     .main-header {
         /* Prevent going to back */
-        z-index: 1000;
+        /* z-index: 1000; */
     }
 }
   

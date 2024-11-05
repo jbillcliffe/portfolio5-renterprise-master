@@ -1,5 +1,6 @@
 {% load static %}
 {% load i18n %}
+
 {% block extra_css %}
     <link href="{% static "css/side-nav.css" %}" rel="stylesheet">
 {% endblock extra_css %}
@@ -19,7 +20,25 @@
              Initial creation of this in Portfolio 4 by myself :
              https://github.com/jbillcliffe/django-renterprise/blob/main/templates/side-nav.html
         -->
+        <!-- The element is only created if there are any messages
+            in the MESSAGE_STORAGE -->
         <nav id="side-navigation-bar" class="nav flex-column">
+            {% if messages %}
+                {% for message in messages %}
+                    <div id="renterprise-toast" class="toast"
+                        role="{% if message.tags != 'info' %}alert{% else %}status{% endif %}"
+                        aria-live="{% if message.tags != 'info' %}assertive{% else %}polite{% endif %}"
+                        aria-atomic="true">
+                        <div class="toast-header">
+                            <strong class="me-auto">{{ message.tags|upper }}!</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
             <ul>
                 <li id="collapse-sidebar" class="nav-item" data-bs-toggle="collapse"
                     data-bs-target="#rest-of-sidebar" aria-expanded="false" aria-controls="rest-of-sidebar">
@@ -39,3 +58,14 @@
         </nav>
     {% endwith %}
 {% endif %}
+
+<script type="text/javascript">
+// Showing elements with a class of toast.
+// https://getbootstrap.com/docs/5.2/components/toasts/#custom-content -->
+
+const toastId = document.getElementById('renterprise-toast')
+if (toastId) {
+    const toastElement = new bootstrap.Toast(toastId)
+    toastElement.show()
+}
+</script>
