@@ -7,15 +7,20 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Hind', sans-serif;
 }
 
-/* Apply flex across body elements. Add divs in a column. */
+/* Apply flex across body elements. Add divs in a column. 
+Set background to be ghost white. A solid white would be quite harsh on
+the eyes over extended viewing. Which is what software would have happen
+unlike regular websites */
 body {
     display: flex;
     flex-direction: column;
+    background-color: #F5F5F5;
 }
 
 /* Make the document full height */
 html {
     height: 100%;
+    background-color: #F5F5F5;
 }
 
 /* Styling for <p> tags - dark grey font */
@@ -31,7 +36,7 @@ input {
 }
 
 /* Muted text styling for placeholders */
-.allauth-form-inner-content input::placeholder {
+input::placeholder {
     color: #AAB7C4;
 }
 
@@ -123,7 +128,6 @@ a.not-submit:hover {
 .renterprise-non-user {
     list-style-type: none;
     flex-direction: column;
-    /*align-items: flex-end;*/
 }
 
 /* base settings for dropdown in header for user control */
@@ -153,12 +157,28 @@ a.not-submit:hover {
 /* Styling for active link on header dropdown */
 .renterprise-dropdown .login-dropdown:active {
     text-decoration: none;
-    color:#FFFFFF;
+    color: #FFFFFF;
 }
 
+/* Container for the toasts */
+.message-container {
+    position: fixed;
+    top: 100px;
+    width: 100%;
+    z-index: 9999999999;
+}
+
+.program-holder {
+    display:flex;
+    flex-direction: row;
+    width:100%;
+    margin: 1rem auto;
+}
 /* Divs to be used to hold the app below the header */
 .app-container {
-    width:90%;
+    display:flex;
+    flex-direction: column;
+    width: 80%;
     margin: 1rem auto;
 }
 
@@ -183,7 +203,7 @@ as placeholders show the user required input data */
 
     /* Margins created at edges */
     .main-header,
-    .app-container {
+    .program-holder {
         width: 80%;
     }
 }
@@ -201,7 +221,8 @@ as placeholders show the user required input data */
 
 }
 
-/* For Bootstrap XS sizing for header menu */
+/* For Bootstrap XS sizing for header menu. Increase height to
+allow the drop down menu to move */
 @media (max-width: 575px) {
     .main-header {
         height: 135px;
@@ -209,7 +230,7 @@ as placeholders show the user required input data */
 
     .renterprise-dropdown .login-dropdown,
     .renterprise-dropdown-menu {
-        font-size:medium;
+        font-size: medium;
     }
 
     .renterprise-non-user {
@@ -230,6 +251,6 @@ as placeholders show the user required input data */
     /* Set the "Welcome, X" message to have larger text than the dropdown options */
     .renterprise-dropdown .login-dropdown,
     .renterprise-dropdown-menu {
-        font-size:smaller;
+        font-size: smaller;
     }
 }

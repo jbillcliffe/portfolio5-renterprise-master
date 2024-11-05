@@ -1,0 +1,17 @@
+<!-- Slightly modified template from Bootstrap website 
+     https://getbootstrap.com/docs/5.0/components/toasts/#options -->
+
+    <!-- For accessibility, as noted on Bootstrap, setting the
+         aria-live to polite and role to status -->
+     <div class="toast align-items-center top-0 end-0" role="status" aria-live="polite" aria-atomic="true" data-bs-delay="10000">
+        <div class="toast-header bg-primary">
+            <strong class="me-auto">Information</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="d-flex">
+            <div class="toast-body bg-white">
+                {{ message }}
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>

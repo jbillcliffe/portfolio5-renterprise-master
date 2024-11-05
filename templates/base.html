@@ -50,20 +50,39 @@
         <title>Renterprise | {% block extra_title %}{% endblock extra_title %}</title>
     </head>
     <body>
+        <!-- Include the headers for the base template-->
         <header>
             {% include "includes/small-header.html" %}
             {% include "includes/main-header.html" %}
         </header>
-        <!-- Header from each app page -->
-        {% block page_header %}
-        {% endblock page_header %}
-
-        <!-- Content from each app page -->
-        {% block content %}
-        {% endblock content %}
+        
+        {% if messages %}
+            <div class="message-container">
+                {% for message in messages %}
+                    {% if message.level == 25 %}
+                        {% include "includes/toasts/toast_success.html" %}
+                    {% elif message.level == 30 %}
+                        {% include "includes/toasts/toast_warning.html" %}
+                    {% elif message.level == 40 %}
+                        {% include "includes/toasts/toast_error.html" %}
+                    {% else %}
+                        {% include "includes/toasts/toast_info.html" %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="program-holder">
+            {% include "includes/side-nav.html" %}
+            <!-- Content from each app page -->
+            {% block content %}
+            {% endblock content %}
+        </div>
 
         <!-- Javascript from each app page -->
         {% block postloadjs %}
+            <script type="text/javascript">
+                $('.toast').toast('show');
+            </script>
         {% endblock postloadjs %}
     </body>
 </html>

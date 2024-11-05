@@ -39,8 +39,7 @@ def profile_view(request):
         user_form = UserForm(request.POST)
         profile_form = ProfileForm(request.POST)
 
-        # If both the user form and profile form are valid. No need for an
-        # else statement, validation is handled elsewhere.
+        # If both the user form and profile form are valid.
         if user_form.is_valid() and profile_form.is_valid():
 
             #     This was the only definitive way of taking a model object
@@ -55,6 +54,8 @@ def profile_view(request):
 
             profile.user.first_name = profile_form.data['first_name']
             profile.user.last_name = profile_form.data['last_name']
+            # Email is entered from the request.user, not the form post.
+            profile.user.email = request.user.email
             profile.address_line_1 = profile_form.data['address_line_1']
             profile.address_line_2 = profile_form.data['address_line_2']
             profile.address_line_3 = profile_form.data['address_line_3']
@@ -74,6 +75,15 @@ def profile_view(request):
             )
 
             return redirect(reverse('profile_view'))
+
+        else:
+            messages.error(
+                request, (
+                    'Profile data is not valid.'
+                    'Please check the validation prompts.'
+                )
+            )
+
     else:
         # The query is a GET. Get the data to load into fields
         user_form = UserForm(instance=request.user)

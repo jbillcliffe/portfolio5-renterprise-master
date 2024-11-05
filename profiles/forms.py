@@ -40,7 +40,6 @@ class UserForm(forms.ModelForm):
         # views.py handles any other attempts by not using any
         # email value from the post.
         self.fields['email'].widget.attrs['readonly'] = True
-        self.fields['email'].widget.attrs['disabled'] = True
 
         self.helper.layout = Layout(
             FloatingField("first_name"),

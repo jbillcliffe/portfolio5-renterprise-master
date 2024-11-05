@@ -1,0 +1,15 @@
+<!-- Slightly modified template from Bootstrap website 
+     https://getbootstrap.com/docs/5.0/components/toasts/#options -->
+
+     <div class="toast align-items-center top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+        <div class="toast-header bg-danger">
+            <strong class="me-auto">Error!</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="d-flex">
+            <div class="toast-body bg-white">
+                {{ message }}
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
