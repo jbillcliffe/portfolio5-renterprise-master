@@ -35,13 +35,13 @@ def profile_view(request):
 # Fix user not updating incoming
     # When form is submitted
     if request.method == "POST":
-
+        
         user_form = UserForm(request.POST)
         profile_form = ProfileForm(request.POST)
 
         # If both the user form and profile form are valid.
         if user_form.is_valid() and profile_form.is_valid():
-
+            update_user = request.user
             #     This was the only definitive way of taking a model object
             # and updating it where the model was an inline relation to the
             # user AND allowed the user to update user fields themselves
@@ -52,10 +52,10 @@ def profile_view(request):
             # NB. Email should be readonly in the profile. If it is changed,
             # the email is no longer validated and can cause issues
 
-            profile.user.first_name = profile_form.data['first_name']
-            profile.user.last_name = profile_form.data['last_name']
+            update_user.first_name = profile_form.data['first_name']
+            update_user.last_name = profile_form.data['last_name']
             # Email is entered from the request.user, not the form post.
-            profile.user.email = request.user.email
+            update_user.email = request.user.email
             profile.address_line_1 = profile_form.data['address_line_1']
             profile.address_line_2 = profile_form.data['address_line_2']
             profile.address_line_3 = profile_form.data['address_line_3']
@@ -67,6 +67,8 @@ def profile_view(request):
 
             # Save the profile
             profile.save()
+            # Save the user
+            update_user.save()
 
             # Display a message to the user to show it has worked
             messages.success(
