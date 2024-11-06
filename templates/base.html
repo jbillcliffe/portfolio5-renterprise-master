@@ -56,18 +56,8 @@
             {% include "includes/small-header.html" %}
             {% include "includes/main-header.html" %}
         </header>
-        {% comment %} <div class="toast-container position-absolute top-0 start-0">
-            <div class="toast">
-                <div class="toast-header">
-                    <strong>
-                        Bootstrap 5 Toast Placement
-                    </strong>
-                </div>
-                <div class="toast-body">
-                    Position at Top left.
-                </div>
-            </div>
-        </div> {% endcomment %}
+
+        <!-- If there are any messages sent, and are in the MESSAGE_STORAGE-->
         {% if messages %}
             <div class="toast-container">
                 {% for message in messages %}
@@ -97,6 +87,15 @@
         <!-- Javascript from each app page -->
         {% block postloadjs %}
             
+            <script type="text/javascript">
+                // Showing elements with a class of toast.
+                // https://getbootstrap.com/docs/5.2/components/toasts/#custom-content -->
+                const toastId = document.getElementById('renterprise-toast')
+                if (toastId) {
+                    const toastElement = new bootstrap.Toast(toastId)
+                    toastElement.show()
+                }
+            </script>
         {% endblock postloadjs %}
     </body>
 </html>

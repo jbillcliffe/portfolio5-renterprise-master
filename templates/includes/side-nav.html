@@ -34,7 +34,7 @@
                 <div id="rest-of-sidebar" class="nav nav-list collapse show">
                     <li class="nav-item">
                         <a href="{% url 'menu' %}" target="_self" class="side-bar nav-link">
-                            <i class="nav-awesome bi-house-up-fill"></i> Home
+                            <i class="nav-icon bi-house-up-fill"></i> Home
                         </a>
                     </li>
                 </div>
@@ -42,14 +42,3 @@
         </nav>
     {% endwith %}
 {% endif %}
-
-<script type="text/javascript">
-// Showing elements with a class of toast.
-// https://getbootstrap.com/docs/5.2/components/toasts/#custom-content -->
-
-const toastId = document.getElementById('renterprise-toast')
-if (toastId) {
-    const toastElement = new bootstrap.Toast(toastId)
-    toastElement.show()
-}
-</script>
