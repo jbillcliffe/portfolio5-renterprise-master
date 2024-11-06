@@ -6,7 +6,7 @@
 {% endblock extra_css %}
 
 <!-- If on the home page (menu), there is no requirement for this.-->
-{% if request.path != '' %}
+{% if request.path != '' and request.path != '/' %}
     {% with request.resolver_match.url_name as url_name %}
         <!-- Uses the url to determine location and what to display -->
     
