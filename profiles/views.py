@@ -32,7 +32,7 @@ def profile_view(request):
             "phone_number": ""
         },
     )
-
+# Fix user not updating incoming
     # When form is submitted
     if request.method == "POST":
 
