@@ -23,22 +23,6 @@
         <!-- The element is only created if there are any messages
             in the MESSAGE_STORAGE -->
         <nav id="side-navigation-bar" class="nav flex-column">
-            {% if messages %}
-                {% for message in messages %}
-                    <div id="renterprise-toast" class="toast"
-                        role="{% if message.tags != 'info' %}alert{% else %}status{% endif %}"
-                        aria-live="{% if message.tags != 'info' %}assertive{% else %}polite{% endif %}"
-                        aria-atomic="true">
-                        <div class="toast-header">
-                            <strong class="me-auto">{{ message.tags|upper }}!</strong>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                        <div class="toast-body">
-                            {{ message }}
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
             <ul>
                 <li id="collapse-sidebar" class="nav-item" data-bs-toggle="collapse"
                     data-bs-target="#rest-of-sidebar" aria-expanded="false" aria-controls="rest-of-sidebar">
@@ -50,7 +34,7 @@
                 <div id="rest-of-sidebar" class="nav nav-list collapse show">
                     <li class="nav-item">
                         <a href="{% url 'menu' %}" target="_self" class="side-bar nav-link">
-                            <i class="nav-awesome fa-solid fa-house"></i> Home
+                            <i class="nav-awesome bi-house-up-fill"></i> Home
                         </a>
                     </li>
                 </div>

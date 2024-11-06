@@ -1,9 +1,17 @@
 /* Container for the toasts */
+
 .toast-container {
-    top: 0;
+    position: absolute;
+    top: 110px;
+    width: 30%;
+    margin: 0.5rem 54rem 0 54rem;
+
+}
+#renterprise-toast {
+    position: relative;
     width: 100%;
-    padding: 0.25 0.5rem;
-    z-index: 9999999999;
+    height: 10%;
+    z-index:9999999999;
 }
 
 /* .renterprise-toast-header {

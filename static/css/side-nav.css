@@ -1,15 +1,16 @@
 #side-navigation-bar {  
-    margin: 1rem 1rem 1rem 0;
+    /* As the holder of the toast, these are set to these values
+    to ensure that the toast goes on top when it is set to absolute.
+    This prevents shifting of other elements */
     display: flex;
     flex-direction: column;
-    align-items: baseline;
-    /*justify-content: center;*/
-    /*margin: 0;*/
-    height: 100%;
     background: #DDDDDD;
     border: 1px solid #D3D3D3;
     padding: 1rem 0;
-    width:350px;
+    margin: 1rem 1rem 0 0;
+    width: 250px;
+    height: auto;
+    z-index: 0;
 }
 
 #side-navigation-bar>ul {
@@ -52,11 +53,12 @@ span#menu-text-holder {
 }
 
 #rest-of-sidebar>li.nav-item>a.nav-link {
-    font-size: 60%;
+    font-size: large;
 }
 
 i.nav-awesome {
     padding: 0.5rem;
+    font-size: x-large;
 }
 
 hr.nav-hr {
@@ -98,4 +100,10 @@ hr.nav-hr {
     text-decoration: none;
     font-weight:bolder;
     text-transform: uppercase;
+}
+
+@media (max-width: 575px) {
+    #side-navigation-bar {
+        width: 210px;
+    }
 }

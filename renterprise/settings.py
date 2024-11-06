@@ -2,6 +2,7 @@ import os
 import dj_database_url
 
 # from django_countries.widgets import LazyChoicesMixin
+from django.contrib.messages import constants as message_constants
 from pathlib import Path
 
 """
@@ -107,6 +108,17 @@ TEMPLATES = [
 ]
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+# Have to define all tags, not just one. This is to override the ERROR
+# value to send the tag of danger to a template. Matching Bootstrap's
+# wording. This can then be used for variable classes.
+MESSAGE_TAGS = {
+    message_constants.DEBUG: 'debug',
+    message_constants.INFO: 'info',
+    message_constants.SUCCESS: 'success',
+    message_constants.WARNING: 'warning',
+    message_constants.ERROR: 'danger',
+}
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`

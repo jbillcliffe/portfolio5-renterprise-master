@@ -3,7 +3,8 @@
     box-sizing: border-box;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6,
+p, input, button, li, a, span, label {
     font-family: 'Hind', sans-serif;
 }
 
@@ -115,6 +116,7 @@ a.not-submit:hover {
     height: 100px;
     background-color: #2D8B60;
     box-shadow: -2px -2px 3px 3px rgba(57, 61, 63, 0.8);
+    z-index:1000;
 }
 
 /* Set the user welcome message to be right aligned and non dropdown options */
@@ -168,10 +170,10 @@ a.not-submit:hover {
 }
 /* Divs to be used to hold the app below the header */
 .app-container {
-    display:flex;
+    display: flex;
     flex-direction: column;
-    width: 80%;
-    margin: 1rem auto;
+    width: 75%;
+    margin-bottom: 1rem
 }
 
 /* --- Specific Allauth form formatting ----
@@ -199,19 +201,16 @@ as placeholders show the user required input data */
         width: 80%;
     }
 }
-  
-/* For Desktop Screens */
+/*   
+/* For Desktop Screens
 @media (min-width: 992px) {
-    .main-header {
-        /* Prevent going to back */
-        /* z-index: 1000; */
-    }
+    
 }
   
-/* For Mobile Devices */
+/* For Mobile Devices
 @media (max-width: 991px) {
 
-}
+} */
 
 /* For Bootstrap XS sizing for header menu. Increase height to
 allow the drop down menu to move */
