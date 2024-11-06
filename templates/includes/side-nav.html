@@ -6,39 +6,41 @@
 {% endblock extra_css %}
 
 <!-- If on the home page (menu), there is no requirement for this.-->
-{% if request.path != '' and request.path != '/' %}
-    {% with request.resolver_match.url_name as url_name %}
-        <!-- Uses the url to determine location and what to display -->
-    
-        <!-- *** Mobile first *** -->
-        <!-- The nav bar is designed for desktop computers. It will display on
-             the left hand side of the screen.
-             If the screen is significantly smaller, the mobile first design is 
-             where the side bar, becomes a collapsable top bar
-             As the majority of the sidebar is inside a div called "rest-of-sidebar"
+<!-- THIS MAY BE USED. BUT AFTER THOUGHT, THE MAIN MENU CAN BE BETTER
+     SERVED AS AN INFORMATION SOURCE -->
+{% comment %} {% if request.path != '' and request.path != '/' %} {% endcomment %}
 
-             Initial creation of this in Portfolio 4 by myself :
-             https://github.com/jbillcliffe/django-renterprise/blob/main/templates/side-nav.html
-        -->
-        <!-- The element is only created if there are any messages
-            in the MESSAGE_STORAGE -->
-        <nav id="side-navigation-bar" class="nav flex-column">
-            <ul>
-                <li id="collapse-sidebar" class="nav-item" data-bs-toggle="collapse"
-                    data-bs-target="#rest-of-sidebar" aria-expanded="false" aria-controls="rest-of-sidebar">
-                    <span id="menu-text-holder">
-                        <a id="side-menu-text" class="side-bar nav-link">Menu
-                        </a><i class="fa-solid fa-circle-up"></i>
-                    </span>
+<!-- Uses the url to determine location and what to display 
+     the resolver gets everything after the domain/host. eg. /admin, /profiles/user/ -->
+{% with request.resolver_match.url_name as url_name %}
+    <!-- *** Mobile first *** -->
+    <!-- The nav bar is designed for desktop computers. It will display on
+        the left hand side of the screen.
+        If the screen is significantly smaller, the mobile first design is 
+        where the side bar, becomes a collapsable top bar
+        As the majority of the sidebar is inside a div called "rest-of-sidebar"
+
+        Initial creation of this in Portfolio 4 by myself :
+        https://github.com/jbillcliffe/django-renterprise/blob/main/templates/side-nav.html
+    -->
+    <!-- The element is only created if there are any messages
+        in the MESSAGE_STORAGE -->
+    <nav id="side-navigation-bar" class="nav flex-column">
+        <ul>
+            <li id="collapse-sidebar" class="nav-item" data-bs-toggle="collapse"
+                data-bs-target="#rest-of-sidebar" aria-expanded="false" aria-controls="rest-of-sidebar">
+                <span id="menu-text-holder">
+                    <a id="side-menu-text" class="side-bar nav-link">Menu
+                    </a><i class="fa-solid fa-circle-up"></i>
+                </span>
+            </li>
+            <div id="rest-of-sidebar" class="nav nav-list collapse show">
+                <li class="nav-item">
+                    <a href="{% url 'menu' %}" target="_self" class="side-bar nav-link">
+                        <i class="nav-icon bi-house-up-fill"></i> Home
+                    </a>
                 </li>
-                <div id="rest-of-sidebar" class="nav nav-list collapse show">
-                    <li class="nav-item">
-                        <a href="{% url 'menu' %}" target="_self" class="side-bar nav-link">
-                            <i class="nav-icon bi-house-up-fill"></i> Home
-                        </a>
-                    </li>
-                </div>
-            </ul>
-        </nav>
-    {% endwith %}
-{% endif %}
+            </div>
+        </ul>
+    </nav>
+{% endwith %}
