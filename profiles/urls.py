@@ -1,5 +1,5 @@
-from django.urls import path
 from . import views
+from django.urls import path
 
 
 """
@@ -8,6 +8,8 @@ Path navigation for user profiles.
 
 
 urlpatterns = [
-    # path('', views.profile_list, name="profile_list"),
+    path('',
+         views.ProfileList.as_view(),
+         name='profile_list'),
     path('user/', views.profile_view, name="profile_view"),
 ]

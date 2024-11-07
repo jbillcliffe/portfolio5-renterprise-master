@@ -2,3 +2,5 @@ https://docs.allauth.org/en/latest/common/admin.html -- !!!! Make Django admin l
 
 https://getbootstrap.com/docs/5.0/layout/z-index/ --- Z-index documentation, was useful to know there were default values
 for different bootstrap components!
+
+@login_required is needed, this also means that the user has to have a verified email too. Therefore not needing @verified_email_addres from allauth

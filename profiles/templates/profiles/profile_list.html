@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_title %}{% blocktrans %}Profile Listing{% endblocktrans %}{% endblock extra_title %}
+{% block content %}
+    <div class="app-container">
+        <hr>
+            <h2 class="mb-2">Profile Listing</h2>
+        <hr>
+        {% if user.is_authenticated %}
+            <div class="row">
+                <div class="col-12 col-lg-9 col-xxl-8">
+                    {% comment %} <div class="table-row table-head">
+                        <div class="col-4">Item</div>
+                        <div class="col-4">Category</div>
+                        <div class="col-3">Serial</div>
+                        <div class="col-1"></div>
+                    </div>
+                    {% for item in item_list %}
+                        <div class="table-row {{ item.item_css_status }}">
+                            <div class="col-4">
+                                {{ item.item_type_name }}
+                                {% if item.status_str != "Available" %}({{ item.status_str }}){% endif %}
+                            </div>
+                            <div class="col-4">{{ item.item_type_category }}</div>
+                            <div class="col-3">{{ item.item_serial }}</div>
+                            <div class="col-1">
+                                <a class="button-table view" href="{% url 'items:item_view' item.pk %}"><i class="fa-solid fa-magnifying-glass"></i></a>
+                            </div>
+                        </div>
+                    {% endfor %} {% endcomment %}
+                    <table class="table-light">
+                        <thead>
+                            <!-- scope is used for screen reader accessibility. 
+                                To determine if the th affects a row, column or group -->
+                            <th scope="col">Username</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Surname</th>
+                            <th scope="col">Email Address</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            {% for profile in profile_list %}
+                                <tr>
+                                    <td>{{ profile }}</td>
+                                    <td>{{ profile.user.first_name }}</td>
+                                    <td>{{ profile.user.last_name }}</td>
+                                    <td>{{ profile.user.email }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% include "includes/paginate.html" %}
+                </div>
+            </div>
+        {% else %}
+            <div class="content-holder centre">
+                <div class="row wd-60">
+                    {% blocktrans %}
+                        <p>You need to be logged in to access the program.</p>
+                        <p>Log in to continue using this application.</p>
+                    {% endblocktrans %}
+                    <a class="button" href="{% url 'account_login' %}">Log In</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

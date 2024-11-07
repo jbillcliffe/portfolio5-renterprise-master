@@ -191,6 +191,28 @@ a.not-submit:hover {
     margin-right: 1rem;
 }
 
+/* Pagination CSS */
+.paginate-foot {
+    align-items: center;
+    justify-content: center;
+}
+
+.paginator-page-text {
+    padding: 1rem;
+}
+
+.paginate-arrows {
+    color:#FFFFFF;
+    text-shadow: 0px 1px 5px #000000;
+    cursor: pointer;
+    padding: 1rem;
+}
+
+.paginate-arrows:hover {
+    color:#C9F0FF;
+}
+
+
 /* --- Specific Allauth form formatting ----
    Boutique Ado tutorial as guidance */
 

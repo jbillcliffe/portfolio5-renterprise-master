@@ -1,12 +1,33 @@
-from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect, reverse
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView
 
 from .models import Profile
 from .forms import UserForm, ProfileForm
 
 
 # Create your views here.
+@method_decorator(login_required, name='dispatch')
+class ProfileList(ListView):
+    """
+    Class ListView to display the items into a table.
+    """
+    paginate_by = 8
+    model = Profile
+    template_name = "profiles/profile_list.html"
+
+    queryset = Profile.objects.all()
+    print(queryset)
+    print(queryset[1].address_line_1)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileList, self).get_context_data(**kwargs)
+        return context
+
+
 @login_required
 def profile_view(request):
     """
