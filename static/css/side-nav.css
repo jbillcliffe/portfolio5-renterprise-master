@@ -13,11 +13,17 @@
     z-index: 0;
 }
 
+/* Setting these values. Removes the bullet points from the list.
+   removes any edges on the left. But most importantly, sets a sticky
+   value, so that when a user scrolls the page. It appears that only
+   the app-container is scrolled as the header and navigation stay in place. */
 #side-navigation-bar>ul {
     list-style-type:none;
     margin: 0;
     padding: 0;
     width:100%;
+    position: sticky;
+    top: 150px;
 }
 
 .nav.nav-list {

@@ -66,6 +66,7 @@ class ProfileForm(forms.ModelForm):
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = False
         self.helper.layout = Layout(
+            FloatingField("phone_number"),
             FloatingField("account_type"),
             FloatingField("address_line_1"),
             FloatingField("address_line_2"),
@@ -73,6 +74,5 @@ class ProfileForm(forms.ModelForm):
             FloatingField("town"),
             FloatingField("county"),
             FloatingField("country"),
-            FloatingField("postcode"),
-            FloatingField("phone_number")
+            FloatingField("postcode")
         )

@@ -18,6 +18,14 @@ body {
     background-color: #F5F5F5;
 }
 
+/* Make the header sticky so that it does not get lost when 
+   scrolling down on mobile devices. */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+}
+
 /* Make the document full height */
 html {
     height: 100%;
@@ -105,6 +113,12 @@ a.not-submit:hover {
     text-shadow: 0px 1px 5px #000000;
 }
 
+/* Colours text with the green in the logo */
+.renterprise-green-text {
+    color: #2D8B60;
+    text-shadow: 0px 1px 5px #FFFFFF;
+}
+
 /* Removes underline on text */
 .no-decoration {
     text-decoration: none;
@@ -115,7 +129,7 @@ a.not-submit:hover {
     width: 100%;
     height: 100px;
     background-color: #2D8B60;
-    box-shadow: -2px -2px 3px 3px rgba(57, 61, 63, 0.8);
+    box-shadow: 0 3px 2px 0px rgba(57, 61, 63, 0.8);
     z-index:1000;
 }
 
@@ -172,8 +186,9 @@ a.not-submit:hover {
 .app-container {
     display: flex;
     flex-direction: column;
-    width: 75%;
-    margin-bottom: 1rem
+    width: 80%;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
 }
 
 /* --- Specific Allauth form formatting ----
@@ -212,7 +227,21 @@ as placeholders show the user required input data */
 
 } */
 
-/* For Bootstrap XS sizing for header menu. Increase height to
+/* At just below this resolution, form buttons "could"
+   stack in a weird way. This will make the buttons full width
+   slightly earlier to prevent this effect */
+@media (max-width:600px) {
+    form>button,
+    form>input[type='submit'],
+    form>a.not-submit {
+        width: 100%;
+        margin-top: 0.25rem;
+        margin: 0 auto 0.75rem auto;
+    }
+}
+
+/* For Bootstrap XS sizing for header menu. 
+Increase height to
 allow the drop down menu to move */
 @media (max-width: 575px) {
     .main-header {
@@ -226,14 +255,6 @@ allow the drop down menu to move */
 
     .renterprise-non-user {
         flex-direction: row;
-    }
-
-    form>button,
-    form>input[type='submit'],
-    form>a.not-submit {
-        width: 100%;
-        margin-top: 0.25rem;
-        margin: 0 auto 0.75rem auto;
     }
 }
 
