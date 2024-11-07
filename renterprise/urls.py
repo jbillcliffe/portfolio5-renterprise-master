@@ -22,7 +22,7 @@ Including another URLconf
 
 
 urlpatterns = [
-    path('account/', include('allauth.urls')),
+    path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
     path('', include('menu.urls')),
     path('profiles/', include('profiles.urls')),

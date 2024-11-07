@@ -1,22 +1,25 @@
 /* Container for the toasts */
 
 .toast-container {
+    display: flex;
+    justify-content: flex-end;
     position: fixed;
     top: 110px;
     width: 100%;
     z-index: 9999999999999999;
-
 }
+
 #renterprise-toast {
     position: relative;
     width: 30%;
     height: auto;
-    margin: 0 auto;
+    margin: 0 2rem;
+    background-color: #FFFFFF;
 }
 
 @media (max-width: 800px) {
     #renterprise-toast {
-        width: 60%;
+        width: 50%;
     }
 }
 
@@ -29,6 +32,7 @@
 @media (max-width: 500px) {
     #renterprise-toast {
         width: 90%;
+        margin: 0 auto;
     }
 }
 

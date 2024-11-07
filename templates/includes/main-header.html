@@ -20,7 +20,7 @@
                 {% if user.is_authenticated %}
                 <div class="dropdown renterprise-dropdown">
                     <button class="btn login-dropdown dropdown-toggle white-text pb-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        Welcome, {% if user.first_name in settings.NULL_VALUES %}{{ user.last_name }}{% else %}{{ user.first_name }}{% endif %}
+                        Welcome, {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.last_name }}{% endif %}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end renterprise-dropdown-menu pt-0" aria-labelledby="dropdownMenuButton" style>
                         <li class="nav-item text-end white-text pe-2">

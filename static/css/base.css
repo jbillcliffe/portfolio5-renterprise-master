@@ -51,7 +51,8 @@ input::placeholder {
 
 /* Program wide buttons + Submit Button styles */
 button,
-input[type='submit'] {
+input[type='submit'],
+a.url-nav-button {
 	display: inline-block;
     font-weight: 400;
     color: #FFFFFF;

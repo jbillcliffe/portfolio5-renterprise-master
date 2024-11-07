@@ -1,7 +1,6 @@
 #side-navigation-bar {  
-    /* As the holder of the toast, these are set to these values
-    to ensure that the toast goes on top when it is set to absolute.
-    This prevents shifting of other elements */
+    /* Styling for Side Nav bar. Height, width, padding, 
+       margin, z-index and background colour */
     display: flex;
     flex-direction: column;
     background: #DDDDDD;
@@ -9,7 +8,7 @@
     padding: 1rem 0;
     margin: 1rem 1rem 0 0;
     width: 250px;
-    height: auto;
+    height: 60vh;
     z-index: 0;
 }
 
