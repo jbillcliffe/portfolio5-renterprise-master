@@ -55,7 +55,7 @@
         {% include "account/snippets/warn_no_email.html" %}
     {% endif %}
     {% if can_add_email %}
-        {% element h2 %}
+        {% element h1 %}
             {% trans "Add Email Address" %}
         {% endelement %}
         {% url 'account_email' as action_url %}
