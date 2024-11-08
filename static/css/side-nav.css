@@ -70,6 +70,10 @@ a.nav-link {
     text-shadow: 0px 1px 5px #000000;
 }
 
+.side-bar.nav-link.active {
+    cursor:default;
+}
+
 i.nav-icon {
     padding: 0.5rem;
     font-size: x-large;
@@ -84,8 +88,15 @@ hr.nav-hr {
 li.nav-item>a.nav-link.active {
     color: #FFFFFF;
     text-shadow: 0px 1px 5px #000000;
-    background-color: #1b9964;
+    background-color: #1B9964;
 }
+
+#rest-of-sidebar>li.nav-item>a.nav-link:hover:not(.display-only) {
+    color: #FFFFFF;
+    text-shadow: 0px 1px 5px #000000;
+    background-color: #1B9964;
+}
+
 /* 
 #rest-of-sidebar>li.nav-item>a.nav-link:not(.display-only) {
     color:#000000;

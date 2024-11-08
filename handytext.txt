@@ -8,3 +8,7 @@ for different bootstrap components!
 PAGINATOR - Prior to moving to grid display. It would centre on the middle item and you could not set a starting column for the text element.
 Hence, when there was only left or right. The paginatior would very clearly move, because the middle element 
 was an arrow (text/arrow/arrow or arrow/arrow/text). Grid enables a consistent size, even for blank columns, which can be centred in the parent div.
+
+SIDEBAR - For a time, the href and target values were persisting although I believed it should have gone, but, the if/else statement was incorrect, 
+then realising target=_self was refreshing the page too. However, with a rescripting in the nav the cursor is not a pointer and it does not have navigation.
+This was discovered at the early stages when creating the link for the profiles list.
