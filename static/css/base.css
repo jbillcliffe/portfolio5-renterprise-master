@@ -3,9 +3,20 @@
     box-sizing: border-box;
 }
 
+/*set the logo font across all areas, with a fallback font available too */
 h1, h2, h3, h4, h5, h6,
 p, input, button, li, a, span, label, strong {
     font-family: 'Hind', sans-serif;
+}
+
+/* h1 tags are surrounded by hr tags, which provide a border. Removing the 
+bottom margin makes it have a central appearance.  
+Set the font-size of the h1 tags to be slightly smaller than default so they
+are not too dominating.
+*/
+h1 {
+    margin-bottom:0;
+    font-size: xx-large;
 }
 
 /* Apply flex across body elements. Add divs in a column. 

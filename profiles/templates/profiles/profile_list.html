@@ -10,7 +10,7 @@
 {% block content %}
     <div class="app-container">
         <hr>
-            <h2 class="mb-2">Profile Listing</h2>
+            <h1>Profile Listing</h1>
         <hr>
         <div class="row">
             <div class="col-12 col-xxl-10">
@@ -50,8 +50,8 @@
                                     </div>
                                     <!-- Create a row for email and button to navigate to profile  -->
                                     <div class="renterprise-table-row bottom-row">
-                                        <div class="col-4"></div>
-                                        <div class="col-8 multi-element-column">
+                                        <div class="col-4 d-none d-md-block"></div>
+                                        <div class="col-12 col-md-8 multi-element-column">
                                             <span><strong>Email : </strong>{{ profile.user.email }}</span>
                                             <a href="{% url 'profile_manage' profile.user.id %}">
                                                 <i class="bi bi-arrow-right-circle-fill icon-button"></i>
