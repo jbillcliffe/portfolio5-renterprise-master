@@ -57,27 +57,26 @@
             {% include "includes/main-header.html" %}
         </header>
 
-        <!-- If there are any messages sent, and are in the MESSAGE_STORAGE-->
-        {% if messages %}
-            <div class="toast-container">
-                {% for message in messages %}
-                    <div id="renterprise-toast" class="toast"
-                        role="{% if message.tags != 'info' %}alert{% else %}status{% endif %}"
-                        aria-live="{% if message.tags != 'info' %}assertive{% else %}polite{% endif %}"
-                        aria-atomic="true">
-                        <div class="toast-header bg-{{ message.tags }} bg-gradient">
-                            <strong class="me-auto">{{ message.tags|upper }}!</strong>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                        <div class="toast-body">
-                            {{ message }}
-                        </div>
-                    </div>
-                {% endfor %}
-                </div>
-        {% endif %}
-
         <div class="program-holder">
+            <!-- If there are any messages sent, and are in the MESSAGE_STORAGE-->
+            {% if messages %}
+                <div class="toast-container">
+                    {% for message in messages %}
+                        <div id="renterprise-toast" class="toast"
+                            role="{% if message.tags != 'info' %}alert{% else %}status{% endif %}"
+                            aria-live="{% if message.tags != 'info' %}assertive{% else %}polite{% endif %}"
+                            aria-atomic="true">
+                            <div class="toast-header bg-{{ message.tags }} bg-gradient">
+                                <strong class="me-auto">{{ message.tags|upper }}!</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body">
+                                {{ message }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             {% include "includes/side-nav.html" %}
             <!-- Content from each app page -->
             {% block content %}

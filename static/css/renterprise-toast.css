@@ -17,6 +17,14 @@
     background-color: #FFFFFF;
 }
 
+@media (min-width: 1200px) {
+    
+    /* Margins created at edges */
+    .toast-container {
+        width: 80%;
+    }
+}
+
 @media (max-width: 800px) {
     #renterprise-toast {
         width: 50%;
