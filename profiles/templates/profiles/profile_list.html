@@ -3,41 +3,61 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% block extra_css %}
+    <link href="{% static "css/renterprise-tables.css" %}" rel="stylesheet">
 {% endblock extra_css %}
 
 {% block extra_title %}{% blocktrans %}Profile Listing{% endblocktrans %}{% endblock extra_title %}
 {% block content %}
-    
     <div class="app-container">
         <hr>
             <h2 class="mb-2">Profile Listing</h2>
         <hr>
         <div class="row">
-            <div class="col-12 col-lg-9 col-xxl-8">
+            <div class="col-12 col-xxl-10">
+                <!-- If user is logged in -->
                 {% if user.is_authenticated %}
+                    <!-- Create "account_type" variable -->
                     {% with account_type=user.profile.account_type %}
+                        <!-- 2 & 3 = HR & Administrator privileges -->
                         {% if account_type == 2 or account_type == 3 %}
-                            <table class="table-light">
-                                <thead>
-                                    <!-- scope is used for screen reader accessibility. 
-                                        To determine if the th affects a row, column or group -->
-                                    <th scope="col">Username</th>
-                                    <th scope="col">First Name</th>
-                                    <th scope="col">Surname</th>
-                                    <th scope="col">Email Address</th>
-                                    <th></th>
-                                </thead>
-                                <tbody>
-                                    {% for profile in profile_list %}
-                                        <tr>
-                                            <td>{{ profile }}</td>
-                                            <td>{{ profile.user.first_name }}</td>
-                                            <td>{{ profile.user.last_name }}</td>
-                                            <td>{{ profile.user.email }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                            <!-- Create Table Div-->
+                            <div class="renterprise-table">
+                                <!-- Create Table Header -->
+                                <div class="renterprise-table-row table-head">
+                                    <div class="col-4">
+                                        <strong>First Name</strong>
+                                    </div>
+                                    <div class="col-4">
+                                        <strong>Surname</strong>
+                                    </div>
+                                    <div class="col-4">
+                                        <strong>Username</strong>
+                                    </div>
+                                </div>
+                                <!-- For each profile/user object -->
+                                {% for profile in profile_list %}
+                                    <!-- Create a row for first name, surname and username -->
+                                    <div class="renterprise-table-row">
+                                        <div class="col-4">
+                                            {{ profile.user.first_name }}
+                                        </div>
+                                        <div class="col-4">
+                                            {{ profile.user.last_name }}
+                                        </div>
+                                        <div class="col-4">
+                                            {{ profile }}
+                                        </div>
+                                    </div>
+                                    <!-- Create a row for email and button to navigate to profile  -->
+                                    <div class="renterprise-table-row bottom-row">
+                                        <div class="col-4"></div>
+                                        <div class="col-8 multi-element-column">
+                                            <span><strong>Email : </strong>{{ profile.user.email }}</span>
+                                            <i class="bi bi-arrow-right-circle-fill icon-button"></i>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>                        
                             {% include "includes/paginate.html" %}
                         {% else %}
                             {% blocktrans %}<h3 class="text-danger">Not Authorised</h3>{% endblocktrans %}

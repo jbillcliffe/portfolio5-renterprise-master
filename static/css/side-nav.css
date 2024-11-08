@@ -8,7 +8,8 @@
     padding: 1rem 0;
     margin: 1rem 1rem 0 0;
     width: 250px;
-    height: 60vh;
+    height: auto;
+    min-height: 60vh;
     z-index: 0;
 }
 

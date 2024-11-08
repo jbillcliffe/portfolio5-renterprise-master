@@ -15,7 +15,7 @@ class ProfileList(ListView):
     """
     Class ListView to display the items into a table.
     """
-    paginate_by = 8
+    paginate_by = 1
     model = Profile
     template_name = "profiles/profile_list.html"
 

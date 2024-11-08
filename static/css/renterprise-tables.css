@@ -1,0 +1,35 @@
+.renterprise-table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #E9E9E9;
+    color: #000000;
+    
+}
+
+.renterprise-table-row {
+    display: flex;
+    flex-direction: row !important;
+    height: 3vh;
+    align-items: center;
+    padding: 1rem;
+    margin: 0;
+    background-color: #FFFFFF;
+    color: #000000;
+    
+}
+
+.table-head {
+    background-color: #B9B9B9;
+    border-bottom: 1px solid #528265;
+}
+
+.multi-element-column {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bottom-row {
+    border-bottom: 1px solid #919191;
+}

@@ -4,7 +4,7 @@
 }
 
 h1, h2, h3, h4, h5, h6,
-p, input, button, li, a, span, label {
+p, input, button, li, a, span, label, strong {
     font-family: 'Hind', sans-serif;
 }
 
@@ -38,10 +38,31 @@ p {
     color: #42494E;
 }
 
+/* Change hr styling to match secondary colour theme from designs */
+hr {
+    border: 1px solid #528265;
+    opacity: 1;
+}
+
 /* Styling for all inputs, black border and rounded corners */
 input {
     border-color: #000000;
     border-radius: 5px;
+}
+
+i {
+    font-size: x-large;
+}
+
+i.icon-button {
+    cursor: pointer;
+    color:#2D8B60;
+}
+
+.multi-element-column {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Muted text styling for placeholders */
