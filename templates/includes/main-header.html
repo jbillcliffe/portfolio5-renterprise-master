@@ -20,28 +20,25 @@
             <nav class="header-menu pt-1.75">
                 <!-- Unordered list for the menu options, each list item is a link to its respective page -->
                 {% if user.is_authenticated %}
-                <div class="dropdown renterprise-dropdown">
-                    <button class="btn login-dropdown dropdown-toggle white-text pb-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        {% trans "Welcome, " %}
-                        {% if user.first_name %}
-                            {% trans "user.first_name" %}
-                        {% else %}
-                            {% trans "user.last_name" %}
-                        {% endif %}
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end renterprise-dropdown-menu pt-0" aria-labelledby="dropdownMenuButton" style>
-                        <li class="nav-item text-end pe-2">
-                            <a class="nav-link white-text"
-                            aria-current="page"
-                            href="{% url "profile_view" %}"> Profile <i class="bi bi-person-fill"></i></a>
-                        </li>
-                        <li class="nav-item text-end pe-2">
-                            <a class="nav-link white-text"
-                            aria-current="page"
-                            href="{% url 'account_logout' %}"> Log Out <i class="bi bi-person-fill-down"></i></a>
-                        </li>
-                    </ul>
-                </div>
+                    {% trans "Welcome, " as welcome_start %}
+                    
+                    <div class="dropdown renterprise-dropdown">
+                        <button class="btn login-dropdown dropdown-toggle white-text pb-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if user.first_name %}{{ welcome_start }}{{ user.first_name }}{% else %}{{ welcome_start }}{{ user.last_name }}{% endif %}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end renterprise-dropdown-menu pt-0" aria-labelledby="dropdownMenuButton" style>
+                            <li class="nav-item text-end pe-2">
+                                <a class="nav-link white-text"
+                                aria-current="page"
+                                href="{% url "profile_view" %}"> Profile <i class="bi bi-person-fill"></i></a>
+                            </li>
+                            <li class="nav-item text-end pe-2">
+                                <a class="nav-link white-text"
+                                aria-current="page"
+                                href="{% url 'account_logout' %}"> Log Out <i class="bi bi-person-fill-down"></i></a>
+                            </li>
+                        </ul>
+                    </div>
                 {% else %}
                 <ul class="renterprise-non-user pt-3 pe-2">
                     <li class="nav-item text-end">
