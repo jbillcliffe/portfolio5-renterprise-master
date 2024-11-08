@@ -17,7 +17,10 @@
                 <form action="{% if self_or_manage == "self" %}{% url 'profile_view' %}{% else %}{% url 'profile_manage' user_id %}{% endif %}" method="post" id="profile-update">
                     {% crispy user_form user_form.helper %}
                     {% crispy profile_form profile_form.helper %}
-                    <a class="not-submit no-decoration" href="{% url 'menu' %}">{% trans "Return To Menu" %}</a>
+                    <a class="not-submit no-decoration" 
+                        href="{% if self_or_manage == "self" %}{% url 'menu' %}{% else %}{% url 'profile_list' %}{% endif %}">
+                        {% if self_or_manage == "self" %}{% trans "Return To Menu" %}{% else %}{% trans "Return To Profiles" %}{% endif %}
+                    </a>
 		            <button type="submit" class="white-text">{% trans "Update Profile" %}</button>
                 </form>
             </div>

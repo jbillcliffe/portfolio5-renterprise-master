@@ -105,14 +105,3 @@ class Profile(models.Model):
             return f"{self.user.last_name}"
         else:
             return f"{self.user.first_name} {self.user.last_name}"
-
-
-# @receiver(post_save, sender=User)
-# def create_or_update_user_profile(sender, instance, created, **kwargs):
-#     """
-#     Create or update user profile
-#     """
-#     if created:
-#         Profile.objects.create(user=instance)
-#     # Existing user will just save profile
-#     instance.userprofile.save()
