@@ -76,6 +76,10 @@ class Profile(models.Model):
         max_length=20, null=True, blank=True
     )
 
+    # Ordering alphabetically by last name from the User Model
+    class Meta:
+        ordering = ["user__last_name"]
+
     # Visual representation of this model is the username
     def __str__(self):
         return self.user.username

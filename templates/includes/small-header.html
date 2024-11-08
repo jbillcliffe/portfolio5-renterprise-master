@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <div id="mobile-header" class="container-fluid main-header d-block d-sm-none">
     <div class="row">
         <div class="col">
@@ -19,32 +20,37 @@
             {% if user.is_authenticated %}
             <div class="dropdown renterprise-dropdown">
                 <button class="btn login-dropdown dropdown-toggle white-text mb-0 pb-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    Welcome, {% if user.first_name.strip in settings.NULL_VALUES %}{{ user.last_name }}{% else %}{{ user.first_name }}{% endif %}
+                    {% trans "Welcome, " %}
+                        {% if user.first_name %}
+                            {% trans "{{ user.first_name }}" %}
+                        {% else %}
+                            {% trans "{{ user.last_name }}" %}
+                        {% endif %}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end renterprise-dropdown-menu pt-0" aria-labelledby="dropdownMenuButton" style>
-                    <li class="nav-item text-end white-text px-3">
-                        <a class="nav-link"
+                    <li class="nav-item text-end px-3">
+                        <a class="nav-link white-text"
                         aria-current="page"
-                        href="{% url "profile_view" %}"> Profile <i class="bi bi-person-fill"></i></a>
+                        href="{% url "profile_view" %}">{% trans "Profile" %}<i class="bi bi-person-fill"></i></a>
                     </li>
-                    <li class="nav-item text-end white-text px-3">
-                        <a class="nav-link"
+                    <li class="nav-item text-end px-3">
+                        <a class="nav-link white-text"
                         aria-current="page"
-                        href="{% url 'account_logout' %}"> Log Out <i class="bi bi-person-fill-down"></i></a>
+                        href="{% url 'account_logout' %}">{% trans "Log Out" %}<i class="bi bi-person-fill-down"></i></a>
                     </li>
                 </ul>
             </div>
             {% else %}
             <ul class="renterprise-non-user mb-0">
-                <li class="nav-item text-center white-text px-3">
-                    <a class="nav-link"
+                <li class="nav-item text-center px-3">
+                    <a class="nav-link white-text"
                     aria-current="page"
-                    href="{% url 'account_login' %}"> Log In <i class="bi bi-person-fill-up"></i></a>
+                    href="{% url 'account_login' %}">{% trans "Log In" %}<i class="bi bi-person-fill-up"></i></a>
                 </li>
-                <li class="nav-item text-center white-text">
-                    <a class="nav-link "
+                <li class="nav-item text-center">
+                    <a class="nav-link white-text"
                     aria-current="page"
-                    href="{% url 'account_signup' %}"> Sign Up <i class="bi bi-person-plus-fill"></i></a>
+                    href="{% url 'account_signup' %}">{% trans "Sign Up" %}<i class="bi bi-person-plus-fill"></i></a>
                 </li>
             </ul>
             {% endif %}

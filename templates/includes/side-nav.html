@@ -30,7 +30,7 @@
             <li id="collapse-sidebar" class="nav-item" data-bs-toggle="collapse"
                 data-bs-target="#rest-of-sidebar" aria-expanded="false" aria-controls="rest-of-sidebar">
                 <span id="menu-text-holder">
-                    <a id="side-menu-text" class="side-bar nav-link">Menu
+                    <a id="side-menu-text" class="side-bar nav-link">{% trans "Menu" %}
                     </a><i class="fa-solid fa-circle-up"></i>
                 </span>
             </li>
@@ -39,7 +39,7 @@
                 {% if url_name != "menu" %}
                     <li class="nav-item">
                         <a href="{% url 'menu' %}" target="_self" class="side-bar nav-link">
-                            <i class="nav-icon bi-house-up-fill"></i> Home
+                            <i class="nav-icon bi-house-up-fill"></i>{% trans "Home" %}
                         </a>
                     </li>
                 {% endif %}
@@ -48,7 +48,7 @@
                         <li class="nav-item">
                             <a href="{% url 'profile_list' %}" target="_self" 
                             class="side-bar nav-link {% if url_name == 'profile_list' %}active{% endif %}">
-                                <i class="nav-icon bi bi-people-fill"></i> Profile List
+                                <i class="nav-icon bi bi-people-fill"></i>{% trans "Profile List" %}
                             </a>
                         </li>
                     {% endif %}

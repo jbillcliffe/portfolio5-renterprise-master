@@ -1,11 +1,14 @@
-<div id="table-paginator" class="table-row table-head paginate-foot">
+{% load static %}
+{% load i18n %}
+
+<div id="table-paginator" class="paginate-foot">
     {% if page_obj.has_previous %}
         <a href="?page=1" class="paginate-arrows"><i class="fa-solid fa-angles-left"></i></a>
         <a href="?page={{ page_obj.previous_page_number }}"
            class="paginate-arrows"><i class="fa-solid fa-angle-left"></i></a>
     {% endif %}
     <span id="paginator-page-text">
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        {% trans "Page " %}{{ page_obj.number }}{% trans " of " %}{{ page_obj.paginator.num_pages }}
     </span>
     {% if page_obj.has_next %}
         <a href="?page={{ page_obj.next_page_number }}" class="paginate-arrows"><i class="fa-solid fa-angle-right"></i></a>

@@ -4,3 +4,7 @@ https://getbootstrap.com/docs/5.0/layout/z-index/ --- Z-index documentation, was
 for different bootstrap components!
 
 @login_required is needed, this also means that the user has to have a verified email too. Therefore not needing @verified_email_addres from allauth
+
+PAGINATOR - Prior to moving to grid display. It would centre on the middle item and you could not set a starting column for the text element.
+Hence, when there was only left or right. The paginatior would very clearly move, because the middle element 
+was an arrow (text/arrow/arrow or arrow/arrow/text). Grid enables a consistent size, even for blank columns, which can be centred in the parent div.

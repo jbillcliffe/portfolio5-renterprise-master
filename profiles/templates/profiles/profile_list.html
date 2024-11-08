@@ -59,8 +59,9 @@
                                         </div>
                                     </div>
                                 {% endfor %}
+                                {% include "includes/paginate.html" %}
                             </div>                        
-                            {% include "includes/paginate.html" %}
+                            
                         {% else %}
                             {% blocktrans %}<h3 class="text-danger">Not Authorised</h3>{% endblocktrans %}
                                 {% if account_type == 0 %}

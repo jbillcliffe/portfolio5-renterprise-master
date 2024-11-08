@@ -1,4 +1,6 @@
 {% load static %}
+{% load i18n %}
+
 <div id="main-header" class="container-fluid main-header d-none d-sm-block">
     <div class="row">
         <div class="col-xs-0 col-md">
@@ -20,16 +22,21 @@
                 {% if user.is_authenticated %}
                 <div class="dropdown renterprise-dropdown">
                     <button class="btn login-dropdown dropdown-toggle white-text pb-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        Welcome, {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.last_name }}{% endif %}
+                        {% trans "Welcome, " %}
+                        {% if user.first_name %}
+                            {% trans "user.first_name" %}
+                        {% else %}
+                            {% trans "user.last_name" %}
+                        {% endif %}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end renterprise-dropdown-menu pt-0" aria-labelledby="dropdownMenuButton" style>
-                        <li class="nav-item text-end white-text pe-2">
-                            <a class="nav-link"
+                        <li class="nav-item text-end pe-2">
+                            <a class="nav-link white-text"
                             aria-current="page"
                             href="{% url "profile_view" %}"> Profile <i class="bi bi-person-fill"></i></a>
                         </li>
-                        <li class="nav-item text-end white-text pe-2">
-                            <a class="nav-link"
+                        <li class="nav-item text-end pe-2">
+                            <a class="nav-link white-text"
                             aria-current="page"
                             href="{% url 'account_logout' %}"> Log Out <i class="bi bi-person-fill-down"></i></a>
                         </li>
@@ -37,13 +44,13 @@
                 </div>
                 {% else %}
                 <ul class="renterprise-non-user pt-3 pe-2">
-                    <li class="nav-item text-end white-text">
-                        <a class="nav-link"
+                    <li class="nav-item text-end">
+                        <a class="nav-link white-text"
                         aria-current="page"
                         href="{% url 'account_login' %}"> Log In <i class="bi bi-person-fill-up"></i></a>
                     </li>
-                    <li class="nav-item text-end white-text pt-2">
-                        <a class="nav-link "
+                    <li class="nav-item text-end pt-2">
+                        <a class="nav-link white-text"
                         aria-current="page"
                         href="{% url 'account_signup' %}"> Sign Up <i class="bi bi-person-plus-fill"></i></a>
                     </li>
