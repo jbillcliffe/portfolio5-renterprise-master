@@ -132,6 +132,10 @@ def profile_manage(request, user_id):
     If one is found by its "user" (unique). Then it will load that
     data into the ProfileForm
     """
+    if user_id == request.user.id:
+        profile_view(request)
+        return
+
     get_user = get_object_or_404(User, pk=user_id)
 
     profile, created = Profile.objects.get_or_create(
