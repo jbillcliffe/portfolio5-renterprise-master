@@ -35,11 +35,25 @@
                 </span>
             </li>
             <div id="rest-of-sidebar" class="nav nav-list collapse show">
-                <li class="nav-item">
-                    <a href="{% url 'menu' %}" target="_self" class="side-bar nav-link">
-                        <i class="nav-icon bi-house-up-fill"></i> Home
-                    </a>
-                </li>
+                <!-- Always have home button at top of menu, unless on the menu screen -->
+                {% if url_name != "menu" %}
+                    <li class="nav-item">
+                        <a href="{% url 'menu' %}" target="_self" class="side-bar nav-link">
+                            <i class="nav-icon bi-house-up-fill"></i> Home
+                        </a>
+                    </li>
+                {% endif %}
+                {% if url_name == "menu" or "/profiles" in request.path %}
+                    {% if request.user.profile.account_type > 1 %}
+                        <li class="nav-item">
+                            <a href="{% url 'profile_list' %}" target="_self" 
+                            class="side-bar nav-link {% if url_name == 'profile_list' %}active{% endif %}">
+                                <i class="nav-icon bi bi-people-fill"></i> Profile List
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+
             </div>
         </ul>
     </nav>
