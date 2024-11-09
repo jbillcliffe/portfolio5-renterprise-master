@@ -4,15 +4,19 @@
     display: flex;
     justify-content: flex-end;
     position: fixed;
-    top: 110px;
+    top: 131px;
     width: 100%;
     z-index: 9999999999999999;
+}
+
+.toast-body {
+    display: flex;
+    justify-content: center;
 }
 
 #renterprise-toast {
     position: relative;
     width: 30%;
-    height: auto;
     margin: 0 2rem;
     background-color: #FFFFFF;
 }

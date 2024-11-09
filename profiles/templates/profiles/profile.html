@@ -14,7 +14,8 @@
         <hr>
         <div class="row">
             <div class="col-12 col-lg-9 col-xxl-8">
-                <form action="{% if self_or_manage == "self" %}{% url 'profile_view' %}{% else %}{% url 'profile_manage' user_id %}{% endif %}" method="post" id="profile-update">
+                <form action="{% if self_or_manage == "self" %}{% url 'profile_view' %}{% else %}{% url 'profile_manage' user_id %}{% endif %}" 
+                      class="floating-labels-form" method="post" id="profile-update">
                     {% crispy user_form user_form.helper %}
                     {% crispy profile_form profile_form.helper %}
                     <a class="not-submit no-decoration" 

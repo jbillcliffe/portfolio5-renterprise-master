@@ -224,6 +224,22 @@ a.not-submit:hover {
     margin-right: 1rem;
 }
 
+/* --- Form Styling --- */
+
+/* Alter the Bootstrap5 floating field values for color. */
+
+/* For a floating field label when it is in the place holder position */
+.form-floating>label {
+    color: rgba(33, 37, 41, 0.35) !important;
+}
+
+/* For a floating field label when it is "floating" at the top of the parent element */
+.form-floating>.form-control-plaintext~label,
+.form-floating>.form-control:focus~label,
+.form-floating>.form-control:not(:placeholder-shown)~label,
+.form-floating>.form-select~label {
+    color: rgba(33, 37, 41, 0.795) !important;
+}
 /* --- Specific Allauth form formatting ----
    Boutique Ado tutorial as guidance */
 
@@ -249,6 +265,7 @@ as placeholders show the user required input data */
         width: 80%;
     }
 }
+
 /*   
 /* For Desktop Screens
 @media (min-width: 992px) {
