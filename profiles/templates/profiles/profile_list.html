@@ -53,7 +53,8 @@
                                         <div class="col-4 d-none d-md-block"></div>
                                         <div class="col-12 col-md-8 multi-element-column">
                                             <span><strong>Email : </strong>{{ profile.user.email }}</span>
-                                            <a href="{% url 'profile_manage' profile.user.id %}">
+                                            <a 
+                                            href="{% if profile.user.id == request.user.id %}{% url 'profile_view' %}{% else %}{% url 'profile_manage' profile.user.id %}{% endif %}">
                                                 <i class="bi bi-arrow-right-circle-fill icon-button"></i>
                                             </a>
                                         </div>

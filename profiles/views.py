@@ -51,7 +51,7 @@ def profile_view(request):
             "phone_number": ""
         },
     )
-# Fix user not updating incoming
+
     # When form is submitted
     if request.method == "POST":
 
@@ -132,93 +132,97 @@ def profile_manage(request, user_id):
     If one is found by its "user" (unique). Then it will load that
     data into the ProfileForm
     """
-    if user_id == request.user.id:
-        profile_view(request)
-        return
 
-    get_user = get_object_or_404(User, pk=user_id)
-
-    profile, created = Profile.objects.get_or_create(
-        user=get_user,
-        defaults={
-            "account_type": 0,
-            "address_line_1": "",
-            "address_line_2": "",
-            "address_line_3": "",
-            "town": "",
-            "county": "",
-            "country": "GB",
-            "postcode": "",
-            "phone_number": ""
-        },
-    )
-# Fix user not updating incoming
-    # When form is submitted
-    if request.method == "POST":
-
-        user_form = UserForm(request.POST)
-        profile_form = ProfileForm(request.POST)
-
-        # If both the user form and profile form are valid.
-        if user_form.is_valid() and profile_form.is_valid():
-            update_user = get_user
-            #     This was the only definitive way of taking a model object
-            # and updating it where the model was an inline relation to the
-            # user AND allowed the user to update user fields themselves
-            # (first_name, last_name, email) in conjunction to additional
-            # profile details.
-            # Individually referring to each object and updating it.
-
-            # NB. Email should be readonly in the profile. If it is changed,
-            # the email is no longer validated and can cause issues
-
-            update_user.first_name = profile_form.data['first_name']
-            update_user.last_name = profile_form.data['last_name']
-            # Email is entered from the get_user, not the form post.
-            update_user.email = get_user.email
-            profile.address_line_1 = profile_form.data['address_line_1']
-            profile.address_line_2 = profile_form.data['address_line_2']
-            profile.address_line_3 = profile_form.data['address_line_3']
-            profile.town = profile_form.data['town']
-            profile.county = profile_form.data['county']
-            profile.country = profile_form.data['country']
-            profile.postcode = profile_form.data['postcode']
-            profile.phone_number = profile_form.data['phone_number']
-
-            # Save the profile
-            profile.save()
-            # Save the user
-            update_user.save()
-
-            # Display a message to the user to show it has worked
-            messages.success(
-                request,
-                'Profile successfully updated'
-            )
-
-            return redirect('profile_manage', user_id=get_user.id)
-
-        else:
-            messages.error(
-                request, (
-                    'Profile data is not valid.'
-                    'Please check the validation prompts.'
-                )
-            )
+    get_user = get_object_or_404(User, id=user_id)
+    
+    # If the user uses url navigation to get to their own profile.
+    # The template already changes the button for click function
+    if get_user == request.user:
+        return profile_view(request)
 
     else:
-        # The query is a GET. Get the data to load into fields
-        user_form = UserForm(instance=get_user)
-        profile_form = ProfileForm(instance=profile)
+        profile, created = Profile.objects.get_or_create(
+            user=get_user,
+            defaults={
+                "account_type": 0,
+                "address_line_1": "",
+                "address_line_2": "",
+                "address_line_3": "",
+                "town": "",
+                "county": "",
+                "country": "GB",
+                "postcode": "",
+                "phone_number": ""
+            },
+        )
 
-    # Set template and context
-    template = 'profiles/profile.html'
-    context = {
-        'user_id': get_user.id,
-        'self_or_manage': "manage",
-        'user_form': user_form,
-        'profile_form': profile_form,
-    }
+        # Fix user not updating incoming
+        # When form is submitted
+        if request.method == "POST":
 
-    # Render the view
-    return render(request, template, context)
+            user_form = UserForm(request.POST)
+            profile_form = ProfileForm(request.POST)
+
+            # If both the user form and profile form are valid.
+            if user_form.is_valid() and profile_form.is_valid():
+                update_user = get_user
+                #     This was the only definitive way of taking a model object
+                # and updating it where the model was an inline relation to the
+                # user AND allowed the user to update user fields themselves
+                # (first_name, last_name, email) in conjunction to additional
+                # profile details.
+                # Individually referring to each object and updating it.
+
+                # Email should be readonly in the profile. If it is changed,
+                # the email is no longer validated and can cause issues
+
+                update_user.first_name = profile_form.data['first_name']
+                update_user.last_name = profile_form.data['last_name']
+                # Email is entered from the get_user, not the form post.
+                update_user.email = get_user.email
+                profile.address_line_1 = profile_form.data['address_line_1']
+                profile.address_line_2 = profile_form.data['address_line_2']
+                profile.address_line_3 = profile_form.data['address_line_3']
+                profile.town = profile_form.data['town']
+                profile.county = profile_form.data['county']
+                profile.country = profile_form.data['country']
+                profile.postcode = profile_form.data['postcode']
+                profile.phone_number = profile_form.data['phone_number']
+
+                # Save the profile
+                profile.save()
+                # Save the user
+                update_user.save()
+
+                # Display a message to the user to show it has worked
+                messages.success(
+                    request,
+                    'Profile successfully updated'
+                )
+
+                return redirect('profile_manage', user_id=get_user.id)
+
+            else:
+                messages.error(
+                    request, (
+                        'Profile data is not valid.'
+                        'Please check the validation prompts.'
+                    )
+                )
+
+        else:
+            # The query is a GET. Get the data to load into fields
+            user_form = UserForm(instance=get_user)
+            profile_form = ProfileForm(instance=profile)
+
+        # Set template and context
+        template = 'profiles/profile.html'
+        context = {
+            'user_id': get_user.id,
+            'self_or_manage': "manage",
+            'user_form': user_form,
+            'profile_form': profile_form,
+        }
+
+        # Render the view
+        return render(request, template, context)

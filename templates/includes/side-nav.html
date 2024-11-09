@@ -43,18 +43,22 @@
                         </a>
                     </li>
                 {% endif %}
-                {% if request.path == "/profiles/user/" %}
+                {% if url_name == "profile_view" or url_name == "profile_manage" %}
                     <li class="nav-item">
-                        <a href=""
-                           class="side-bar nav-link active">
-                           <i class="nav-icon bi bi-person-fill"></i>{% trans "My Profile" %}
+                        <a href="" class="side-bar nav-link active">
+                            {% if url_name == "profile_view" %}
+                                <i class="nav-icon bi bi-person-fill"></i>{% trans "My Profile" %}
+                            {% else %}
+                                <i class="nav-icon bi bi-person-fill-gear"></i>{% trans "Manage Profile" %}
+                            {% endif %}
                         </a>
                     </li>
                 {% endif %}
+
                 <!-- Show Profile List, if on the list page itself. Show it as active, by
                 highlighting it with the active class and disabling it by not applying
                 its href and target value -->
-                {% if url_name == "menu" or "/profiles" in request.path %}
+                {% if url_name == "menu" or "/profiles" in request.path and request.path != "/profiles/user/" %}
                     {% if request.user.profile.account_type > 1 %}
                         <li class="nav-item">
                             <a {% if url_name == "profile_list" %}{% else %}href="{% url 'profile_list' %}" target="_self"{% endif %}

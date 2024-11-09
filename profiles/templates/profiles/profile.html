@@ -10,7 +10,7 @@
 {% block content %}
     <div class="app-container">
         <hr>
-            <h1>My Profile</h1>
+            <h1>{% if self_or_manage == "self" %}My Profile{% else %}Manage User Profile{% endif %}</h1>
         <hr>
         <div class="row">
             <div class="col-12 col-lg-9 col-xxl-8">
