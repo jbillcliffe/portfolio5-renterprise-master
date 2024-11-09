@@ -51,6 +51,14 @@ class Item(models.Model):
         (REPAIR, 'Repair'),
     )
 
+    """
+    (AVAILABLE, 'Available', 'success-subtle white-text'),
+        (SCRAPPED, 'Scrapped', 'secondary-subtle white-text'),
+        (MISSING, 'Missing', 'danger-subtle white-text'),
+        (SOLD, 'Sold', 'primary-subtle white-text'),
+        (REPAIR, 'Repair', 'warning-subtle'),
+        """
+
     item_type = models.ForeignKey(
         ItemType, on_delete=models.CASCADE, related_name="item_type"
     )
@@ -91,10 +99,22 @@ class Item(models.Model):
     def item_css_status(self):
         """
         Returning the css ready version of status (noteably
-        in lower case)
+        in lower case).
         """
-        self = str(self.STATUS[self.status][1]).replace('/', '_').lower()
+        # status_name = str(self.STATUS[self.status][1]).replace('/', '_').lower()
+        
+        if self.STATUS[self.status][1] == "warning"
+            
+
+        if self.STATUS != REPAIR:
+            
         return self
+         (AVAILABLE, 'Available', 'success-subtle white-text'),
+        (SCRAPPED, 'Scrapped', 'secondary-subtle white-text'),
+        (MISSING, 'Missing', 'danger-subtle white-text'),
+        (SOLD, 'Sold', 'primary-subtle white-text'),
+        (REPAIR, 'Repair', 'warning-subtle'),
+    )
 
     def __str__(self):
         """

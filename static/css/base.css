@@ -247,6 +247,7 @@ a.not-submit:hover {
 as placeholders show the user required input data */
 .allauth-form-inner-content label:not([for='id_remember']) {
     display: none;
+    color:#0066ff
 }
 
 /* <a> styling, such as "Forgot Password" */
