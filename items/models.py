@@ -13,8 +13,9 @@ class ItemType(models.Model):
     uses a URL for it's data, which can then be linked to an image
     which is hosted online
     """
-    name = models.CharField(max_length=200)
-    category = models.CharField(max_length=200)
+    name = models.CharField(max_length=60)
+    sku = models.CharField(max_length=15, unique=True, default="MH-")
+    category = models.CharField(max_length=50)
     cost_initial = models.DecimalField(max_digits=6, decimal_places=2)
     cost_week = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(null=True, blank=True)
