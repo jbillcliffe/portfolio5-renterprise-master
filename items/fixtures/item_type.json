@@ -1,0 +1,222 @@
+[
+    {
+        "pk": 1, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "150kg Compact Hoist",
+            "category": "Hoists",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 2, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "330kg Hoist",
+            "category": "Hoists",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 3, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Bariatric Cocoon Lift Chair",
+            "category": "Rise & Recliner Chairs",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 4, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Bath Board",
+            "category": "Bathroom Accessories",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 5, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Bathlift",
+            "category": "Bathroom Accessories",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 6, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Dual Motor Rise & Recliner Chair",
+            "category": "Rise & Recliner Chairs",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 7, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Forearm Walker",
+            "category": "Walking Aids",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 8, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Homecare Hospital Bed",
+            "category": "Standard Beds",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 9, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Horizon Aztec S3",
+            "category": "8mph Mobility Scooters",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 10, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Horizon Mayan S2",
+            "category": "8mph Mobility Scooters",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 11, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Horizon Saxon",
+            "category": "8mph Mobility Scooters",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 12, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Pride Quest",
+            "category": "Folding Mobility Scooters",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 13, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Quantum Q6 Edge",
+            "category": "High Functioning Powerchairs",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 14, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Quantum Q700 Up",
+            "category": "High Functioning Powerchairs",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 15, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Rota Stand",
+            "category": "Stand Aids",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 16, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Stand Assist Aid",
+            "category": "Stand Aids",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 17, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Walker Wheelchair",
+            "category": "Walking Aids",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 18, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Fold Down Rollator",
+            "category": "Walking Aids",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 19, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Pride Apex Lite",
+            "category": "4mph Mobility Scooters",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+    {
+        "pk": 19, 
+        "model": "items.item_type",
+        "fields": {
+            "name": "Trendelenburg Homecare Bed",
+            "category": "Standard Beds",
+            "cost_initial": ,
+            "cost_week": ,
+            "image": 
+        }
+    },
+]
