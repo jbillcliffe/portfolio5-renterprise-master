@@ -1,5 +1,6 @@
-from django.db import models
 from decimal import Decimal
+from django.db import models
+
 """
 Model structure initial concept from my own Portfolio 4 --
 https://github.com/jbillcliffe/django-renterprise/tree/main/items/models.py
@@ -43,21 +44,22 @@ class Item(models.Model):
     MISSING = 2
     SOLD = 3
     REPAIR = 4
+
     STATUS = (
         (AVAILABLE, 'Available'),
         (SCRAPPED, 'Scrapped'),
         (MISSING, 'Missing'),
         (SOLD, 'Sold'),
-        (REPAIR, 'Repair'),
+        (REPAIR, 'Repair')
     )
 
-    """
-    (AVAILABLE, 'Available', 'success-subtle white-text'),
-        (SCRAPPED, 'Scrapped', 'secondary-subtle white-text'),
-        (MISSING, 'Missing', 'danger-subtle white-text'),
-        (SOLD, 'Sold', 'primary-subtle white-text'),
-        (REPAIR, 'Repair', 'warning-subtle'),
-        """
+    CSS_STATUS = (
+        (AVAILABLE, 'bg-success-subtle white-text'),
+        (SCRAPPED, 'bg-secondary-subtle white-text'),
+        (MISSING, 'bg-danger-subtle white-text'),
+        (SOLD, 'bg-primary-subtle white-text'),
+        (REPAIR, 'bg-warning-subtle')
+    )
 
     item_type = models.ForeignKey(
         ItemType, on_delete=models.CASCADE, related_name="item_type"
@@ -98,23 +100,10 @@ class Item(models.Model):
 
     def item_css_status(self):
         """
-        Returning the css ready version of status (noteably
-        in lower case).
+        Returning the css class to return to the template
+        based on it's status value saved.
         """
-        # status_name = str(self.STATUS[self.status][1]).replace('/', '_').lower()
-        
-        if self.STATUS[self.status][1] == "warning"
-            
-
-        if self.STATUS != REPAIR:
-            
-        return self
-         (AVAILABLE, 'Available', 'success-subtle white-text'),
-        (SCRAPPED, 'Scrapped', 'secondary-subtle white-text'),
-        (MISSING, 'Missing', 'danger-subtle white-text'),
-        (SOLD, 'Sold', 'primary-subtle white-text'),
-        (REPAIR, 'Repair', 'warning-subtle'),
-    )
+        return self.CSS_STATUS[self.status][1]
 
     def __str__(self):
         """
