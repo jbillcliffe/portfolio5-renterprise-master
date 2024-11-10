@@ -17,7 +17,6 @@ class ItemType(models.Model):
     category = models.CharField(max_length=200)
     cost_initial = models.DecimalField(max_digits=6, decimal_places=2)
     cost_week = models.DecimalField(max_digits=6, decimal_places=2)
-    image_url = models.URLField(max_length=1024, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
 
     # order by name 0-9 then A-Z
