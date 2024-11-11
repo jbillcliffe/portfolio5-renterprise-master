@@ -72,6 +72,7 @@ class Item(models.Model):
                                  decimal_places=2,
                                  default=Decimal('0.00'))
     status = models.IntegerField(choices=STATUS, default=AVAILABLE)
+    meta_tags = models.TextField(null=True, blank=True)
 
     class Meta:
         # order by item_type name 0-9 then A-Z

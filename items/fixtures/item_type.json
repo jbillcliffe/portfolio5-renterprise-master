@@ -4,10 +4,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "150kg Compact Hoist",
+            "sku": "HOI-COM150",
             "category": "Hoists",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "100.00",
+            "cost_week": "40.00",
+            "image": "birdie-evo-compact.webp",
+            "meta_tags":"Mobile Hoist, Hoist,Travel Hoist, Folding Hoist, Lightweight Hoist, Invacare Hoist, Invacare Birdie, Daily Mobility Support, Hire A Hoist"
         }
     },
     {
@@ -15,10 +17,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "330kg Hoist",
+            "sku": "HOI-BAR330",
             "category": "Hoists",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "170.00",
+            "cost_week": "65.00",
+            "image": "lifty-6-hoist.webp",
+            "meta_tags":"Bariatric Hoist, Hoist, Heavy Duty Hoist, Heavy Lifting Hoist, Invacare Hoist, Invacare Lifty 6, Daily Mobility Support, Hire A Hoist"
         }
     },
     {
@@ -26,10 +30,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Bariatric Cocoon Lift Chair",
+            "sku": "CHR-BARCOC",
             "category": "Rise & Recliner Chairs",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "200.00",
+            "cost_week": "75.00",
+            "image": "cocoon-xl-chair.webp",
+            "meta_tags":"Bariatric Chair, Coccoon Chair, Care Chair, Rising Chair, Reclining Chair, Lifting Chair, Standing Chair, Daily Mobility Support, Hire A Chair"
         }
     },
     {
@@ -37,10 +43,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Bath Board",
+            "sku": "BAT-BATBOA",
             "category": "Bathroom Accessories",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "40.00",
+            "cost_week": "10.00",
+            "image": "bath-board.webp",
+            "meta_tags":"Bathing Assist, Bathroom Assist, Bathroom Help, Bathroom Aid, Bathing Support, Bathroom Support, Daily Mobility Support, Hire Bath Board, Hire Bath Lift"
         }
     },
     {
@@ -48,10 +56,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Bathlift",
+            "sku": "BAT-BATHLI",
             "category": "Bathroom Accessories",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "60.00",
+            "cost_week": "15.00",
+            "image": "orca-bathlift.webp",
+            "meta_tags": "Bathing Assist, Bathroom Assist, Bathroom Help, Bathroom Aid, Lift out bath, Bathing Support, Bathroom Support, Daily Mobility Support, Hire Bath Lift"
         }
     },
     {
@@ -59,10 +69,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Dual Motor Rise & Recliner Chair",
+            "sku": "CHR-DMRNDR",
             "category": "Rise & Recliner Chairs",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "120.00",
+            "cost_week": "55.00",
+            "image": "dual-motor-chair.webp",
+            "meta_tags":"Care Chair, Rising Chair, Reclining Chair, Lifting Chair, Standing Chair, Daily Mobility Support, Hire A Chair"
         }
     },
     {
@@ -70,10 +82,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Forearm Walker",
+            "sku": "WAL-FORWAL",
             "category": "Walking Aids",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "30.00",
+            "cost_week": "8.00",
+            "image": "forearm-walker.webp",
+            "meta_tags":"Walker Wheelchair, Standing Wheelchair, Portable Wheelchair, Daily Mobility Support, Hire A Wheelchair"
         }
     },
     {
@@ -81,10 +95,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Homecare Hospital Bed",
+            "sku": "BED-HOMEBE",
             "category": "Standard Beds",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "110.00",
+            "cost_week": "45.00",
+            "image": "homecare-hospital-bed.webp",
+            "meta_tags":"Hospital Bed at Home, Home Care, Profiling Bed, Daily Mobility Support, Hire A Bed"
         }
     },
     {
@@ -92,10 +108,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Horizon Aztec S3",
+            "sku": "SCO-HORAZ3",
             "category": "8mph Mobility Scooters",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "140.00",
+            "cost_week": "70.00",
+            "image": "horizon-aztec-s3.webp",
+            "meta_tags":"Heavy Duty Mobility Scooter, Powerful Mobility Scooter, Off Road Mobility Scooter, Off Road Mobility, High Milage Scooter, Daily Mobility Support, Hire Mobility Scooter"
         }
     },
     {
@@ -103,10 +121,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Horizon Mayan S2",
+            "sku": "SCO-HORMA2",
             "category": "8mph Mobility Scooters",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "150.00",
+            "cost_week": "75.00",
+            "image": "horizon-mayan-s2.webp",
+            "meta_tags":"Heavy Duty Mobility Scooter, Powerful Mobility Scooter, Off Road Mobility Scooter, Off Road Mobility, High Milage Scooter, Daily Mobility Support, Hire Mobility Scooter"
         }
     },
     {
@@ -114,10 +134,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Horizon Saxon",
+            "sku": "SCO-HORSAX",
             "category": "8mph Mobility Scooters",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "110.00",
+            "cost_week": "55.00",
+            "image": "horizon-saxon.webp",
+            "meta_tags":"Powerful Mobility Scooter, Stylish Mobility Scooter, Daily Mobility Support, Hire Mobility Scooter"
         }
     },
     {
@@ -125,10 +147,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Pride Quest",
+            "sku": "SCO-PRIQUE",
             "category": "Folding Mobility Scooters",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "100.00",
+            "cost_week": "55.00",
+            "image": "quest-folding-scooter.webp",
+            "meta_tags":"Portable Mobility Scooter, Boot Mobility Scooter, Lightweight Mobility Scooter, Small Mobility Scooter, Travel Mobility Scooter, Daily Mobility Support, Hire Mobility Scooter"
         }
     },
     {
@@ -136,10 +160,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Quantum Q6 Edge",
+            "sku": "POW-QUAQ6E",
             "category": "High Functioning Powerchairs",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "200.00",
+            "cost_week": "95.00",
+            "image": "q6-edge-powerchair.webp",
+            "meta_tags": "Specialist Powerchair, Powerchair With Functions, Heavy Duty Powerchair, Daily Mobility Support, Hire Powerchair"
         }
     },
     {
@@ -147,10 +173,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Quantum Q700 Up",
+            "sku": "POW-QUQ700",
             "category": "High Functioning Powerchairs",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "220.00",
+            "cost_week": "105.00",
+            "image": "q700up-powerchair.webp",
+            "meta_tags": "Standing Powerchair, Specialist Powerchair, Powerchair With Functions, Heavy Duty Powerchair, Daily Mobility Support, Hire Powerchair"
         }
     },
     {
@@ -158,10 +186,13 @@
         "model": "items.item_type",
         "fields": {
             "name": "Rota Stand",
+            "sku": "STA-ROTASD",
             "category": "Stand Aids",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "40.00",
+            "cost_week": "10.00",
+            "image": "rota-stand.webp",
+            "meta_tags": "Move A Patient, Daily Mobility Support, Hire Care Products, Hire Stand Assist"
+
         }
     },
     {
@@ -169,10 +200,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Stand Assist Aid",
+            "sku": "STA-STANDA",
             "category": "Stand Aids",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "140.00",
+            "cost_week": "60.00",
+            "image": "isa-stand-assist.webp",
+            "meta_tags": "Move A Patient, Daily Mobility Support, Hire Care Products, Hire Stand Assist, Invacare ISA"
         }
     },
     {
@@ -180,10 +213,11 @@
         "model": "items.item_type",
         "fields": {
             "name": "Walker Wheelchair",
+            "sku": "WAL-WAWCHR",
             "category": "Walking Aids",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "25.00",
+            "cost_week": "5.00",
+            "image": "deluxe-rollator.webp"
         }
     },
     {
@@ -191,10 +225,12 @@
         "model": "items.item_type",
         "fields": {
             "name": "Fold Down Rollator",
+            "sku": "WAL-FDDNRO",
             "category": "Walking Aids",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "30.00",
+            "cost_week": "7.00",
+            "image": "fold-down-rollator.webp",
+            "meta_tags":"Walker Wheelchair, Standing Wheelchair, Portable Wheelchair, Daily Mobility Support, Hire A Wheelchair"
         }
     },
     {
@@ -202,21 +238,25 @@
         "model": "items.item_type",
         "fields": {
             "name": "Pride Apex Lite",
+            "sku": "SCO-PRIAPX",
             "category": "4mph Mobility Scooters",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "60.00",
+            "cost_week": "50.00",
+            "image": "apex-lite.webp",
+            "meta_tags":"Portable Mobility Scooter, Boot Mobility Scooter, Lightweight Mobility Scooter, Small Mobility Scooter, Travel Mobility Scooter, Daily Mobility Support, Hire Mobility Scooter"
         }
     },
     {
-        "pk": 19, 
+        "pk": 20, 
         "model": "items.item_type",
         "fields": {
             "name": "Trendelenburg Homecare Bed",
+            "sku": "BED-SDTRND",
             "category": "Standard Beds",
-            "cost_initial": ,
-            "cost_week": ,
-            "image": 
+            "cost_initial": "160.00",
+            "cost_week": "70.00",
+            "image": "opera-classic-bed.webp",
+            "meta_tags":"Hospital Bed at Home, Home Care, Profiling Bed, Daily Mobility Support, Hire A Bed"
         }
-    },
+    }
 ]
