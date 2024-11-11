@@ -19,6 +19,7 @@ class ItemType(models.Model):
     cost_initial = models.DecimalField(max_digits=6, decimal_places=2)
     cost_week = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(null=True, blank=True)
+    meta_tags = models.TextField(null=True, blank=True)
 
     # order by name 0-9 then A-Z
     class Meta:
@@ -72,7 +73,6 @@ class Item(models.Model):
                                  decimal_places=2,
                                  default=Decimal('0.00'))
     status = models.IntegerField(choices=STATUS, default=AVAILABLE)
-    meta_tags = models.TextField(null=True, blank=True)
 
     class Meta:
         # order by item_type name 0-9 then A-Z
