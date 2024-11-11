@@ -1,0 +1,653 @@
+[
+
+    {
+        "pk": 1,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 6,
+            "item_serial": "RENT-290-ZP3AP",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    },
+    {
+        "pk": 2,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 20,
+            "item_serial": "RENT-924-T6HHC",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    },
+    {
+        "pk": 3,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 11,
+            "item_serial": "RENT-890-BKPPN",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    },
+    {
+        "pk": 4,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 15,
+            "item_serial": "RENT-119-5T33C",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 5,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 16,
+            "item_serial": "RENT-486-R8XPT",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 6,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 2,
+            "item_serial": "RENT-634-7KQU1",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 7,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 7,
+            "item_serial": "RENT-897-8K68L",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 8,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 10,
+            "item_serial": "RENT-388-C9V04",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 9,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 15,
+            "item_serial": "RENT-513-MDRG8",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 10,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 1,
+            "item_serial": "RENT-349-088EU",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 11,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 5,
+            "item_serial": "RENT-425-KXVIT",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 12,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 15,
+            "item_serial": "RENT-474-UDDYC",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 13,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 11,
+            "item_serial": "RENT-655-U66V1",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 14,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 16,
+            "item_serial": "RENT-328-FB56N",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 15,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 17,
+            "item_serial": "RENT-169-6YNKJ",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 16,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 19,
+            "item_serial": "RENT-102-7MHAJ",
+            "delivery_date": "2024-09-15",
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 17,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 8,
+            "item_serial": "RENT-368-GERZP",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 18,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 4,
+            "item_serial": "RENT-239-GUDL2",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 19,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 5,
+            "item_serial": "RENT-302-06KNY",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 20,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 12,
+            "item_serial": "RENT-585-80IF0",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 21,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 3,
+            "item_serial": "RENT-082-CAAWA",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 22,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 7,
+            "item_serial": "RENT-923-ZMMEE",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 23,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 2,
+            "item_serial": "RENT-132-BA6R9",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 24,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 18,
+            "item_serial": "RENT-463-6HY9V",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 25,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 1,
+            "item_serial": "RENT-229-C94WM",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 26,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 20,
+            "item_serial": "RENT-637-VJMBP",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 27,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 15,
+            "item_serial": "RENT-788-QBTG3",
+            "delivery_date": "2024-09-09",
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 28,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 15,
+            "item_serial": "RENT-036-P0CGM",
+            "delivery_date": "2024-07-04",
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 29,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 9,
+            "item_serial": "RENT-069-PF082",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    },
+    {
+        "pk": 30,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 5,
+            "item_serial": "RENT-446-U7KP9",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 31,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 8,
+            "item_serial": "RENT-077-78D3Q",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 32,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 14,
+            "item_serial": "RENT-706-HWPTJ",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 33,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 17,
+            "item_serial": "RENT-729-EVYY2",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 34,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 13,
+            "item_serial": "RENT-016-L3EZ3",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 35,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 1,
+            "item_serial": "RENT-767-SWXZU",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 36,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 5,
+            "item_serial": "RENT-576-GF2HY",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 37,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 12,
+            "item_serial": "RENT-532-70KBD",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 38,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 9,
+            "item_serial": "RENT-947-PZIDD",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 39,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 17,
+            "item_serial": "RENT-290-QJ6P7",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 40,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 3,
+            "item_serial": "RENT-224-Z7DY7",
+            "delivery_date": "2024-09-13",
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 41,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 15,
+            "item_serial": "RENT-545-0LRX1",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 42,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 18,
+            "item_serial": "RENT-481-0C565",
+            "delivery_date": "2024-08-15",
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 43,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 6,
+            "item_serial": "RENT-302-6V5AU",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 44,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 12,
+            "item_serial": "RENT-564-KB73U",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 45,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 5,
+            "item_serial": "RENT-953-KG36P",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 46,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 20,
+            "item_serial": "RENT-489-S97JE",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 47,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 11,
+            "item_serial": "RENT-523-9L3D8",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 48,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 4,
+            "item_serial": "RENT-763-5HUWG",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 49,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 5,
+            "item_serial": "RENT-680-MUJSR",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }, 
+    {
+        "pk": 50,
+        "model": "items.Item",
+        "fields": {
+            "item_type": 6,
+            "item_serial": "RENT-050-1AX3D",
+            "delivery_date": null,
+            "collect_date": null,
+            "repair_date": null,
+            "income": 0.00,
+            "status": 0
+        }
+    }
+]
