@@ -21,7 +21,8 @@ class ItemType(models.Model):
     image = models.ImageField(null=True, blank=True)
     meta_tags = models.TextField(null=True, blank=True)
 
-    # order by name 0-9 then A-Z
+    # Order by category and then name to create the category separation
+    # in the list view
     class Meta:
         ordering = ["category", "name"]
 
@@ -73,6 +74,9 @@ class Item(models.Model):
                                  decimal_places=2,
                                  default=Decimal('0.00'))
     status = models.IntegerField(choices=STATUS, default=AVAILABLE)
+    # For a possible future where items can be viewed with their own unique
+    # photo rather than a generic picture by its type.
+    unique_image_field = models.ImageField(null=True, blank=True)
 
     class Meta:
         # order by item_type name 0-9 then A-Z

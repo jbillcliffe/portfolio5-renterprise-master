@@ -24,7 +24,7 @@
                             <div class="renterprise-table">
                                 <!-- Create Table Header -->
                                  <!-- Header is not visible from 767px and less -->
-                                <div class="renterprise-table-row table-head d-none d-md-block">
+                                <div class="renterprise-table-row table-head d-none d-md-flex">
                                     <div class="col-7">
                                         <strong>Item</strong>
                                     </div>
@@ -39,7 +39,7 @@
                                         <!-- Add a category header -->
                                         <div class="renterprise-table-row bottom-row bg-info-subtle">
                                             <div class="col-12">
-                                                {{ item.item_type_category|upper }}
+                                                <strong>{{ item.item_type_category|upper }}</strong>
                                             </div>
                                         </div>
                                     {% endifchanged %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_title %}{% blocktrans %}View An Item{% endblocktrans %}{% endblock extra_title %}
+
+<!-- Creating the form for Profiles allowing a user to update their details -->
+{% block content %}
+    <div class="app-container">
+        <div class="row">
+            <hr>
+                <h1>View Item {{ item_serial }}</h1>
+            
+            <div class="col-4 item-image-holder">
+                {% if item.item_type.image %}
+                    <img class="item-image"
+                         src="{% static 'images/default.webp' %}"
+                         alt="placeholder image">
+                {% else %}
+                    <img class="item-image"
+                         src="{{ item.item_type.image.url }}"
+                         alt="{{ item.item_type_name }}">
+                {% endif %}
+            </div>
+            <hr>
+        </div>
+        
+        <div class="row">
+            <div class="col-12 col-lg-9 col-xxl-8">
+                <form action="{% url 'item_view' %}" 
+                      class="floating-labels-form" method="post" id="item_update">
+                    {% crispy item_form %}
+                    <a class="not-submit no-decoration" 
+                        href="{% url 'item_list' %}">{% trans "Return To Item List" %}
+                    </a>
+		            <button type="submit" class="white-text">{% trans "Update Item" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

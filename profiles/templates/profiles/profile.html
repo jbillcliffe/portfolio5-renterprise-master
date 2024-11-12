@@ -6,6 +6,9 @@
 {% block extra_css %}
 {% endblock extra_css %}
 
+
+{% block extra_title %}{% blocktrans %}{%if self_or_manage == "self"%}My Profile{% else %}Manage User Profile{% endif %}{% endblocktrans %}{% endblock extra_title %}
+
 <!-- Creating the form for Profiles allowing a user to update their details -->
 {% block content %}
     <div class="app-container">

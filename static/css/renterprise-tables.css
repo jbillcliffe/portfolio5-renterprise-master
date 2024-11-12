@@ -73,7 +73,9 @@
     color:#C9F0FF;
 }
 
+/* For items that cannot use the Bootstrap md breakpoint */
 @media (max-width: 767px) {
+    
     .renterprise-table-row.item-list {
         flex-direction: column !important;
         height: auto;

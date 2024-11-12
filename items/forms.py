@@ -24,8 +24,7 @@ class ItemForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        """
-        """
+
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
@@ -34,8 +33,8 @@ class ItemForm(forms.ModelForm):
         self.fields['item_serial'].required = True
 
         self.helper.layout = Layout(
-            FloatingField("item_type"),
-            FloatingField("item_serial"),
+            FloatingField("item_type", readonly=True),
+            FloatingField("item_serial", readonly=True),
         )
 
 
@@ -50,6 +49,7 @@ class ItemTypeForm(forms.ModelForm):
         fields = "__all__"
         labels = {
             "name": "Type",
+            "category": "Category",
             "cost_initial": "Initial (£)",
             "cost_week": "Weekly (£)",
         }
@@ -62,6 +62,7 @@ class ItemTypeForm(forms.ModelForm):
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = False
         self.fields['name'].required = True
+        self.fields['category'].required = True
         self.fields['cost_initial'].required = True
         self.fields['cost_week'].required = True
         self.helper.layout = Layout(

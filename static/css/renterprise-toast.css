@@ -21,6 +21,13 @@
     background-color: #FFFFFF;
 }
 
+/* 1600+ px */
+@media (min-width: 1600px) {
+    /* Smaller still for extreme screen width */
+    #renterprise-toast {
+        width: 25%;
+    }
+}
 /* 1200+ px */
 @media (min-width: 1200px) {
     
