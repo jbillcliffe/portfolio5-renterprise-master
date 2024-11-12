@@ -72,3 +72,17 @@
 .paginate-arrows:hover {
     color:#C9F0FF;
 }
+
+@media (max-width: 767px) {
+    .renterprise-table-row.item-list {
+        flex-direction: column !important;
+        height: auto;
+        padding: 0.5rem 1rem 0 1rem;
+    }
+
+    .renterprise-table-row.item-list>div {
+        display:flex;
+        flex-direction: row !important;
+        align-items: baseline;
+    }
+}

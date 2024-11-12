@@ -23,7 +23,7 @@ class ItemType(models.Model):
 
     # order by name 0-9 then A-Z
     class Meta:
-        ordering = ["name"]
+        ordering = ["category", "name"]
 
     # so the name will replace "ItemType Object" in all instances
     def __str__(self):
@@ -76,7 +76,7 @@ class Item(models.Model):
 
     class Meta:
         # order by item_type name 0-9 then A-Z
-        ordering = ["item_type", "status", "item_serial"]
+        ordering = ["item_type", "item_serial"]
 
     # return a formatted string for the name of the item type
     def item_type_name(self):
