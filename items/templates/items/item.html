@@ -26,6 +26,12 @@
 
                     {% crispy item_type_form item_type_form.helper %}
                     {% crispy item_form item_form.helper %}
+
+                    {% comment %} {{ item_form.item_type|as_crispy_field }}
+                    {{ item_type_form.category|as_crispy_field }}
+                    {{ item_form.item_serial|as_crispy_field }}
+                    {{ item_type_form.cost_initial|as_crispy_field }}
+                    {{ item_type_form.cost_week|as_crispy_field }} {% endcomment %}
                         <a class="not-submit no-decoration" 
                             href="{% url 'item_list' %}">
                             {% trans "Return To Item List" %}

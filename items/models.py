@@ -9,9 +9,9 @@ https://github.com/jbillcliffe/django-renterprise/tree/main/items/models.py
 
 class ItemType(models.Model):
     """
-    Fields for the ItemType model, including the CloudinaryField which
-    uses a URL for it's data, which can then be linked to an image
-    which is hosted online
+    Fields for the ItemType model, including the ImageField which
+    contains a URL for it's data, which can then be linked to an image
+    which is hosted online (local for debug)
     """
     name = models.CharField(max_length=60)
     sku = models.CharField(max_length=15, unique=True, default="MH-")
@@ -41,12 +41,16 @@ class Item(models.Model):
     The status is also important as it will determine the availability
     of it to hire.
     """
+
+    # Creating word variables to integer values
     AVAILABLE = 0
     SCRAPPED = 1
     MISSING = 2
     SOLD = 3
     REPAIR = 4
 
+    # Creating tuples under the STATUS variable where an integer has a
+    # relation to a string
     STATUS = (
         (AVAILABLE, 'Available'),
         (SCRAPPED, 'Scrapped'),
@@ -55,6 +59,8 @@ class Item(models.Model):
         (REPAIR, 'Repair')
     )
 
+    # Creating tuples under the CSS_STATUS variable where an integer has
+    # a relation to a string
     CSS_STATUS = (
         (AVAILABLE, 'success'),
         (SCRAPPED, 'secondary'),
@@ -79,10 +85,9 @@ class Item(models.Model):
     unique_image_field = models.ImageField(null=True, blank=True)
 
     class Meta:
-        # order by item_type name 0-9 then A-Z
+        # order by item_type name 0-9 then A-Z, then by serial number
         ordering = ["item_type", "item_serial"]
 
-    # return a formatted string for the name of the item type
     def item_type_name(self):
         """
         Returning the item_type.name as a seperate entity as it is referred to

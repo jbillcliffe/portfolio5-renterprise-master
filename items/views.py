@@ -2,11 +2,12 @@
 
 # from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+# from django.core import serializers
 from django.shortcuts import render, get_object_or_404  # , redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 
-from .models import Item
+from .models import Item  # , ItemType
 from .forms import ItemTypeForm, ItemForm
 
 
@@ -32,7 +33,12 @@ def item_view(request, item_id):
 
     item = get_object_or_404(Item, pk=item_id)
     account_type = request.user.profile.get_account_type()
-    print(request.user.profile.account_type)
+
+    # type_images_query = ItemType.objects.values_list('id', 'name', 'image')
+    # for id, name, image in type_images:
+    # type_images_json = serializers.serialize('json', type_images_query)
+    # type_images_list = list(type_images_json)
+    # print(type_images_list)
     template = 'items/item.html'
     context = {
         # 'current_user': request.user,
@@ -42,7 +48,8 @@ def item_view(request, item_id):
         'item_type_name': item.item_type.name,
         'image_border': item.item_css_status(),
         'account_type': account_type,
-        'item_type_form': ItemTypeForm(account_type=account_type, instance=item.item_type),
+        'item_type_form': ItemTypeForm(
+            account_type=account_type, instance=item.item_type),
         'item_form': ItemForm(account_type=account_type, instance=item)
     }
 
