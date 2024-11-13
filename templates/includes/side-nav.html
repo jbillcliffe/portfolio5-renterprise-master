@@ -30,7 +30,7 @@
             <li id="collapse-sidebar" class="nav-item" data-bs-toggle="collapse"
                 data-bs-target="#rest-of-sidebar" aria-expanded="false" aria-controls="rest-of-sidebar">
                 <span id="menu-text-holder">
-                    <a id="side-menu-text" class="side-bar nav-link">{% trans "Menu" %}
+                    <a id="side-menu-text" class="side-bar nav-link"><strong>{% trans "Menu" %}</strong>
                     </a><i class="bi bi-arrow-up-circle-fill"></i>
                 </span>
             </li>
@@ -39,7 +39,7 @@
                 {% if url_name != "menu" %}
                     <li class="nav-item">
                         <a href="{% url 'menu' %}" target="_self" class="side-bar nav-link">
-                            <i class="nav-icon bi-house-up-fill"></i>{% trans "Home" %}
+                            <i class="nav-icon bi-house-up-fill"></i><strong>{% trans "Home" %}</strong>
                         </a>
                     </li>
                 {% endif %}
@@ -47,9 +47,9 @@
                     <li class="nav-item">
                         <a href="" class="side-bar nav-link active">
                             {% if url_name == "profile_view" %}
-                                <i class="nav-icon bi bi-person-fill"></i>{% trans "My Profile" %}
+                                <i class="nav-icon bi bi-person-fill"></i><strong>{% trans "My Profile" %}</strong>
                             {% else %}
-                                <i class="nav-icon bi bi-person-fill-gear"></i>{% trans "Manage Profile" %}
+                                <i class="nav-icon bi bi-person-fill-gear"></i><strong>{% trans "Manage Profile" %}</strong>
                             {% endif %}
                         </a>
                     </li>
@@ -63,7 +63,7 @@
                         <li class="nav-item">
                             <a {% if url_name == "profile_list" %}{% else %}href="{% url 'profile_list' %}" target="_self"{% endif %}
                             class="side-bar nav-link {% if url_name == 'profile_list' %}active{% endif %}">
-                                <i class="nav-icon bi bi-people-fill"></i>{% trans "Profile List" %}
+                                <i class="nav-icon bi bi-people-fill"></i><strong>{% trans "Profile List" %}</strong>
                             </a>
                         </li>
                     {% endif %}

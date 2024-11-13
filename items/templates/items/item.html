@@ -11,33 +11,28 @@
 <!-- Creating the form for Profiles allowing a user to update their details -->
 {% block content %}
     <div class="app-container">
+        <hr>
+            <h1>View Item {{ item_serial }}</h1>
+        <hr>
         <div class="row">
-            <hr>
-                <h1>View Item {{ item_serial }}</h1>
-            
-            <div class="col-4 item-image-holder">
-                {% if item.item_type.image %}
-                    <img class="item-image"
-                         src="{% static 'images/default.webp' %}"
-                         alt="placeholder image">
-                {% else %}
-                    <img class="item-image"
-                         src="{{ item.item_type.image.url }}"
-                         alt="{{ item.item_type_name }}">
-                {% endif %}
+            <div class="col-12 col-lg-3 col-xxl-4 pb-3">
+                <img class="item-image img-fluid border border-2 border-{{ image_border }} rounded"
+                    src={% if not item_image %}"{% static 'images/default.webp' %}"{% else %}"{{ item_image.url }}"{% endif %}
+                    alt={% if not item_image %}"default no image"{% else %}"{{ item_type_name }}"{% endif %}>
             </div>
-            <hr>
-        </div>
-        
-        <div class="row">
             <div class="col-12 col-lg-9 col-xxl-8">
-                <form action="{% url 'item_view' %}" 
+                <form action="{% url 'item_view' item_id %}" 
                       class="floating-labels-form" method="post" id="item_update">
-                    {% crispy item_form %}
-                    <a class="not-submit no-decoration" 
-                        href="{% url 'item_list' %}">{% trans "Return To Item List" %}
-                    </a>
-		            <button type="submit" class="white-text">{% trans "Update Item" %}</button>
+
+                    {% crispy item_type_form item_type_form.helper %}
+                    {% crispy item_form item_form.helper %}
+                        <a class="not-submit no-decoration" 
+                            href="{% url 'item_list' %}">
+                            {% trans "Return To Item List" %}
+                        </a>
+		            <button type="submit" 
+                    class="{% if account_type == 'Administrator' %}white-text{% else %}{% endif %}"
+                    {% if account_type == 'Administrator' %}{% else %}disabled{% endif %}>{% trans "Update Item" %}</button>
                 </form>
             </div>
         </div>

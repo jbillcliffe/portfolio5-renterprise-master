@@ -6,8 +6,7 @@
 {% block extra_css %}
 {% endblock extra_css %}
 
-
-{% block extra_title %}{% blocktrans %}{%if self_or_manage == "self"%}My Profile{% else %}Manage User Profile{% endif %}{% endblocktrans %}{% endblock extra_title %}
+{% block extra_title %}{%if self_or_manage == "self"%}{% trans "My Profile" %}{% else %}{% trans "Manage User Profile" %}{% endif %}{% endblock extra_title %}
 
 <!-- Creating the form for Profiles allowing a user to update their details -->
 {% block content %}

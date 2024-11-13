@@ -70,6 +70,7 @@ i.icon-button {
     color:#2D8B60;
 }
 
+
 .multi-element-column {
     display: flex;
     justify-content: space-between;
@@ -113,6 +114,13 @@ input[type='submit']:hover {
     border-color: #000000;
 }
 
+button:disabled,
+button:hover:disabled {
+    color: rgba(33, 37, 41, 0.35);
+    background-color: rgba(108, 107, 125, 0.35);
+    border: 1px solid rgba(108, 107, 125, 0.5);
+}
+
 /* For program wide a tag buttons */
 a.not-submit {
     display: inline-block;
@@ -142,7 +150,8 @@ a.not-submit:hover {
 
 /* Text shadow on white text emphasises it */
 .white-text {
-    color:#FFFFFF !important;
+    /* color:#FFFFFF !important; */
+    color:#FFFFFF;
     text-shadow: 0px 1px 5px #000000;
 }
 
@@ -253,6 +262,12 @@ as placeholders show the user required input data */
 /* <a> styling, such as "Forgot Password" */
 .allauth-form-inner-content a {
 	color: #17A2B8;
+}
+
+/* Item Image (in Item View) */
+.item-image {
+    width: 296px;
+    height: auto;
 }
 
 /* --- Media Queries --- */

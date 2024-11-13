@@ -134,7 +134,7 @@ def profile_manage(request, user_id):
     """
 
     get_user = get_object_or_404(User, id=user_id)
-    
+
     # If the user uses url navigation to get to their own profile.
     # The template already changes the button for click function
     if get_user == request.user:

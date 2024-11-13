@@ -12,3 +12,6 @@ was an arrow (text/arrow/arrow or arrow/arrow/text). Grid enables a consistent s
 SIDEBAR - For a time, the href and target values were persisting although I believed it should have gone, but, the if/else statement was incorrect, 
 then realising target=_self was refreshing the page too. However, with a rescripting in the nav the cursor is not a pointer and it does not have navigation.
 This was discovered at the early stages when creating the link for the profiles list.
+
+USER TO FORM FOR AUTHENTICATION ------ 
+https://forum.djangoproject.com/t/using-request-user-in-forms-py/19184/2

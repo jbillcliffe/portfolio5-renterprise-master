@@ -56,11 +56,11 @@ class Item(models.Model):
     )
 
     CSS_STATUS = (
-        (AVAILABLE, 'bg-success-subtle white-text'),
-        (SCRAPPED, 'bg-secondary-subtle white-text'),
-        (MISSING, 'bg-danger-subtle white-text'),
-        (SOLD, 'bg-primary-subtle white-text'),
-        (REPAIR, 'bg-warning-subtle')
+        (AVAILABLE, 'success'),
+        (SCRAPPED, 'secondary'),
+        (MISSING, 'danger'),
+        (SOLD, 'primary'),
+        (REPAIR, 'warning')
     )
 
     item_type = models.ForeignKey(
