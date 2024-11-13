@@ -34,5 +34,9 @@ Bootstrap order class on grid layout has tiers 1 throught to 5 by default, altho
 # Switch button order on screen breakpoint
 https://stackoverflow.com/questions/66981371/how-to-use-breakpoints-to-change-bootstrap-columns-grid-ordering
 
+MODEL LEVEL VALIDATION ------
+Used in ItemForm
+https://docs.djangoproject.com/en/5.1/ref/models/instances/#django.db.models.Model.full_clean
+
 
 

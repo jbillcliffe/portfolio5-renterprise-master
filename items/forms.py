@@ -29,12 +29,12 @@ class ItemForm(forms.ModelForm):
 
         self.account_type = kwargs.pop('account_type', None)
         self.all_types = kwargs.pop('all_types', None)
-        # self.item_type_key = kwargs.pop('item_type_key', None)
+
         super().__init__(*args, **kwargs)
+
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = False
-        # self.helper.form_class = "row floating-labels-form m-0"
 
         if self.account_type == "Administrator":
             self.fields['item_type'].widget.attrs['disabled'] = False
@@ -88,7 +88,7 @@ class ItemTypeForm(forms.ModelForm):
         self.fields['category'].widget.attrs['disabled'] = True
         self.fields['cost_initial'].widget.attrs['disabled'] = True
         self.fields['cost_week'].widget.attrs['disabled'] = True
-        
+
         self.fields['category'].required = True
         self.fields['cost_initial'].required = True
         self.fields['cost_week'].required = True

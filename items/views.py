@@ -1,9 +1,12 @@
 # from datetime import datetime
 
 # from django.contrib import messages
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 # from django.core import serializers
-from django.shortcuts import render, get_object_or_404  # , redirect
+from django.forms.models import model_to_dict
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 
@@ -34,15 +37,50 @@ def item_view(request, item_id):
     item = get_object_or_404(Item, pk=item_id)
     account_type = request.user.profile.get_account_type()
 
-    # When form is submitted, note to ignore the ItemType form, they are disabled
-    # in the form and they are display only, carrying the values from it's own
-    # model for display.
-    # if request.method == "POST":
+    # When form is submitted, note to ignore the ItemType form, they are
+    # disabled in the form and they are display only, carrying the values
+    # from it's own model for display.
+    if request.method == "POST":
+        
+        item_new = item
+        selected_type = get_object_or_404(ItemType, pk=request.POST['item-item_type'])
+        item_new.type = selected_type
+        item_new.item_type = selected_type
+        item_new.item_serial = request.POST['item-item_serial']
 
-    # item_form = ItemForm(request.POST)
-    # If both the user form and profile form are valid.
-    # if user_form.is_valid() and profile_form.is_valid():
+        try:
+            item_new.full_clean()
+        except ValidationError as e:
+            messages.error(
+                request, (
+                    e,
+                    'Item data is not valid.'
+                    'Please check the validation prompts.'
+                )
+            )
+            pass
 
+        item_new.save()
+
+        # Display a message to the user to show it has worked
+        messages.success(
+            request,
+            'Item successfully updated'
+        )
+
+        return redirect('item_view', item_id=item_new.id)
+
+    else:
+        # The query is a GET. So data/context/template needs to
+        # sent to the form to load.
+        item_form_to_use = ItemForm(
+            account_type=account_type,
+            instance=item, prefix="item")
+        item_type_form = ItemTypeForm(
+            account_type=account_type,
+            instance=item.item_type, prefix="type")
+
+    # Set template and context
     template = 'items/item.html'
     context = {
         # 'current_user': request.user,
@@ -53,12 +91,8 @@ def item_view(request, item_id):
         'item_type_name': item.item_type.name,
         'image_border': item.item_css_status(),
         'account_type': account_type,
-        'item_type_form': ItemTypeForm(
-            account_type=account_type,
-            instance=item.item_type, prefix="type"),
-        'item_form': ItemForm(
-            account_type=account_type, instance=item,
-            prefix="item")
+        'item_type_form': item_type_form,
+        'item_form': item_form_to_use,
     }
 
     return render(request, template, context)
