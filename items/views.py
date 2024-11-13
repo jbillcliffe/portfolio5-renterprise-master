@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404  # , redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 
-from .models import Item  # , ItemType
+from .models import Item, ItemType
 from .forms import ItemTypeForm, ItemForm
 
 
@@ -34,23 +34,31 @@ def item_view(request, item_id):
     item = get_object_or_404(Item, pk=item_id)
     account_type = request.user.profile.get_account_type()
 
-    # type_images_query = ItemType.objects.values_list('id', 'name', 'image')
-    # for id, name, image in type_images:
-    # type_images_json = serializers.serialize('json', type_images_query)
-    # type_images_list = list(type_images_json)
-    # print(type_images_list)
+    # When form is submitted, note to ignore the ItemType form, they are disabled
+    # in the form and they are display only, carrying the values from it's own
+    # model for display.
+    # if request.method == "POST":
+
+    # item_form = ItemForm(request.POST)
+    # If both the user form and profile form are valid.
+    # if user_form.is_valid() and profile_form.is_valid():
+
     template = 'items/item.html'
     context = {
         # 'current_user': request.user,
         'item_id': item.id,
         'item_serial': item.item_serial,
+        'item_income': item.income,
         'item_image': item.item_type.image,
         'item_type_name': item.item_type.name,
         'image_border': item.item_css_status(),
         'account_type': account_type,
         'item_type_form': ItemTypeForm(
-            account_type=account_type, instance=item.item_type),
-        'item_form': ItemForm(account_type=account_type, instance=item)
+            account_type=account_type,
+            instance=item.item_type, prefix="type"),
+        'item_form': ItemForm(
+            account_type=account_type, instance=item,
+            prefix="item")
     }
 
     return render(request, template, context)

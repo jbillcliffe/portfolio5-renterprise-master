@@ -15,3 +15,24 @@ This was discovered at the early stages when creating the link for the profiles 
 
 USER TO FORM FOR AUTHENTICATION ------ 
 https://forum.djangoproject.com/t/using-request-user-in-forms-py/19184/2
+
+
+MULTIPLE FORM LAYOUT + SUBMISSION
+
+# Button outside form
+https://til.hashrocket.com/posts/v2s2gxgifj-submit-a-form-with-a-button-outside-the-form#:~:text=You%20can%20tie%20a%20submit,with%20the%20button's%20form%20property.&text=With%20this%20setup%2C%20clicking%20the,Button%20docs%20for%20more%20details.
+# LAYOUT - For wrapper class to override provided wrappers for FloatingFields, 
+https://django-crispy-forms.readthedocs.io/en/latest/form_helper.html
+
+# Ordering
+https://getbootstrap.com/docs/5.3/layout/columns/#order-classes
+
+Buttons were ignoring the ordering (not sure why as they were inside the same parent tag as fields). Instead, took the buttons outside of the form and they render perfectly underneath.
+**** FIGURED OUT ****
+Bootstrap order class on grid layout has tiers 1 throught to 5 by default, although more can be added. This was discovered after an already working implementation, so no requirement to change.
+
+# Switch button order on screen breakpoint
+https://stackoverflow.com/questions/66981371/how-to-use-breakpoints-to-change-bootstrap-columns-grid-ordering
+
+
+

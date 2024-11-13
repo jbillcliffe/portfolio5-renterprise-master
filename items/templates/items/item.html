@@ -21,25 +21,29 @@
                     alt={% if not item_image %}"default no image"{% else %}"{{ item_type_name }}"{% endif %}>
             </div>
             <div class="col-12 col-lg-9 col-xxl-8">
-                <form action="{% url 'item_view' item_id %}" 
-                      class="floating-labels-form" method="post" id="item_update">
+                <form id="item_view_form" action="{% url 'item_view' item_id %}" 
+                      class="row floating-labels-form m-0" method="post" id="item_update">
 
                     {% crispy item_type_form item_type_form.helper %}
                     {% crispy item_form item_form.helper %}
-
-                    {% comment %} {{ item_form.item_type|as_crispy_field }}
-                    {{ item_type_form.category|as_crispy_field }}
-                    {{ item_form.item_serial|as_crispy_field }}
-                    {{ item_type_form.cost_initial|as_crispy_field }}
-                    {{ item_type_form.cost_week|as_crispy_field }} {% endcomment %}
-                        <a class="not-submit no-decoration" 
-                            href="{% url 'item_list' %}">
-                            {% trans "Return To Item List" %}
-                        </a>
-		            <button type="submit" 
-                    class="{% if account_type == 'Administrator' %}white-text{% else %}{% endif %}"
-                    {% if account_type == 'Administrator' %}{% else %}disabled{% endif %}>{% trans "Update Item" %}</button>
+                    
                 </form>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="Income (£)" value={{ item_income }} disabled>
+                    <label for="floatingInput">Income (£)*</label>
+                </div>
+                <div class="row flex-column-reverse flex-md-row m-0">
+                    <a class="col-12 col-md-5 not-submit no-decoration mb-3 me-1" 
+                        href="{% url 'item_list' %}">
+                        {% trans "Return To Item List" %}
+                    </a>
+                    <button type="submit" 
+                        class="{% if account_type == 'Administrator' %}white-text{% else %}{% endif %}
+                        col-12 col-md-5 mb-3"
+                        {% if account_type == 'Administrator' %}{% else %}disabled{% endif %}
+                        form="item_view_form">{% trans "Update Item" %}
+                    </button>
+                </div>
             </div>
         </div>
     </div>
