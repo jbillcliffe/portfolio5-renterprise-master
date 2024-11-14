@@ -1,8 +1,8 @@
 from django import forms
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout
-from crispy_forms.bootstrap import PrependedText
+from crispy_forms.layout import Layout, HTML, Div
+from crispy_forms.bootstrap import StrictButton
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
 from .models import Item, ItemType
@@ -47,9 +47,23 @@ class ItemForm(forms.ModelForm):
         self.fields['item_serial'].required = True
 
         self.helper.layout = Layout(
-            FloatingField(
-                "item_type",
-                wrapper_class="col-12 order-1 p-0"),
+            Div(
+                FloatingField(
+                    "item_type",
+                    wrapper_class=(
+                        "flex-md-row col-12 col-sm-10 p-0")),
+                StrictButton(
+                    '<span class="d-flex flex-row align-items-center gap-3">'
+                    '<p class="d-block d-sm-none my-0 white-text">'
+                    'Edit Item Type'
+                    '</p>'
+                    '<i class="bi bi-pen white-text"></i>'
+                    '</span>',
+                    css_class='inline-form-button col-1 mb-3'
+                ),
+                css_class="row order-1 p-0 mx-auto"
+            ),
+
             FloatingField(
                 "item_serial",
                 wrapper_class="col-12 order-3 p-0"),

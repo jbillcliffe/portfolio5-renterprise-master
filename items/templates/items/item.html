@@ -8,7 +8,7 @@
 
 {% block extra_title %}{% blocktrans %}View An Item{% endblocktrans %}{% endblock extra_title %}
 
-<!-- Creating the form for Profiles allowing a user to update their details -->
+<!-- Creating the form for an Item allowing a user to update the details if they have the authorisation -->
 {% block content %}
     <div class="app-container">
         <hr>
@@ -29,7 +29,7 @@
                     
                 </form>
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="floatingInput" placeholder="Income (£)" value={{ item_income }} disabled>
+                    <input type="number" class="form-control" id="floatingInput" placeholder="Income (£)" value={{ item_income }} disabled>
                     <label for="floatingInput">Income (£)*</label>
                 </div>
                 <div class="row flex-column-reverse flex-md-row m-0">

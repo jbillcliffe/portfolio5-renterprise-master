@@ -38,5 +38,11 @@ MODEL LEVEL VALIDATION ------
 Used in ItemForm
 https://docs.djangoproject.com/en/5.1/ref/models/instances/#django.db.models.Model.full_clean
 
+----- PREDICTED ISSUE -----
+Django  crispy forms automatically adds "mb-3" to field css class.
+The way to override this is by implementing the #id of the element by specificity rules. However, a button that is put inline into the form, needs to not exist when the user is not authorised to edit.
+So, the prefix of the fields (eg. ItemForm(prefix="item")) would need to be variable determined by the user.
+So if the user is authorised the prefix for the table is "item-edit". These would affect the #id of the element and allow different styling based upon the user. Including not having the button there at all.
+
 
 

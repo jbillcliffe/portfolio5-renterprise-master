@@ -4,7 +4,7 @@
 }
 
 /*set the logo font across all areas, with a fallback font available too */
-h1, h2, h3, h4, h5, h6,
+body, h1, h2, h3, h4, h5, h6,
 p, input, button, li, a, span, label, strong {
     font-family: 'Hind', sans-serif;
 }
@@ -106,16 +106,43 @@ a.url-nav-button {
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+#div_id_edit-item-item_type {
+    margin-bottom: 1rem !important;
+}
+button.inline-form-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+    /* text-align: center;
+    vertical-align: middle; */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #2D8B60;
+    border: 1px solid #000000;
+    line-height: 1.5;
+    border-radius: 5px;
+    margin: 0 0 1rem auto;
+    width: max-content;
+    /* standard bootstrap button transitions */
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
 /* Program wide buttons + Submit Button styles for hover over */
 button:hover,
-input[type='submit']:hover {	
+input[type='submit']:hover,
+.inline-form-button:hover {	
 	color: #FFFFFF;
     background-color: #154D33;
     border-color: #000000;
 }
 
 button:disabled,
-button:hover:disabled {
+button:hover:disabled,
+.inline-form-button:disabled,
+.inline-form-button:hover:disabled {
     color: rgba(33, 37, 41, 0.35);
     background-color: rgba(108, 107, 125, 0.35);
     border: 1px solid rgba(108, 107, 125, 0.5);
@@ -321,6 +348,13 @@ allow the drop down menu to move */
 
     .renterprise-non-user {
         flex-direction: row;
+    }
+
+    #div_id_edit-item-item_type {
+        margin-bottom: 0.25rem !important;
+    }
+    button.inline-form-button {
+        width: 100%;
     }
 }
 
