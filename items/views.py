@@ -5,13 +5,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 # from django.core import serializers
-from django.forms.models import model_to_dict
-from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.shortcuts import render, get_object_or_404, redirect  # , reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 
 from .models import Item, ItemType
-from .forms import ItemTypeForm, ItemForm
+from .forms import ItemTypeForm, ItemTypeEditForm, ItemForm
 
 
 @method_decorator(login_required, name='dispatch')
@@ -41,7 +40,7 @@ def item_view(request, item_id):
     # disabled in the form and they are display only, carrying the values
     # from it's own model for display.
     if request.method == "POST":
-        
+
         item_new = item
         # Only need to search for the one prefix, because someone without
         # "edit" should not be able to change the details and they are
@@ -81,12 +80,15 @@ def item_view(request, item_id):
         if account_type == "Administrator":
             extra_prefix = "edit-"
 
-        item_form_to_use = ItemForm(
+        item_form = ItemForm(
             account_type=account_type,
             instance=item, prefix=f"{extra_prefix}item")
         item_type_form = ItemTypeForm(
             account_type=account_type,
-            instance=item.item_type, prefix=f"{extra_prefix}type")
+            instance=item.item_type, prefix="type")
+        item_type_edit_form = ItemTypeEditForm(
+            account_type=account_type,
+            instance=item.item_type, prefix="edit-type")
 
     # Set template and context
     template = 'items/item.html'
@@ -100,7 +102,8 @@ def item_view(request, item_id):
         'image_border': item.item_css_status(),
         'account_type': account_type,
         'item_type_form': item_type_form,
-        'item_form': item_form_to_use,
+        'item_form': item_form,
+        'item_type_edit_form': item_type_edit_form,
     }
 
     return render(request, template, context)

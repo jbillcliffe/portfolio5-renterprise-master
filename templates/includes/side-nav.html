@@ -47,7 +47,7 @@
                      This would be used where the url requires an argument (such as ../items/id/) -->
                 {% if url_name == "profile_view" or url_name == "profile_manage" or url_name == "item_view" %}
                     <li class="nav-item">
-                        <a href="" class="side-bar nav-link active">
+                        <a class="side-bar nav-link active">
                             {% if url_name == "profile_view" %}
                                 <i class="nav-icon bi bi-person-fill"></i><strong>{% trans "My Profile" %}</strong>
                             {% elif url_name == "profile_manage" %}
