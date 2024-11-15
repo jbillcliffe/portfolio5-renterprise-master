@@ -23,4 +23,6 @@ function submitItemTypeForm(event){
 function resetEditTypeForm(){
 
     //id_edit-type-name, id_edit-type-sku, id_edit-type-cost_initial, id_edit-type-cost_week
+    //id_edit-item-item_type(selected), id_edit-item-item_serial
+
 }

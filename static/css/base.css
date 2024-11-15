@@ -201,10 +201,18 @@ as placeholders show the user required input data */
 }
 
 /* Item Image (in Item View) */
-.item-image {
+.item-image,
+.item-image-sku {
     width: 296px;
+    max-width: 100%;
     height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid;
+    text-align: center;
+    border-radius: 0;
 }
+
 
 /* --- Media Queries --- */
 
