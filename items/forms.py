@@ -1,7 +1,7 @@
 from django import forms
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Button, Row, Submit
+from crispy_forms.layout import Layout, Div, Button  # , Row  # , Submit
 from crispy_forms.bootstrap import StrictButton, Modal
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
@@ -206,8 +206,8 @@ class ItemTypeEditForm(forms.ModelForm):
                     wrapper_class="col-12 order-5 p-0"),
                 # Crispy forms modal does not automatically use a modal footer
                 Div(
-                    Submit(
-                        'submit', 'Update Item Type',
+                    Button(
+                        'submit-type-edit', 'Update Item Type',
                         css_id='edit-type-submit-button',
                         css_class='default-button mb-2',
                         onclick="submitItemTypeForm(event)"),

@@ -15,4 +15,12 @@ function submitItemTypeForm(event){
 
     // Prevent default form submission (navigate to the URL)
     event.preventDefault();
+    //Want to disable further submissions while waiting for response.
+    $('#edit-type-submit-button').attr('disabled', true)
+    $('#edit-type-cancel-button').attr('disabled', true)
+}
+
+function resetEditTypeForm(){
+
+    //id_edit-type-name, id_edit-type-sku, id_edit-type-cost_initial, id_edit-type-cost_week
 }
