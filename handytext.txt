@@ -44,5 +44,6 @@ The way to override this is by implementing the #id of the element by specificit
 So, the prefix of the fields (eg. ItemForm(prefix="item")) would need to be variable determined by the user.
 So if the user is authorised the prefix for the table is "item-edit". These would affect the #id of the element and allow different styling based upon the user. Including not having the button there at all.
 
-
+--- Button Dropdown BS5 for category history ---
+https://getbootstrap.com/docs/5.3/forms/input-group/#buttons-with-dropdowns
 

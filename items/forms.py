@@ -1,7 +1,7 @@
 from django import forms
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Button, Row
+from crispy_forms.layout import Layout, Div, Button, Row, Submit
 from crispy_forms.bootstrap import StrictButton, Modal
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
@@ -157,7 +157,8 @@ class ItemTypeEditForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
-        self.helper.form_tag = False
+        self.helper.form_tag = True
+        self.helper.form_action = 'item_type_update'
 
         # These cannot be edited from the item view by default
         self.fields['name'].required = True
@@ -174,21 +175,49 @@ class ItemTypeEditForm(forms.ModelForm):
                 FloatingField(
                     "sku",
                     wrapper_class="col-12 order-4 p-0"),
-                FloatingField(
-                    "category",
-                    wrapper_class="col-12 order-2 p-0"),
+                # FloatingField(
+                #     "category",
+                #     wrapper_class="col-12 order-2 p-0"),
+                # Dropdown button menu to use categories, created with help
+                # https://getbootstrap.com/docs/5.3/forms/input-group/
+                Div(
+
+                    css_class="input-group mb-3"
+                ),
+
+
+                # <div class="input-group mb-3">
+                #     <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                #     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
+                #     <ul class="dropdown-menu dropdown-menu-end">
+                #         <li><a class="dropdown-item" href="#">Action</a></li>
+                #         <li><a class="dropdown-item" href="#">Another action</a></li>
+                #         <li><a class="dropdown-item" href="#">Something else here</a></li>
+                #         <li><hr class="dropdown-divider"></li>
+                #         <li><a class="dropdown-item" href="#">Separated link</a></li>
+                #     </ul>
+                # </div>
+
                 FloatingField(
                     "cost_initial",
                     wrapper_class="col-12 order-4 p-0"),
                 FloatingField(
                     "cost_week",
                     wrapper_class="col-12 order-5 p-0"),
-                Row(
+                # Crispy forms modal does not automatically use a modal footer
+                Div(
+                    Submit(
+                        'submit', 'Update Item Type',
+                        css_id='edit-type-submit-button',
+                        css_class='default-button mb-2',
+                        onclick="submitItemTypeForm(event)"),
                     Button(
-                        'Cancel', 'Cancel',
-                        id='edit-type-cancel-button',
+                        'cancel-type-edit', 'Cancel',
+                        css_id='edit-type-cancel-button',
                         css_class='danger-button',
-                        )
+                        data_bs_dismiss='modal',
+                        onclick='resetEditTypeForm()'),
+                    css_class="row modal-footer pb-0"
                 ),
                 css_id="item-type-edit-modal",
                 title="Edit Item Type",

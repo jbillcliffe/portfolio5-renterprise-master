@@ -30,6 +30,7 @@
             <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" >
             <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
             <link href="{% static "css/base.css" %}" rel="stylesheet">
+            <link href="{% static "css/base-buttons.css" %}" rel="stylesheet">
             <link href="{% static "css/renterprise-toast.css" %}" rel="stylesheet">
         {% endblock corecss %}
 
@@ -83,12 +84,13 @@
             {% endblock content %}
         </div>
 
-        <!-- Javascript from each app page -->
+        <!-- *** Javascript from each app page *** -->
+        <!-- As toast is included on the base.html, it will always be included in account_type
+        block.super statement as it always takes the parent content and adds to it. -->
         {% block postloadjs %}
-            
             <script type="text/javascript">
                 // Showing elements with a class of toast.
-                // https://getbootstrap.com/docs/5.2/components/toasts/#custom-content -->
+                // https://getbootstrap.com/docs/5.2/components/toasts/#custom-content
                 const toastId = document.getElementById('renterprise-toast')
                 if (toastId) {
                     const toastElement = new bootstrap.Toast(toastId)

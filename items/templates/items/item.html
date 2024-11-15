@@ -11,7 +11,6 @@
 <!-- Creating the form for an Item allowing a user to update the details if they have the authorisation -->
 {% block content %}
     <div class="app-container">
-        {% crispy item_type_edit_form item_type_edit_form.helper %}
         <hr>
             <h1>View Item {{ item_serial }}</h1>
         <hr>
@@ -48,4 +47,10 @@
             </div>
         </div>
     </div>
+    {% crispy item_type_edit_form item_type_edit_form.helper %}
 {% endblock content %}
+
+{% block postloadjs %}
+    {{ block.super }}
+    <script src="{% static 'items/js/edit_type.js' %}"></script>
+{% endblock postloadjs %}
