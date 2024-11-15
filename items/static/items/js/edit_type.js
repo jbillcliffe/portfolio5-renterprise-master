@@ -21,8 +21,17 @@ function submitItemTypeForm(event){
 }
 
 function resetEditTypeForm(){
+    //Name / Sku / Category / Initial / Weekly
 
-    //id_edit-type-name, id_edit-type-sku, id_edit-type-cost_initial, id_edit-type-cost_week
-    //id_edit-item-item_type(selected), id_edit-item-item_serial
+    // Reset text in modal to be the same as the text in the item view
+    // Name
+    $('#id_edit-type-name').val($("#id_edit-item-item_type option:selected").text());
+    // SKU
+    $('#id_edit-type-sku').val($('#id_item_type_sku').val());
+    //Category
+    //Cost Initial
+    $('#id_edit-type-cost_initial').val($('#id_type-cost_initial').val());
+    //Cost Week
+    $('#id_edit-type-cost_week').val($('#id_type-cost_week').val());
 
 }
