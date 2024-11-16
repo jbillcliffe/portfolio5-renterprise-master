@@ -32,17 +32,16 @@
                     {% crispy item_form item_form.helper %}
                     
                 </form>
-                <div class="form-form-floating mb-3 col-12 p-0">
-                    <input type="number" class="numberinput form-control" id="id_item_income" placeholder="Income (£)" value={{ item_income }} disabled>
-                    <label for="id_item_income">Income (£)<span class="asteriskField">*</span> </label>
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="id_edit-income" placeholder="Income (£)" value={{ item_income }} disabled>
+                    <label for="id_edit-income">Income (£)*</label>
                 </div>
-
                 <div class="row flex-column-reverse flex-md-row justify-content-center m-0">
                     <a class="col-12 col-md-5 not-submit no-decoration mb-3 me-1"
                         href="{% url 'item_list' %}">
                         {% trans "Return To Item List" %}
                     </a>
-                    <button type="submit" 
+                    <button type="submit"
                         class="{% if account_type == 'Administrator' %}white-text{% else %}{% endif %}
                         col-12 col-md-5 mb-3"
                         {% if account_type == 'Administrator' %}{% else %}disabled{% endif %}

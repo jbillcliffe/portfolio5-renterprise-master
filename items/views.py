@@ -1,13 +1,13 @@
 # from datetime import datetime
-
-# from django.contrib import messages
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+# from django.core import serializers
 from django.core.exceptions import ValidationError
-from django.http import HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect  # , reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
+
+import json
 
 from .models import Item, ItemType
 from .forms import ItemTypeForm, ItemTypeEditForm, ItemForm
@@ -81,6 +81,23 @@ def item_view(request, item_id):
         if account_type == "Administrator":
             extra_prefix = "edit-"
 
+        queryset = ItemType.objects.all()
+        item_type_list = list(queryset)
+
+        for x in item_type_list:
+            print(x.sku)
+        # get_item_types = ItemType.objects.all().values()
+        # json_item_types = json.dumps(get_item_types)
+        # print(json_item_types)
+        # print(get_item_types)
+        # item_type_data = serializers.serialize('json', get_item_types)
+        # print(item_type_data)
+        # item_type_list = list(item_type_data)
+        # print(item_type_list)
+  
+        # for x in get_item_types:
+        #     print(x)
+
         item_form = ItemForm(
             account_type=account_type,
             instance=item, prefix=f"{extra_prefix}item")
@@ -103,6 +120,7 @@ def item_view(request, item_id):
         'item_type_name': item.item_type.name,
         'status_css': item.item_css_status(),
         'account_type': account_type,
+        'all_types': item_type_list,
         'item_type_form': item_type_form,
         'item_form': item_form,
         'item_type_edit_form': item_type_edit_form,
@@ -116,7 +134,6 @@ def item_type_update(request, type_id):
     """
     View to display the properties of an individual item type
     """
-    print(request.META.HTTP_REFERER)
     item_type = get_object_or_404(ItemType, pk=type_id)
     account_type = request.user.profile.get_account_type()
 
@@ -156,7 +173,7 @@ def item_type_update(request, type_id):
                 )
             )
             pass
-        
+
         # item_type_new.save()
 
         # Display a message to the user to show it has worked

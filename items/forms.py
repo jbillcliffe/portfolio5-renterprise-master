@@ -1,7 +1,7 @@
 from django import forms
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Button  # , Row  # , Submit
+from crispy_forms.layout import Layout, Div, Button, HTML  # , Row  # , Submit
 from crispy_forms.bootstrap import StrictButton, Modal
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
@@ -28,8 +28,6 @@ class ItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
 
         self.account_type = kwargs.pop('account_type', None)
-        self.all_types = kwargs.pop('all_types', None)
-
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
@@ -169,9 +167,30 @@ class ItemTypeEditForm(forms.ModelForm):
 
         self.helper.layout = Layout(
             Modal(
-                FloatingField(
-                    "name",
-                    wrapper_class="col-12 order-2 p-0"),
+                # FloatingField(
+                #     "name",
+                #     wrapper_class="col-12 order-2 p-0"),
+                Div(
+                    Button(
+                        "item_types_select", "All Types",
+                        css_class="btn-outline-secondary dropdown-toggle",
+                        data_bs_toggle="dropdown",
+                        aria_expanded="false"
+                    ),
+                    FloatingField('name'),
+                    HTML(
+                        '<ul class="dropdown-menu">'
+                        '   {% for type in all_types %}'
+                        '       <li data-type-data={{ type }}>'
+                        '           <a class="dropdown-item" href="#">'
+                        '               {{ type.name }}'
+                        '           </a>'
+                        '       </li>'
+                        '   {% endfor %}'
+                        '</ul>'
+                    ),
+                    css_class="input-group order-1 mb-3"
+                ),
                 FloatingField(
                     "sku",
                     wrapper_class="col-12 order-4 p-0"),
@@ -180,22 +199,19 @@ class ItemTypeEditForm(forms.ModelForm):
                 #     wrapper_class="col-12 order-2 p-0"),
                 # Dropdown button menu to use categories, created with help
                 # https://getbootstrap.com/docs/5.3/forms/input-group/
-                Div(
-
-                    css_class="input-group mb-3"
-                ),
+                
 
 
                 # <div class="input-group mb-3">
-                #     <input type="text" class="form-control" aria-label="Text input with dropdown button">
                 #     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
-                #     <ul class="dropdown-menu dropdown-menu-end">
+                #     <ul class="dropdown-menu">
                 #         <li><a class="dropdown-item" href="#">Action</a></li>
                 #         <li><a class="dropdown-item" href="#">Another action</a></li>
                 #         <li><a class="dropdown-item" href="#">Something else here</a></li>
                 #         <li><hr class="dropdown-divider"></li>
                 #         <li><a class="dropdown-item" href="#">Separated link</a></li>
                 #     </ul>
+                #     <input type="text" class="form-control" aria-label="Text input with dropdown button">
                 # </div>
 
                 FloatingField(
