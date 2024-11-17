@@ -36,12 +36,11 @@ class ItemForm(forms.ModelForm):
         self.helper.form_tag = False
 
         if self.account_type == "Administrator":
-            self.fields['item_type'].widget.attrs['disabled'] = False
             self.fields['item_serial'].widget.attrs['disabled'] = False
         else:
-            self.fields['item_type'].widget.attrs['disabled'] = True
             self.fields['item_serial'].widget.attrs['disabled'] = True
 
+        self.fields['item_type'].widget.attrs['disabled'] = True
         self.fields['item_type'].required = True
         self.fields['item_serial'].required = True
 
