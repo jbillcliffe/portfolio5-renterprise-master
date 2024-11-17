@@ -172,8 +172,8 @@ class ItemTypeEditForm(forms.ModelForm):
                 # https://getbootstrap.com/docs/5.3/forms/input-group/
                 Div(
                     HTML(
-                        
                         '<img class="item-image img-fluid border-black" '
+                        'id="edit-type-image" '
                         'src="{% if not item_type_image %}'
                         '{{STATIC_URL}}"images/default.webp" %}'
                         '{% else %}'
@@ -194,8 +194,7 @@ class ItemTypeEditForm(forms.ModelForm):
                         aria_expanded="false"
                     ),
                     FloatingField(
-                        'category', 
-                        onchange="categoryTypeChanged()",
+                        'category',
                         css_class="rounded-end",
                         wrapper_class="p-0"),
                     HTML(
@@ -207,9 +206,10 @@ class ItemTypeEditForm(forms.ModelForm):
                         '{% if type.category == item_type_category %}'
                         'list-active{% else %}{% endif %}" '
                         '{% if type.category == item_type_category %}'
-                        '{% else %}onclick="'
-                        'setTypeCategory({{ type.category }})"'
-                        '{% endif %}>'
+                        '{% else %}'
+                        'onclick="'
+                        'setTypeCategory(\'{{ type.category }}\')"'
+                        '{% endif %} >'
                         '               {{ type.category }}'
                         '           </a>'
                         '       </li>'
@@ -229,17 +229,28 @@ class ItemTypeEditForm(forms.ModelForm):
                     ),
                     FloatingField(
                         'name',
-                        onchange="itemTypeChanged()",
                         css_class="rounded-end",
                         wrapper_class="p-0"),
                     HTML(
                         '<ul class="dropdown-menu">'
                         '   {% for type in all_types %}'
-                        '       <li data-type-data="{{ type }}">'
-                        '           <a class="dropdown-item" href="#">'
+                        '   {% if type.category == item_type_category %}'
+                        '       <li class="edit-type-list-item" '
+                        '        id="type-name-list-item-{{type.id}}"'
+                        '        data-name="{{ type }}"'
+                        '        data-img="{{ type.image }}">'
+                        '           <a class="dropdown-item '
+                        '{% if type.name == item_type_name %}'
+                        'list-active{% else %}{% endif %}" '
+                        '{% if type.name == item_type_name %}'
+                        '{% else %}'
+                        'onclick="itemTypeChanged('
+                        '\'type-name-list-item-{{type.id}}\'){% endif %}">'
                         '               {{ type.name }}'
                         '           </a>'
                         '       </li>'
+                        '   {% else %}'
+                        '   {% endif %}'
                         '   {% endfor %}'
                         '</ul>'
                     ),
