@@ -113,6 +113,7 @@ def item_view(request, item_id):
     context = {
         # 'current_user': request.user,
         'item_id': item.id,
+        'item_type_category': item.item_type.category,
         'item_serial': item.item_serial,
         'item_type_sku': item.item_type.sku,
         'item_income': item.income,

@@ -167,21 +167,75 @@ class ItemTypeEditForm(forms.ModelForm):
 
         self.helper.layout = Layout(
             Modal(
-                # FloatingField(
-                #     "name",
-                #     wrapper_class="col-12 order-2 p-0"),
+                # Dropdown button menu for types + categories.
+                # Created with help from :
+                # https://getbootstrap.com/docs/5.3/forms/input-group/
                 Div(
-                    Button(
-                        "item_types_select", "All Types",
-                        css_class="btn-outline-secondary dropdown-toggle",
+                    HTML(
+                        
+                        '<img class="item-image img-fluid border-black" '
+                        'src="{% if not item_type_image %}'
+                        '{{STATIC_URL}}"images/default.webp" %}'
+                        '{% else %}'
+                        '{{ item_type_image.url }}{% endif %}" '
+                        'alt="{% if not item_type_image %}'
+                        'default no image'
+                        '{% else %}'
+                        '{{ item_type_name }}{% endif %}">'
+                    ),
+                    css_class="d-flex col-12 pb-3"
+                ),
+                Div(
+                    StrictButton(
+                        'Categories',
+                        css_class=(
+                            "col-4 btn default-button dropdown-toggle mb-3"),
                         data_bs_toggle="dropdown",
                         aria_expanded="false"
                     ),
-                    FloatingField('name'),
+                    FloatingField(
+                        'category', 
+                        onchange="categoryTypeChanged()",
+                        css_class="rounded-end",
+                        wrapper_class="p-0"),
+                    HTML(
+                        '<ul class="dropdown-menu">'
+                        '{% for type in all_types %}'
+                        '   {% ifchanged type.category %}'
+                        '       <li>'
+                        '           <a class="dropdown-item '
+                        '{% if type.category == item_type_category %}'
+                        'list-active{% else %}{% endif %}" '
+                        '{% if type.category == item_type_category %}'
+                        '{% else %}onclick="'
+                        'setTypeCategory({{ type.category }})"'
+                        '{% endif %}>'
+                        '               {{ type.category }}'
+                        '           </a>'
+                        '       </li>'
+                        '       {% endifchanged %}'
+                        '   {% endfor %}'
+                        '</ul>'
+                    ),
+                    css_class="row input-group order-1 m-0 p-0"
+                ),
+                Div(
+                    StrictButton(
+                        'Types',
+                        css_class=(
+                            "col-4 btn default-button dropdown-toggle mb-3"),
+                        data_bs_toggle="dropdown",
+                        aria_expanded="false"
+                    ),
+                    FloatingField(
+                        'name',
+                        onchange="itemTypeChanged()",
+                        css_class="rounded-end",
+                        wrapper_class="p-0"),
                     HTML(
                         '<ul class="dropdown-menu">'
                         '   {% for type in all_types %}'
-                        '       <li data-type-data={{ type }}>'
+                        '       <li data-type-data="{{ type }}">'
                         '           <a class="dropdown-item" href="#">'
                         '               {{ type.name }}'
                         '           </a>'
@@ -189,31 +243,11 @@ class ItemTypeEditForm(forms.ModelForm):
                         '   {% endfor %}'
                         '</ul>'
                     ),
-                    css_class="input-group order-1 mb-3"
+                    css_class="row input-group order-1 m-0 p-0"
                 ),
                 FloatingField(
                     "sku",
                     wrapper_class="col-12 order-4 p-0"),
-                # FloatingField(
-                #     "category",
-                #     wrapper_class="col-12 order-2 p-0"),
-                # Dropdown button menu to use categories, created with help
-                # https://getbootstrap.com/docs/5.3/forms/input-group/
-                
-
-
-                # <div class="input-group mb-3">
-                #     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
-                #     <ul class="dropdown-menu">
-                #         <li><a class="dropdown-item" href="#">Action</a></li>
-                #         <li><a class="dropdown-item" href="#">Another action</a></li>
-                #         <li><a class="dropdown-item" href="#">Something else here</a></li>
-                #         <li><hr class="dropdown-divider"></li>
-                #         <li><a class="dropdown-item" href="#">Separated link</a></li>
-                #     </ul>
-                #     <input type="text" class="form-control" aria-label="Text input with dropdown button">
-                # </div>
-
                 FloatingField(
                     "cost_initial",
                     wrapper_class="col-12 order-4 p-0"),

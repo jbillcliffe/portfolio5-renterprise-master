@@ -14,11 +14,12 @@
         <hr>
             <h1>View Item {{ item_serial }}</h1>
         <hr>
+        
         <div class="row">
             <div class="d-flex flex-column d-lg-block col-12 col-lg-3 col-xxl-4 pb-3">
                 <img class="item-image img-fluid border-{{ status_css }} border-bottom-0"
-                    src={% if not item_type_image %}"{% static 'images/default.webp' %}"{% else %}"{{ item_type_image.url }}"{% endif %}
-                    alt={% if not item_type_image %}"default no image"{% else %}"{{ item_type_name }}"{% endif %}>
+                    src="{% if not item_type_image %}{% static 'images/default.webp' %}{% else %}{{ item_type_image.url }}{% endif %}"
+                    alt="{% if not item_type_image %}default no image{% else %}{{ item_type_name }}{% endif %}">
                 <input type="text" id="id_item_type_sku" 
                     class="item-image-sku border-{{ status_css }} border-top-0 bg-{{ status_css }} bg-opacity-75
                     {% if status_css == 'warning' or status_css == 'info' %}{% else %}white-text{% endif %}" 
@@ -52,6 +53,7 @@
         </div>
     </div>
     {% crispy item_type_edit_form item_type_edit_form.helper %}
+
 {% endblock content %}
 
 {% block postloadjs %}
