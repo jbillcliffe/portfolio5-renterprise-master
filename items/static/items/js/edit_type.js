@@ -36,7 +36,7 @@ function setTypeCategory(categoryString){
             
         } else {
             
-            categoryListElements[x].onclick = function(){setTypeCategory(categoryString)};
+            categoryListElements[x].onclick = function(){setTypeCategory(categoryListElements[x].innerText)};
             categoryListElements[x].className = "dropdown-item type-category-list-item";
         }
     }
