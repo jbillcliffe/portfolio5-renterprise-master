@@ -22,6 +22,7 @@ function submitItemTypeForm(event){
 
 function setTypeCategory(categoryString){
     console.log(categoryString);
+    originalType= $('#id_edit-type-category').val();
     $('#edit-type-image').attr('src','/static/images/default.webp');
     $('#id_edit-type-category').val(categoryString);
     $('#id_edit-type-name').val('');
@@ -32,17 +33,19 @@ function setTypeCategory(categoryString){
 
 }
 
-function resetEditTypeForm(){
+function resetFormImage(){
     //Name / Sku / Category / Initial / Weekly
 
     // Reset text in modal to be the same as the text in the item view
     // Name
-    $('#id_edit-type-name').val($('#id_edit-item-item_type option:selected').text());
+    //$('#id_edit-type-name').val($('#id_edit-item-item_type option:selected').text());
     // SKU
-    $('#id_edit-type-sku').val($('#id_item_type_sku').val());
+    //$('#id_edit-type-sku').val($('#id_item_type_sku').val());
     //Category
     //Cost Initial
-    $('#id_edit-type-cost_initial').val($('#id_type-cost_initial').val());
+    //$('#id_edit-type-cost_initial').val($('#id_type-cost_initial').val());
     //Cost Week
-    $('#id_edit-type-cost_week').val($('#id_type-cost_week').val());
+    //$('#id_edit-type-cost_week').val($('#id_type-cost_week').val());
+    $('#edit-type-image').attr('src', $('#item-image-id').attr('src'));
+    $('#edit-type-image').attr('alt', $('#item-image-id').attr('alt'));
 }

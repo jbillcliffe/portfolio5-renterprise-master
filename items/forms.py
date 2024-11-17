@@ -1,7 +1,8 @@
 from django import forms
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Button, HTML  # , Row  # , Submit
+from crispy_forms.layout import Layout, Div, Button, HTML, Reset
+# , Row  # , Submit
 from crispy_forms.bootstrap import StrictButton, Modal
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
@@ -272,12 +273,12 @@ class ItemTypeEditForm(forms.ModelForm):
                         css_id='edit-type-submit-button',
                         css_class='default-button mb-2',
                         onclick="submitItemTypeForm(event)"),
-                    Button(
+                    Reset(
                         'cancel-type-edit', 'Cancel',
                         css_id='edit-type-cancel-button',
                         css_class='danger-button',
                         data_bs_dismiss='modal',
-                        onclick='resetEditTypeForm()'),
+                        onclick='resetFormImage()'),
                     css_class="row modal-footer pb-0"
                 ),
                 css_id="item-type-edit-modal",
