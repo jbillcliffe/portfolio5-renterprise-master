@@ -1,18 +1,20 @@
+// 
+// setCategoryFunctions();
+
+// function setCategoryFunctions(){
+//     for ( let x = 0; x < categoryListElements.length; x++ ) {
+//         if (categoryListElements[x].innerText == categoryString) {
+//             categoryListElements[x].className = "dropdown-item type-category-list-item list-active";
+//             categoryListElements[x].onclick = function(){};
+//         } else {
+            
+//             categoryListElements[x].onclick = function(){setTypeCategory(categoryString)};
+//             categoryListElements[x].className = "dropdown-item type-category-list-item";
+//         }
+//     }
+// }
+
 function submitItemTypeForm(event){
-    // let amount_paid = document.getElementById("invoice-modal-create-amount-paid").value;
-    // let note = document.getElementById("invoice-modal-create-note").value;
-
-    // //trigger the form validation on required fields before submitting
-    // if(document.forms["invoice-create-form"].reportValidity() == false) {
-    //     //do no further functions as it is not valid
-    // } else {
-    //     //set href of hidden confirm button, after grabbing values to post
-    //     let paidURL = `${orderId}/invoice_create/${amount_paid}/${note}/`;
-    //     let submitButton = document.getElementById("hidden-invoice-create-confirm");
-    //     submitButton.href = paidURL;
-    //     submitButton.click(); 
-    // }
-
     // Prevent default form submission (navigate to the URL)
     event.preventDefault();
     //Want to disable further submissions while waiting for response.
@@ -22,30 +24,43 @@ function submitItemTypeForm(event){
 
 function setTypeCategory(categoryString){
     console.log(categoryString);
-    originalType= $('#id_edit-type-category').val();
+    let categoryListElements = document.getElementsByClassName('type-category-list-item');
+    
+    for ( let x = 0; x < categoryListElements.length; x++ ) {
+
+        //set to none on click to start.
+        //categoryListElements[x].onclick = "";
+        //if the selection made matches the currently iterated list item. 
+        if (categoryListElements[x].innerText == categoryString) {
+            categoryListElements[x].className = "dropdown-item type-category-list-item list-active";
+            
+        } else {
+            
+            categoryListElements[x].onclick = function(){setTypeCategory(categoryString)};
+            categoryListElements[x].className = "dropdown-item type-category-list-item";
+        }
+    }
+    //for each of the elements, if the selected category matches the element category the 
+    //class needs to be list-active and to not have an onclick function (this disables this function
+    //for the item)
+    //If the 
+    //set each to "dropdown-item type-category-list-item"
+
+    //if matching category set to "dropdown-item type-category-list-item list-active"
+
+    //
+
+    originalType = $('#id_edit-type-category').val();
     $('#edit-type-image').attr('src','/static/images/default.webp');
     $('#id_edit-type-category').val(categoryString);
     $('#id_edit-type-name').val('');
-
-
 
     
 
 }
 
 function resetFormImage(){
-    //Name / Sku / Category / Initial / Weekly
-
-    // Reset text in modal to be the same as the text in the item view
-    // Name
-    //$('#id_edit-type-name').val($('#id_edit-item-item_type option:selected').text());
-    // SKU
-    //$('#id_edit-type-sku').val($('#id_item_type_sku').val());
-    //Category
-    //Cost Initial
-    //$('#id_edit-type-cost_initial').val($('#id_type-cost_initial').val());
-    //Cost Week
-    //$('#id_edit-type-cost_week').val($('#id_type-cost_week').val());
+    /* Set the image to be the same as the one from the item view */
     $('#edit-type-image').attr('src', $('#item-image-id').attr('src'));
     $('#edit-type-image').attr('alt', $('#item-image-id').attr('alt'));
 }

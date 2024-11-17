@@ -61,9 +61,6 @@ class ItemForm(forms.ModelForm):
                     data_bs_toggle='modal',
                     data_bs_target="#item-type-edit-modal",
                 ),
-                # <button type="button" data-toggle="modal" data-target="#myModal">Launch modal</button>
-
-                # <div id="item_type_edit_modal" class="modal" aria-labelledby="modal_title_id-label" role="dialog" tabindex="-1"> 
                 css_class="row order-1 p-0 mx-auto"
             ),
 
@@ -202,14 +199,11 @@ class ItemTypeEditForm(forms.ModelForm):
                         '{% for type in all_types %}'
                         '   {% ifchanged type.category %}'
                         '       <li>'
-                        '           <a class="dropdown-item '
+                        '<a class="dropdown-item type-category-list-item'
                         '{% if type.category == item_type_category %}'
-                        'list-active{% else %}{% endif %}" '
-                        '{% if type.category == item_type_category %}'
-                        '{% else %}'
+                        ' list-active{% else %}{% endif %}" '
                         'onclick="'
-                        'setTypeCategory(\'{{ type.category }}\')"'
-                        '{% endif %} >'
+                        'setTypeCategory(\'{{ type.category }}\')">'
                         '               {{ type.category }}'
                         '           </a>'
                         '       </li>'
