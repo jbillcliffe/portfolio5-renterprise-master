@@ -22,42 +22,74 @@ function submitItemTypeForm(event){
     $('#edit-type-cancel-button').attr('disabled', true)
 }
 
-function setTypeCategory(categoryString){
-    console.log(categoryString);
+function typeCategoryChanged(categoryString){
     let categoryListElements = document.getElementsByClassName('type-category-list-item');
     
     for ( let x = 0; x < categoryListElements.length; x++ ) {
 
-        //set to none on click to start.
-        //categoryListElements[x].onclick = "";
-        //if the selection made matches the currently iterated list item. 
+        // If the selection made matches the currently iterated list item.
         if (categoryListElements[x].innerText == categoryString) {
+            // Set the style of the element to be "list-active"
             categoryListElements[x].className = "dropdown-item type-category-list-item list-active";
             
         } else {
-            
-            categoryListElements[x].onclick = function(){setTypeCategory(categoryListElements[x].innerText)};
+            // Otherwise, set the element to the default css below
             categoryListElements[x].className = "dropdown-item type-category-list-item";
         }
     }
-    //for each of the elements, if the selected category matches the element category the 
-    //class needs to be list-active and to not have an onclick function (this disables this function
-    //for the item)
-    //If the 
-    //set each to "dropdown-item type-category-list-item"
 
-    //if matching category set to "dropdown-item type-category-list-item list-active"
+    //Get original category value
+    originalCategory = $('#id_edit-type-category').val();
 
-    //
-
-    originalType = $('#id_edit-type-category').val();
-    $('#edit-type-image').attr('src','/static/images/default.webp');
-    $('#id_edit-type-category').val(categoryString);
-    $('#id_edit-type-name').val('');
-
-    
-
+    //Compare against selection to determine if there has been a change.
+    //If no change
+    if (originalCategory == categoryString){
+        // Do Nothing, there has been no change
+    } else {
+        $('#edit-type-image').attr('src','/static/images/default.webp');
+        $('#edit-type-image').attr('alt','No Image');
+        $('#id_edit-type-category').val(categoryString);
+        $('#id_edit-type-name').val('');
+        changeTypesAvailable(categoryString);
+    }
 }
+
+function changeTypesAvailable(categoryString){
+    //li-#, li-a-#
+    //the <li> element which will need d-none or not, depending on if it's category is correct.
+    let typeListElements = document.getElementsByClassName('edit-type-list-item ');
+    //let typeATagElements = document.getElementsByClassName('dropdown-item type-name-list-item ');
+
+    for ( let x = 0; x < typeListElements.length; x++){
+        let getId = typeListElements[x].id;
+        getId = getId.replace('li-', '');
+        let relativeATag = document.getElementById('li-a-'+getId);
+
+        if ($(relativeATag).attr('data-category') == categoryString){
+            typeListElements[x].className = "edit-type-list-item";
+        } else {
+            typeListElements[x].className = "edit-type-list-item d-none";
+        }
+    }
+}
+
+function typeChanged(typeId){
+    //Data Attrs : data-img, data-category, data-sku, data-initial, data-week
+    //Field Ids : id_edit-type-name, id_edit-type-sku, id_edit-type-cost_initial, id_edit-type-cost_week
+    let selectedTypeOption = document.getElementById("li-a-"+typeId);
+
+    $('#edit-type-image').attr('src', '/media/'+$(selectedTypeOption).attr('data-img'));
+    $('#edit-type-image').attr('alt', $(selectedTypeOption).val());
+    console.log( $('#id_edit-type-name').val());
+    console.log( selectedTypeOption.innerText);
+    console.log($(selectedTypeOption).attr('data-sku'));
+    $('#id_edit-type-name').val(selectedTypeOption.innerText);
+    $('#id_edit-type-sku').val($(selectedTypeOption).attr('data-sku'));
+    $('#id_edit-type-cost_initial').val($(selectedTypeOption).attr('data-initial'));
+    $('#id_edit-type-cost_week').val($(selectedTypeOption).attr('data-week'));
+}
+
+//typeChanged( '5', 'Bathlift', 'Bathroom Accessories', 'orca-bathlift.webp' )
 
 function resetFormImage(){
     /* Set the image to be the same as the one from the item view */
