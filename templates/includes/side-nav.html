@@ -26,15 +26,20 @@
     <!-- The element is only created if there are any messages
         in the MESSAGE_STORAGE -->
     <nav id="side-navigation-bar" class="nav flex-column">
-        <ul>
-            <li id="collapse-sidebar" class="nav-item" data-bs-toggle="collapse"
-                data-bs-target="#rest-of-sidebar" aria-expanded="false" aria-controls="rest-of-sidebar">
-                <span id="menu-text-holder">
-                    <a id="side-menu-text" class="side-bar nav-link"><strong>{% trans "Menu" %}</strong>
-                    </a><i class="bi bi-arrow-up-circle-fill"></i>
-                </span>
-            </li>
-            <div id="rest-of-sidebar" class="nav nav-list collapse show">
+        
+        {% comment %} <li id="collapse-sidebar" class="nav-item" data-bs-toggle="collapse"
+            data-bs-target="#rest-of-sidebar" aria-expanded="false" aria-controls="rest-of-sidebar">
+            <span id="menu-text-holder">
+                <a id="side-menu-text" class="side-bar nav-link">
+            </span>
+        </li> {% endcomment %}
+
+        <a id="collapse-sidebar" class="side-bar nav-link" data-bs-toggle="collapse" data-bs-target="#rest-of-sidebar"
+            role="button" aria-expanded="false" aria-controls="rest-of-sidebar">
+                <i class="nav-icon bi bi-list"></i><strong>{% trans "Menu" %}</strong>
+        </a>
+        <div id="rest-of-sidebar" class="nav nav-list collapse">
+            <ul>
                 <!-- Always have home button at top of menu, unless on the menu screen -->
                 {% if url_name != "menu" %}
                     <li class="nav-item">
@@ -83,9 +88,8 @@
                             </a>
                         </li>
                     {% endif %}
-                {% endif %}
-
-            </div>
-        </ul>
+                {% endif %}  
+            </ul>
+        </div>
     </nav>
 {% endwith %}

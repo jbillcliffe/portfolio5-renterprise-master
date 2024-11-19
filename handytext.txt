@@ -1,3 +1,6 @@
+KILLING A PORT ----
+sudo lsof -t -i tcp:8000 | xargs kill *PID*
+
 https://docs.allauth.org/en/latest/common/admin.html -- !!!! Make Django admin login requires allauth 
 
 https://getbootstrap.com/docs/5.0/layout/z-index/ --- Z-index documentation, was useful to know there were default values

@@ -17,7 +17,7 @@
    removes any edges on the left. But most importantly, sets a sticky
    value, so that when a user scrolls the page. It appears that only
    the app-container is scrolled as the header and navigation stay in place. */
-#side-navigation-bar>ul {
+#rest-of-sidebar>ul {
     list-style-type:none;
     margin: 0;
     padding: 0;
@@ -27,7 +27,7 @@
 }
 
 .nav.nav-list {
-    display:flex;
+    /* display: block; */
     flex-direction:column;
 }
 
@@ -85,58 +85,56 @@ hr.nav-hr {
     color:black;
 }
 
+li.nav-item {
+    width: 100%;
+}
+
 li.nav-item>a.nav-link.active {
     color: #FFFFFF;
     text-shadow: 0px 1px 5px #000000;
     background-color: #1B9964;
 }
 
-#rest-of-sidebar>li.nav-item>a.nav-link:hover:not(.display-only) {
+#rest-of-sidebar~li.nav-item>a.nav-link:hover:not(.display-only) {
     color: #FFFFFF;
     text-shadow: 0px 1px 5px #000000;
     background-color: #1B9964;
 }
 
-/* 
-#rest-of-sidebar>li.nav-item>a.nav-link:not(.display-only) {
-    color:#000000;
-    text-shadow: none;
-    text-decoration: none;
-}
-
-#rest-of-sidebar>li.nav-item>a.nav-link:hover:not(.display-only),
-#rest-of-sidebar>li.nav-item>a.nav-link.active:not(.display-only),
-#rest-of-sidebar>li.nav-item>a.nav-link.display-only.active {
-    color: #FFFFFF;
-    text-shadow: 0px 1px 5px #000000;
-    background-color: #1b9964;
-}
-
-#collapse-sidebar:hover {
-    background-color: #1b9964;
-}
-
-#collapse-sidebar:hover a, #collapse-sidebar:hover i {
-    color: #FFFFFF;
-    text-shadow: 0px 1px 5px #000000;
-}
-
-#rest-of-sidebar>li.nav-item>a.nav-link.display-only {
-    color:#000000;
-    text-shadow: none;
-    text-decoration: underline;
-    font-weight:bold;
-}
-#rest-of-sidebar>li.nav-item>a.nav-link.display-only.status {
-    color:#0000FF;
-    text-shadow: none;
-    text-decoration: none;
-    font-weight:bolder;
-    text-transform: uppercase;
-} */
-
 @media (max-width: 575px) {
+    h1, hr, .row {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    #collapse-sidebar {
+        display: list-item;
+        text-decoration: none;
+    }
+
+    /* Change side navigation bar, to be a top navigation bar */
     #side-navigation-bar {
-        width: 210px;
+        padding: 0 1rem;
+        margin: 0;
+        width: 100%;
+        height: auto;
+        min-height: auto;
+        z-index: 0;
+    }
+
+    .nav.nav-list {
+        flex-direction: column;
+    }
+
+    .app-container {
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
+@media (min-width: 576px) {
+    .nav.nav-list {
+        display: block;
+        flex-direction:column;
     }
 }

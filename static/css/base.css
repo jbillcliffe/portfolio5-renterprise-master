@@ -275,6 +275,13 @@ allow the drop down menu to move */
     .main-header {
         height: 135px;
     }
+    
+    .program-holder {
+        flex-direction: column;
+        width: 100%;
+        margin: 0 auto;
+    }
+    
 
     .renterprise-dropdown .login-dropdown,
     .renterprise-dropdown-menu {
