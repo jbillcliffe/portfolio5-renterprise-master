@@ -120,6 +120,9 @@ li.nav-item>a.nav-link.active {
         height: auto;
         min-height: auto;
         z-index: 0;
+        position: sticky;
+        top: 135px;
+        box-shadow: 0px 1px 4px 0px rgba(57, 61, 63, 0.8);
     }
 
     .nav.nav-list {
@@ -133,6 +136,7 @@ li.nav-item>a.nav-link.active {
 }
 
 @media (min-width: 576px) {
+
     .nav.nav-list {
         display: block;
         flex-direction:column;

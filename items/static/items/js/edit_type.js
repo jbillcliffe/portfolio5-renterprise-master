@@ -93,3 +93,4 @@ function resetFormImage(){
     $('#edit-type-image').attr('src', $('#item-image-id').attr('src'));
     $('#edit-type-image').attr('alt', $('#item-image-id').attr('alt'));
 }
+
