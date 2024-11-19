@@ -80,9 +80,6 @@ function typeChanged(typeId){
 
     $('#edit-type-image').attr('src', '/media/'+$(selectedTypeOption).attr('data-img'));
     $('#edit-type-image').attr('alt', $(selectedTypeOption).val());
-    console.log( $('#id_edit-type-name').val());
-    console.log( selectedTypeOption.innerText);
-    console.log($(selectedTypeOption).attr('data-sku'));
     $('#id_edit-type-name').val(selectedTypeOption.innerText);
     $('#id_edit-type-sku').val($(selectedTypeOption).attr('data-sku'));
     $('#id_edit-type-cost_initial').val($(selectedTypeOption).attr('data-initial'));

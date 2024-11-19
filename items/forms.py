@@ -49,7 +49,8 @@ class ItemForm(forms.ModelForm):
                 FloatingField(
                     "item_type",
                     wrapper_class=(
-                        "flex-md-row col-12 col-sm-10 p-0")),
+                        "flex-md-row col-12 col-sm-10 p-0"),
+                    ),
                 StrictButton(
                     '<span class="d-flex flex-row align-items-center gap-3">'
                     '<p class="d-block d-sm-none my-0 white-text">'
@@ -145,6 +146,9 @@ class ItemTypeEditForm(forms.ModelForm):
             "cost_week": "Weekly (£)",
         }
 
+    # image = forms.ImageField(
+    #     label='Image', required=False, widget=CustomClearableFileInput)
+
     def __init__(self, *args, **kwargs):
         """
         """
@@ -162,31 +166,39 @@ class ItemTypeEditForm(forms.ModelForm):
         self.fields['cost_initial'].required = True
         self.fields['cost_week'].required = True
 
+        # self.fields['image'].widget.attrs['disabled'] = True
+
         self.helper.layout = Layout(
             Modal(
                 # Dropdown button menu for types + categories.
                 # Created with help from :
                 # https://getbootstrap.com/docs/5.3/forms/input-group/
-                Div(
-                    HTML(
-                        '<img class="item-image img-fluid border-black" '
-                        'id="edit-type-image" '
-                        'src="{% if not item_type_image %}'
-                        '{{STATIC_URL}}"images/default.webp" %}'
-                        '{% else %}'
-                        '{{ item_type_image.url }}{% endif %}" '
-                        'alt="{% if not item_type_image %}'
-                        'default no image'
-                        '{% else %}'
-                        '{{ item_type_name }}{% endif %}">'
-                    ),
-                    css_class="d-flex col-12 pb-3"
+
+                HTML(
+                    '<img class="item-image img-fluid border-black'
+                    ' d-flex justify-content-center mb-3 p-0" '
+                    'id="edit-type-image" '
+                    'src="{% if not item_type_image %}'
+                    '{{STATIC_URL}}"images/default.webp" %}'
+                    '{% else %}'
+                    '{{ item_type_image.url }}{% endif %}" '
+                    'alt="{% if not item_type_image %}'
+                    'default no image'
+                    '{% else %}'
+                    '{{ item_type_name }}{% endif %}">'
+                ),
+                HTML(
+                    '{% include "items/includes/custom_file_input.html"'
+                    ' with image_sent_url=item_type_image.url %}'
                 ),
                 Div(
                     StrictButton(
                         'Categories',
                         css_class=(
-                            "col-4 btn default-button dropdown-toggle mb-3"),
+                            "col-4 btn default-button"
+                            " dropdown-toggle mb-3 d-flex "
+                            " justify-content-center align-items-center"
+                            " mb-3 p-0"),
                         data_bs_toggle="dropdown",
                         aria_expanded="false"
                     ),
@@ -217,7 +229,10 @@ class ItemTypeEditForm(forms.ModelForm):
                     StrictButton(
                         'Types',
                         css_class=(
-                            "col-4 btn default-button dropdown-toggle mb-3"),
+                            "col-4 btn default-button"
+                            " dropdown-toggle mb-3 d-flex "
+                            " justify-content-center align-items-center"
+                            " mb-3 p-0"),
                         data_bs_toggle="dropdown",
                         aria_expanded="false"
                     ),
