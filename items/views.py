@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 # from django.core import serializers
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect  # , reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
@@ -86,17 +87,6 @@ def item_view(request, item_id):
 
         for x in item_type_list:
             print(x.sku)
-        # get_item_types = ItemType.objects.all().values()
-        # json_item_types = json.dumps(get_item_types)
-        # print(json_item_types)
-        # print(get_item_types)
-        # item_type_data = serializers.serialize('json', get_item_types)
-        # print(item_type_data)
-        # item_type_list = list(item_type_data)
-        # print(item_type_list)
-  
-        # for x in get_item_types:
-        #     print(x)
 
         item_form = ItemForm(
             account_type=account_type,
@@ -145,13 +135,26 @@ def item_type_update_inline(request, item_id, type_id):
 
     """
     item = get_object_or_404(Item, pk=item_id)
-    item_type = get_object_or_404(ItemType, pk=type_id)
+    # item_type = get_object_or_404(ItemType, pk=type_id)
     account_type = request.user.profile.get_account_type()
 
     # When form is submitted.
     if request.method == "POST":
         # Work with a duplicate of the original instance, just in case
-        item_type_new = item_type
+        submit_type_form = ItemTypeForm(request.POST)
+        submit_type_name = submit_type_form.data['edit-type-name']
+        submit_type_category = submit_type_form.data['edit-type-category']
+        # item_type_new = item_type
+        # item_type_check = ItemType.objects.filter(
+        #     name=submit_type_name, category=submit_type_category)
+        item_type_check = ItemType.objects.filter(
+            Q(name__iexact=submit_type_name) &
+            Q(category__iexact=submit_type_category))
+        print(item_type_check)
+        if item_type_check.exists():
+            print("Found")
+        else:
+            print("Not Found")
         # Only need to search for the one prefix, because someone without
         # "edit" should not be able to change the details and they are
         # display only
@@ -165,7 +168,7 @@ def item_type_update_inline(request, item_id, type_id):
         # item_new.item_type = selected_type
         # item_new.item_serial = request.POST['edit-item-item_serial']
         # item_type_form = ItemTypeForm(request.POST, request.FILES)
-        print(request.POST)
+        #print(request.POST)
         # item_type_new.name = request.POST['edit-type-name']
         # item_type_new.sku = request.POST['edit-type-sku']
         # item_type_new.category = request.POST['edit-type-category']
@@ -175,7 +178,7 @@ def item_type_update_inline(request, item_id, type_id):
         # item_type_new.meta_tags = item_type_new.meta_tags
 
         try:
-            item_type_new.full_clean()
+            submit_type_form.full_clean()
         except ValidationError as e:
             messages.error(
                 request, (
@@ -185,6 +188,8 @@ def item_type_update_inline(request, item_id, type_id):
                 )
             )
             pass
+
+        print(submit_type_form.data)
 
         # item_type_new.save()
 
