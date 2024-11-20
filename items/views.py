@@ -105,7 +105,7 @@ def item_view(request, item_id):
             account_type=account_type,
             instance=item.item_type, prefix="type")
         item_type_edit_form = ItemTypeEditForm(
-            account_type=account_type,
+            account_type=account_type, item_id=item.id,
             instance=item.item_type, prefix="edit-type")
 
     # Set template and context
@@ -131,16 +131,25 @@ def item_view(request, item_id):
 
 
 @login_required
-def item_type_update(request, type_id):
+def item_type_update_inline(request, item_id, type_id):
     """
-    View to display the properties of an individual item type
+
+    View to display the properties of an individual item type within an item.
+    It only responds to POST so there is no requirement for a GET return response.
+    It needs to determine :
+    - If it is a new item type
+    Or
+    - If it is an old item type that is the same
+    Or
+    - If it is an old item type that has been modified
+
     """
+    item = get_object_or_404(Item, pk=item_id)
     item_type = get_object_or_404(ItemType, pk=type_id)
     account_type = request.user.profile.get_account_type()
 
     # When form is submitted.
     if request.method == "POST":
-
         # Work with a duplicate of the original instance, just in case
         item_type_new = item_type
         # Only need to search for the one prefix, because someone without
@@ -155,13 +164,15 @@ def item_type_update(request, type_id):
         # item_new.type = selected_type
         # item_new.item_type = selected_type
         # item_new.item_serial = request.POST['edit-item-item_serial']
-        item_type_new.name = request.POST['edit-type-name']
-        item_type_new.sku = request.POST['edit-type-sku']
-        item_type_new.category = request.POST['edit-type-category']
-        item_type_new.cost_initial = request.POST['edit-type-cost_initial']
-        item_type_new.cost_week = request.POST['edit-type-cost_week']
+        # item_type_form = ItemTypeForm(request.POST, request.FILES)
+        print(request.POST)
+        # item_type_new.name = request.POST['edit-type-name']
+        # item_type_new.sku = request.POST['edit-type-sku']
+        # item_type_new.category = request.POST['edit-type-category']
+        # item_type_new.cost_initial = request.POST['edit-type-cost_initial']
+        # item_type_new.cost_week = request.POST['edit-type-cost_week']
         # [NICE] If time will include a meta tags field
-        item_type_new.meta_tags = item_type_new.meta_tags
+        # item_type_new.meta_tags = item_type_new.meta_tags
 
         try:
             item_type_new.full_clean()
@@ -178,14 +189,14 @@ def item_type_update(request, type_id):
         # item_type_new.save()
 
         # Display a message to the user to show it has worked
-        # messages.success(
-        #     request,
-        #     'Item successfully updated'
-        # )
+        messages.success(
+            request,
+            'Item Type updated. Reloaded Item page'
+        )
 
-        # return redirect('item_view', item_id=item_new.id)
+        return redirect('item_view', item_id=item_id)
 
-    # else:
+    else:
         # The query is a GET. So data/context/template needs to
         # sent to the form to load.
         # if account_type == "Administrator":
@@ -200,7 +211,7 @@ def item_type_update(request, type_id):
         # item_type_edit_form = ItemTypeEditForm(
         #     account_type=account_type,
         #     instance=item.item_type, prefix="edit-type")
-
+        print("GET FORM")
     # Set template and context
     # template = 'items/item.html'
     # context = {

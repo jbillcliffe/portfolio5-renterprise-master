@@ -1,7 +1,8 @@
 from django import forms
+from django.shortcuts import reverse
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Button, HTML, Reset
+from crispy_forms.layout import Layout, Div, HTML, Reset, Submit
 # , Row  # , Submit
 from crispy_forms.bootstrap import StrictButton, Modal
 from crispy_bootstrap5.bootstrap5 import FloatingField
@@ -35,14 +36,13 @@ class ItemForm(forms.ModelForm):
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = False
 
-        if self.account_type == "Administrator":
-            self.fields['item_serial'].widget.attrs['disabled'] = False
-        else:
-            self.fields['item_serial'].widget.attrs['disabled'] = True
-
-        self.fields['item_type'].widget.attrs['disabled'] = True
-        self.fields['item_type'].required = True
-        self.fields['item_serial'].required = True
+        for field in self.fields:
+            self.fields[field].required = True
+            if field == 'item_serial':
+                if self.account_type == "Administrator":
+                    self.fields[field].widget.attrs['disabled'] = False
+                else:
+                    self.fields[field].widget.attrs['disabled'] = True
 
         self.helper.layout = Layout(
             Div(
@@ -100,16 +100,19 @@ class ItemTypeForm(forms.ModelForm):
         self.helper.form_tag = False
 
         # These cannot be edited from the item view by default
-        self.fields['category'].widget.attrs['disabled'] = True
-        self.fields['cost_initial'].widget.attrs['disabled'] = True
-        self.fields['cost_week'].widget.attrs['disabled'] = True
+        # self.fields['category'].widget.attrs['disabled'] = True
+        # self.fields['cost_initial'].widget.attrs['disabled'] = True
+        # self.fields['cost_week'].widget.attrs['disabled'] = True
 
-        self.fields['category'].required = True
-        self.fields['cost_initial'].required = True
-        self.fields['cost_week'].required = True
+        # self.fields['category'].required = True
+        # self.fields['cost_initial'].required = True
+        # self.fields['cost_week'].required = True
+
+        for field in self.fields:
+            self.fields[field].required = True
+            self.fields[field].widget.attrs['disabled'] = True
 
         self.helper.layout = Layout(
-            # FloatingField("name"),
             FloatingField(
                 "category",
                 wrapper_class="col-12 order-2 p-0"),
@@ -152,19 +155,32 @@ class ItemTypeEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         """
         """
+        self.item_id = kwargs.pop('item_id', None)
         self.account_type = kwargs.pop('account_type', None)
         super().__init__(*args, **kwargs)
+        self.type_id = self.instance.id
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = True
-        self.helper.form_action = 'item_type_update'
+        # self.helper.form_action = 'item_type_update'
+        self.helper.form_action = reverse(
+            'item_type_update_inline',
+            kwargs={
+                "item_id": self.item_id,
+                "type_id": self.type_id
+            }
+        )
 
         # These cannot be edited from the item view by default
-        self.fields['name'].required = True
-        self.fields['sku'].required = True
-        self.fields['category'].required = True
-        self.fields['cost_initial'].required = True
-        self.fields['cost_week'].required = True
+        # self.fields['name'].required = True
+        # self.fields['sku'].required = True
+        # self.fields['category'].required = True
+        # self.fields['cost_initial'].required = True
+        # self.fields['cost_week'].required = True
+
+        for field in self.fields:
+            self.fields[field].required = True
+            self.fields[field].widget.attrs['disabled'] = False
 
         # self.fields['image'].widget.attrs['disabled'] = True
 
@@ -179,7 +195,7 @@ class ItemTypeEditForm(forms.ModelForm):
                     ' d-flex justify-content-center mb-3 p-0" '
                     'id="edit-type-image" '
                     'src="{% if not item_type_image %}'
-                    '{{STATIC_URL}}"images/default.webp" %}'
+                    '{{ STATIC_URL }}"images/default.webp" %}'
                     '{% else %}'
                     '{{ item_type_image.url }}{% endif %}" '
                     'alt="{% if not item_type_image %}'
@@ -205,6 +221,7 @@ class ItemTypeEditForm(forms.ModelForm):
                     FloatingField(
                         'category',
                         css_class="rounded-end",
+                        onchange="typeCategoryChanged(this.value, \'input\')",
                         wrapper_class="p-0"),
                     HTML(
                         '<ul class="dropdown-menu">'
@@ -215,7 +232,7 @@ class ItemTypeEditForm(forms.ModelForm):
                         '{% if type.category == item_type_category %}'
                         ' list-active{% else %}{% endif %}" '
                         'onclick="'
-                        'typeCategoryChanged(\'{{ type.category }}\')">'
+                        'typeCategoryChanged(\'{{ type.category }}\', \'drop\')">'
                         '               {{ type.category }}'
                         '           </a>'
                         '       </li>'
@@ -228,6 +245,7 @@ class ItemTypeEditForm(forms.ModelForm):
                 Div(
                     StrictButton(
                         'Types',
+                        css_id="id-types-dropdown-btn",
                         css_class=(
                             "col-4 btn default-button"
                             " dropdown-toggle mb-3 d-flex "
@@ -239,6 +257,7 @@ class ItemTypeEditForm(forms.ModelForm):
                     FloatingField(
                         'name',
                         css_class="rounded-end",
+                        onchange="typeChanged()",
                         wrapper_class="p-0"),
                     HTML(
                         '<ul class="dropdown-menu">'
@@ -272,17 +291,24 @@ class ItemTypeEditForm(forms.ModelForm):
                     wrapper_class="col-12 order-4 p-0"),
                 FloatingField(
                     "cost_initial",
+                    onfocusout="setTwoDecimalPlaces(this.id, this.value)",
                     wrapper_class="col-12 order-4 p-0"),
                 FloatingField(
                     "cost_week",
+                    onfocusout="setTwoDecimalPlaces(this.id, this.value)",
                     wrapper_class="col-12 order-5 p-0"),
                 # Crispy forms modal does not automatically use a modal footer
                 Div(
-                    Button(
+                    # Button(
+                    #     'submit-type-edit', 'Update Item Type',
+                    #     css_id='edit-type-submit-button',
+                    #     css_class='default-button mb-2',
+                    #     onclick="submitItemTypeForm(event)"),
+                    Submit(
                         'submit-type-edit', 'Update Item Type',
                         css_id='edit-type-submit-button',
-                        css_class='default-button mb-2',
-                        onclick="submitItemTypeForm(event)"),
+                        css_class='default-button mb-2'
+                    ),
                     Reset(
                         'cancel-type-edit', 'Cancel',
                         css_id='edit-type-cancel-button',

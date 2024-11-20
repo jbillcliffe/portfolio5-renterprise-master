@@ -1,3 +1,5 @@
+// Raw javascript is quicker than jQuery, because jQuery executes on top of JS.
+
 KILLING A PORT ----
 sudo lsof -t -i tcp:8000 | xargs kill *PID*
 

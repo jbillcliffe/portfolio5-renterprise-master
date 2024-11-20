@@ -15,9 +15,9 @@ urlpatterns = [
         views.item_view,
         name='item_view'),
     path(
-        'type/<int:type_id>/edit',
-        views.item_type_update,
-        name='item_type_update')
+        '<int:item_id>/type/<int:type_id>/edit',
+        views.item_type_update_inline,
+        name='item_type_update_inline')
 ]
 
 # path('create/', views.item_create, name="item_create"),
