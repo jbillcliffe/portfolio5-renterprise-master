@@ -1,6 +1,6 @@
 function setTwoDecimalPlaces(elementId, initialNumber) {
     let number;
-    
+
     if (!initialNumber) {
         number = "0.00"
     } else {
@@ -8,6 +8,4 @@ function setTwoDecimalPlaces(elementId, initialNumber) {
     }
 
     document.getElementById(elementId).value = number;
-
-    
 }
