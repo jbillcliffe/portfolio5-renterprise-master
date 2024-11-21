@@ -112,8 +112,7 @@ function changeTypesAvailable(categoryString){
     //li-#, li-a-#
     // The <li> element which will need d-none or not, depending on if it's category is correct.
     let typeListElements = document.getElementsByClassName('edit-type-list-item');
-    // The button which is the dropdown of types available by category
-    console.log(typeListElements);
+
     // Go through each list item and set it to not be visible if it does not match the category.
     for ( let x = 0; x < typeListElements.length; x++){
         let getId = typeListElements[x].id;
@@ -151,9 +150,43 @@ function typeChanged(typeId = null){
     let initialCostElement = document.getElementById('id_edit-type-cost_initial');
     let weekCostElement = document.getElementById('id_edit-type-cost_week');
 
-    if (typeId == null) {
-        //edit-type-list-item
 
+    if (typeId == null) {
+        //This change is sent from the input field.
+
+        // Get a collection of elements (ignoring any d-none classes), these are for other
+        // categories ignoring all those with d-none
+        //let typeListElements = document.getElementsByClassName('edit-type-list-item');
+        let typeListElements = document.querySelectorAll('.edit-type-list-item:not(.d-none)');
+        console.log("I am null typeid");
+        for ( let x = 0; x < typeListElements.length; x++) {
+            //get relational id 
+            let relationalId = (typeListElements[x].id).replace('li-', 'li-a-');
+            let typeAvailableValue = document.getElementById(relationalId).innerHTML.trim();
+    
+            console.log(typeAvailableValue+" : "+typeNameElement.value.trim());
+            if (typeAvailableValue == typeNameElement.value.trim()) {
+                //set the found type to be "active"
+                document.getElementById(relationalId).className = "dropdown-item type-name-list-item list-active";
+
+                let selectedTypeOption = document.getElementById(relationalId);
+
+                imageElement.src = '/media/'+selectedTypeOption.dataset.img;
+                imageElement.alt = selectedTypeOption.value;
+                imageTextElement.value = selectedTypeOption.dataset.img;
+
+                skuElement.value = selectedTypeOption.dataset.sku;
+                initialCostElement.value = selectedTypeOption.dataset.initial;
+                weekCostElement.value = selectedTypeOption.dataset.week;
+
+                // no need to change the name field, it has already been typed in.
+
+            } else {
+                document.getElementById(relationalId).className = "dropdown-item type-name-list-item";
+            }
+        }
+        
+            
     } else {
 
         let selectedTypeOption = document.getElementById("li-a-"+typeId);
@@ -167,25 +200,19 @@ function typeChanged(typeId = null){
         initialCostElement.value = selectedTypeOption.dataset.initial;
         weekCostElement.value = selectedTypeOption.dataset.week;
     }
-    
-
-
-    //$('#edit-type-image').attr('src', '/media/'+$(selectedTypeOption).attr('data-img'));
-    //$('#edit-type-image').attr('alt', $(selectedTypeOption).val());
-
-    //$('#id_edit-type-name').val(selectedTypeOption.innerText);
-    //$('#id_edit-type-sku').val($(selectedTypeOption).attr('data-sku'));
-    //$('#id_edit-type-cost_initial').val($(selectedTypeOption).attr('data-initial'));
-    //$('#id_edit-type-cost_week').val($(selectedTypeOption).attr('data-week'));
 }
 
-//typeChanged( '5', 'Bathlift', 'Bathroom Accessories', 'orca-bathlift.webp' )
 
 
-
-function resetFormImage(){
+function resetForm(){
     /* Set the image to be the same as the one from the item view */
-    $('#edit-type-image').attr('src', $('#item-image-id').attr('src'));
-    $('#edit-type-image').attr('alt', $('#item-image-id').attr('alt'));
+    let dropdownButton = document.getElementById('id-types-dropdown-btn');
+    let typeImage = document.getElementById('edit-type-image');
+
+    dropdownButton.disabled = false;
+    typeImage.src = document.getElementById('item-image-id').src;
+    typeImage.alt = document.getElementById('item-image-id').alt;
+
+    // Other elements in the form are reset from Crispy Forms "Reset"
 }
 

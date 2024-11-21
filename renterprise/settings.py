@@ -208,6 +208,8 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+DEFAULT_NO_IMAGE = '/static/images/default.webp'
+
 # if 'USE_AWS' in os.environ is True:
 #     # Cache Control
 #     AWS_S3_OBJECT_PARAMETERS = {

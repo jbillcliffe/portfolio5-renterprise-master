@@ -18,7 +18,7 @@ class ItemType(models.Model):
     category = models.CharField(max_length=50)
     cost_initial = models.DecimalField(max_digits=6, decimal_places=2)
     cost_week = models.DecimalField(max_digits=6, decimal_places=2)
-    image = models.ImageField(upload_to=, null=True, blank=True)
+    image = models.ImageField(null=True, blank=True)
     meta_tags = models.TextField(null=True, blank=True)
 
     # Order by category and then name to create the category separation

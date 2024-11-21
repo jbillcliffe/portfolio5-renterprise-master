@@ -52,3 +52,6 @@ So if the user is authorised the prefix for the table is "item-edit". These woul
 --- Button Dropdown BS5 for category history ---
 https://getbootstrap.com/docs/5.3/forms/input-group/#buttons-with-dropdowns
 
+--- GETTING ELEMENTS BY JUST ONE CLASS NAME - USED FOR ITEMTYPE EDITS ---
+https://stackoverflow.com/questions/19492716/get-elements-with-one-class-but-not-another-without-iterating
+Change from getElementsByClassName, to use a querySelectorAll

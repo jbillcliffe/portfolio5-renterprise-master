@@ -314,7 +314,7 @@ class ItemTypeEditForm(forms.ModelForm):
                         css_id='edit-type-cancel-button',
                         css_class='danger-button',
                         data_bs_dismiss='modal',
-                        onclick='resetFormImage()'),
+                        onclick='resetForm()'),
                     css_class="row modal-footer pb-0"
                 ),
                 css_id="item-type-edit-modal",
