@@ -5,14 +5,10 @@
     <link href="{% static "css/side-nav.css" %}" rel="stylesheet">
 {% endblock extra_css %}
 
-<!-- If on the home page (menu), there is no requirement for this.-->
-<!-- THIS MAY BE USED. BUT AFTER THOUGHT, THE MAIN MENU CAN BE BETTER
-     SERVED AS AN INFORMATION SOURCE -->
-{% comment %} {% if request.path != '' and request.path != '/' %} {% endcomment %}
-
 <!-- Uses the url to determine location and what to display 
      the resolver gets everything after the domain/host. eg. /admin, /profiles/user/ -->
-{% with request.resolver_match.url_name as url_name %}
+{% with url_name=request.resolver_match.url_name account_level=request.user.profile.account_type %}
+
     <!-- *** Mobile first *** -->
     <!-- The nav bar is designed for desktop computers. It will display on
         the left hand side of the screen.
@@ -23,17 +19,7 @@
         Initial creation of this in Portfolio 4 by myself :
         https://github.com/jbillcliffe/django-renterprise/blob/main/templates/side-nav.html
     -->
-    <!-- The element is only created if there are any messages
-        in the MESSAGE_STORAGE -->
     <nav id="side-navigation-bar" class="nav flex-column">
-        
-        {% comment %} <li id="collapse-sidebar" class="nav-item" data-bs-toggle="collapse"
-            data-bs-target="#rest-of-sidebar" aria-expanded="false" aria-controls="rest-of-sidebar">
-            <span id="menu-text-holder">
-                <a id="side-menu-text" class="side-bar nav-link">
-            </span>
-        </li> {% endcomment %}
-
         <a id="collapse-sidebar" class="side-bar nav-link" data-bs-toggle="collapse" data-bs-target="#rest-of-sidebar"
             role="button" aria-expanded="false" aria-controls="rest-of-sidebar">
                 <i class="nav-icon bi bi-list"></i><strong>{% trans "Menu" %}</strong>
@@ -67,7 +53,7 @@
                 highlighting it with the active class and disabling it by not applying
                 its href and target value -->
                 {% if url_name == "menu" or "/profiles" in request.path and request.path != "/profiles/user/" %}
-                    {% if request.user.profile.account_type > 1 %}
+                    {% if account_level > 1 %}
                         <li class="nav-item">
                             <a {% if url_name == "profile_list" %}{% else %}href="{% url 'profile_list' %}" target="_self"{% endif %}
                             class="side-bar nav-link {% if url_name == 'profile_list' %}active{% endif %}">
@@ -80,7 +66,8 @@
                 highlighting it with the active class and disabling it by not applying
                 its href and target value -->
                 {% if url_name == "menu" or "/items" in request.path %}
-                    {% if request.user.profile.account_type > 1 %}
+                    <!-- 0 will always be Customer, so they cannot see this -->
+                    {% if account_level > 0 %}
                         <li class="nav-item">
                             <a {% if url_name == "item_list" %}{% else %}href="{% url 'item_list' %}" target="_self"{% endif %}
                             class="side-bar nav-link {% if url_name == 'item_list' %}active{% endif %}">
@@ -88,7 +75,21 @@
                             </a>
                         </li>
                     {% endif %}
-                {% endif %}  
+                {% endif %}
+                <!-- When on the "Item Listing" page or "Create An Item" page, show this.
+                Highlighting it with the active class and disabling it by not applying
+                its href and target value when it is on the "Create An Item" page itself-->
+                {% if url_name == "item_list" or url_name == "item_create" %}
+                    <!-- 0 will always be Customer, so they cannot see this -->
+                    {% if account_level > 0 %}
+                        <li class="nav-item">
+                            <a {% if url_name == "item_create" %}{% else %}href="{% url 'item_create' %}" target="_self"{% endif %}
+                            class="side-bar nav-link {% if url_name == 'item_create' %}active{% endif %}">
+                                <i class="nav-icon bi bi-boxes"></i><strong>{% trans "Create Item" %}</strong>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
             </ul>
         </div>
     </nav>

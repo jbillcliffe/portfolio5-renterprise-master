@@ -14,12 +14,11 @@ class ItemForm(forms.ModelForm):
     """
     Defining the ItemForm, assigning correctly formatted
     labels to the fields and declaring the fields to display
-    for creation.
+    for creation. ItemTypeForm is also joined to this for viewing.
     """
-
     class Meta:
-        """
-        """
+        # Assigning the model to the form, fields to be active
+        # and the labels associated to the fields.
         model = Item
         fields = ['item_type', 'item_serial']
         labels = {
@@ -72,16 +71,50 @@ class ItemForm(forms.ModelForm):
                 wrapper_class="col-12 order-3 p-0"),
         )
 
+class ItemCreateForm(forms.ModelForm):
+    """
+    Defining the ItemForm, assigning correctly formatted
+    labels to the fields and declaring the fields to display
+    for creation. ItemTypeForm is also joined to this for viewing.
+    """
+    class Meta:
+        # Assigning the model to the form, fields to be active
+        # and the labels associated to the fields.
+        model = Item
+        fields = ['item_type', 'item_serial']
+        labels = {
+            "item_type": "Item Type",
+            "item_serial": "Serial No.",
+        }
+
+    def __init__(self, *args, **kwargs):
+        """
+        Add placeholders and classes, remove auto-generated
+        labels and set autofocus on first field
+        """
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+        self.helper.attrs['autocomplete'] = 'off'
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            FloatingField("item_type"),
+            FloatingField("item_serial")
+        )
+
 
 class ItemTypeForm(forms.ModelForm):
     """
     Defining the ItemTypeForm, assigning correctly formatted
     labels to the fields and declaring the fields to display
-    for creation.
+    for creation. This is a viewing form as part of the ItemForm.
+    Edits for types are done inline, or could be accessible from
+    another page.
     """
-    # previous_category_tags = ItemType.objects.all()
 
     class Meta:
+        # Assigning the model to the form, fields to be active
+        # and the labels associated to the fields.
         model = ItemType
         fields = ['category', 'cost_initial', 'cost_week']
         # With fixtures, meta tags were added in, but that is a NICE
@@ -100,15 +133,6 @@ class ItemTypeForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = False
-
-        # These cannot be edited from the item view by default
-        # self.fields['category'].widget.attrs['disabled'] = True
-        # self.fields['cost_initial'].widget.attrs['disabled'] = True
-        # self.fields['cost_week'].widget.attrs['disabled'] = True
-
-        # self.fields['category'].required = True
-        # self.fields['cost_initial'].required = True
-        # self.fields['cost_week'].required = True
 
         for field in self.fields:
             self.fields[field].required = True
@@ -134,9 +158,11 @@ class ItemTypeEditForm(forms.ModelForm):
     labels to the fields and declaring the fields to display
     for creation. Into a modal which is initated from a button on the item view
     """
-    # name|sku|category|cost_initial|cost_week|image|meta_tags
 
     class Meta:
+        # Assigning the model to the form, fields to be active
+        # and the labels associated to the fields. In this case,
+        # all fields are included except for meta_tags [NICE]
         model = ItemType
         exclude = ["meta_tags"]
 
@@ -151,9 +177,6 @@ class ItemTypeEditForm(forms.ModelForm):
             "cost_week": "Weekly (£)",
         }
 
-    # image = forms.ImageField(
-    #     label='Image', required=False, widget=CustomClearableFileInput)
-
     def __init__(self, *args, **kwargs):
         """
         """
@@ -165,7 +188,6 @@ class ItemTypeEditForm(forms.ModelForm):
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = True
         self.helper.form_id = "item-inline-type-form-id"
-        # self.helper.form_action = 'item_type_update'
         self.helper.form_action = reverse(
             'item_type_update_inline',
             kwargs={
@@ -174,18 +196,12 @@ class ItemTypeEditForm(forms.ModelForm):
             }
         )
 
-        # These cannot be edited from the item view by default
-        # self.fields['name'].required = True
-        # self.fields['sku'].required = True
-        # self.fields['category'].required = True
-        # self.fields['cost_initial'].required = True
-        # self.fields['cost_week'].required = True
-
         for field in self.fields:
             self.fields[field].required = True
             self.fields[field].widget.attrs['disabled'] = False
 
-        # except sku
+        # Except sku, make that readonly as this shouldn't be changed.
+        # They are unique, so it should be fixed
         self.fields['sku'].widget.attrs['readonly'] = True
 
         self.helper.layout = Layout(
@@ -193,11 +209,15 @@ class ItemTypeEditForm(forms.ModelForm):
                 # Dropdown button menu for types + categories.
                 # Created with help from :
                 # https://getbootstrap.com/docs/5.3/forms/input-group/
+
+                # A simple display and also a way of checking edit progress.
+                # This stops unnecessary form reloads.
                 HTML(
                     '<strong id="id-edit-progress"'
                     'class="text-primary mt-0 mb-1 d-none">'
                     'Currently Editing</strong>'
                 ),
+                # Setting the image display for the type
                 HTML(
                     '<img class="item-image img-fluid border-black'
                     ' d-flex justify-content-center mb-3 p-0" '
@@ -211,11 +231,16 @@ class ItemTypeEditForm(forms.ModelForm):
                     '{% else %}'
                     '{{ item_type_name }}{% endif %}">'
                 ),
+                # Include this file, its a long block which has a custom
+                # customisation of the ClearableFileInput.
                 HTML(
                     '{% include "items/includes/custom_file_input.html"'
                     ' with image_sent_url=item_type_image.url %}'
                 ),
+                # A row which has Category dropdown and category input field
                 Div(
+                    # Creating the category dropdown button.
+                    # StrictButton ensures it is a <button> (not <a>)
                     StrictButton(
                         'Categories',
                         css_class=(
@@ -226,11 +251,14 @@ class ItemTypeEditForm(forms.ModelForm):
                         data_bs_toggle="dropdown",
                         aria_expanded="false"
                     ),
+                    # Category text input+ associated function for
+                    # change in text
                     FloatingField(
                         'category',
                         css_class="rounded-end",
                         onchange="typeCategoryChanged(this.value, \'input\')",
                         wrapper_class="p-0"),
+                    # Creating the dropdown list of categories for selection
                     HTML(
                         '<ul class="dropdown-menu">'
                         '{% for type in all_types %}'
@@ -240,7 +268,8 @@ class ItemTypeEditForm(forms.ModelForm):
                         '{% if type.category == item_type_category %}'
                         ' list-active{% else %}{% endif %}" '
                         'onclick="'
-                        'typeCategoryChanged(\'{{ type.category }}\', \'drop\')">'
+                        'typeCategoryChanged('
+                        '\'{{ type.category }}\', \'drop\')">'
                         '               {{ type.category }}'
                         '           </a>'
                         '       </li>'
@@ -250,7 +279,11 @@ class ItemTypeEditForm(forms.ModelForm):
                     ),
                     css_class="row input-group order-1 m-0 p-0"
                 ),
+                # A row which has type(name) dropdown
+                # and type(name) input field
                 Div(
+                    # Creating the type(name) dropdown button.
+                    # StrictButton ensures it is a <button> (not <a>)
                     StrictButton(
                         'Types',
                         css_id="id-types-dropdown-btn",
@@ -262,11 +295,15 @@ class ItemTypeEditForm(forms.ModelForm):
                         data_bs_toggle="dropdown",
                         aria_expanded="false"
                     ),
+                    # Type(name) text input + associated function for
+                    # change in text
                     FloatingField(
                         'name',
                         css_class="rounded-end",
                         onchange="typeChanged()",
                         wrapper_class="p-0"),
+                    # Creating the dropdown list of types(names)
+                    # for selection
                     HTML(
                         '<ul class="dropdown-menu">'
                         '   {% for type in all_types %}'
@@ -294,41 +331,46 @@ class ItemTypeEditForm(forms.ModelForm):
                     ),
                     css_class="row input-group order-1 m-0 p-0"
                 ),
+                # SKU input field
                 FloatingField(
                     "sku",
                     wrapper_class="col-12 order-4 p-0"),
+                # Initial Cost input field
                 FloatingField(
                     "cost_initial",
                     onfocusout="setTwoDecimalPlaces(this.id, this.value)",
                     wrapper_class="col-12 order-4 p-0"),
+                # Weekly Cost input field
                 FloatingField(
                     "cost_week",
                     onfocusout="setTwoDecimalPlaces(this.id, this.value)",
                     wrapper_class="col-12 order-5 p-0"),
                 # Crispy forms modal does not automatically use a modal footer
+                # A div which holds the two form buttons, submit and reset
                 Div(
-                    # Button(
-                    #     'submit-type-edit', 'Update Item Type',
-                    #     css_id='edit-type-submit-button',
-                    #     css_class='default-button mb-2',
-                    #     onclick="submitItemTypeForm(event)"),
+                    # Submit means this defaults to performing the
+                    # "form action"
                     Submit(
                         'submit-type-edit', 'Update Item Type',
                         css_id='edit-type-submit-button',
                         css_class='default-button mb-2'
                     ),
+                    # Returns the form to it's original state.
+                    # Removing "editing" status field, making sure the type
+                    # dropdown isn't disabled, resetting the image display
+                    # and image text area are done in JS
                     Reset(
                         'cancel-type-edit', 'Cancel',
                         css_id='edit-type-cancel-button',
                         css_class='danger-button',
                         data_bs_dismiss='modal',
                         onclick='resetForm()'),
-                    css_class="row modal-footer pb-0"
+                    css_class="row modal-footer justify-content-center pb-0"
                 ),
                 css_id="item-type-edit-modal",
                 title="Edit Item Type",
-                # Send Item Id. This stays fixed when creating 
-                # the dynamic form action
+                # Send Item Id as the ID for this modal. This stays fixed
+                # when creating the dynamic form action
                 data_form_id=self.item_id,
             )
         )

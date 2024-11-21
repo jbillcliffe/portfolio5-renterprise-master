@@ -68,7 +68,11 @@
                             aria-live="{% if message.tags != 'info' %}assertive{% else %}polite{% endif %}"
                             aria-atomic="true">
                             <div class="toast-header bg-{{ message.tags }} bg-gradient">
-                                <strong class="me-auto">{{ message.tags|upper }}!</strong>
+                                {% if message.tags == "danger" %}
+                                    <strong class="me-auto">ERROR!</strong>
+                                {% else %}
+                                    <strong class="me-auto">{{ message.tags|upper }}!</strong>
+                                {% endif %}
                                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                             </div>
                             <div class="toast-body">

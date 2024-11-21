@@ -27,7 +27,7 @@
             </div>
             <div class="col-12 col-lg-9 col-xxl-8">
                 <form id="item_view_form" action="{% url 'item_view' item_id %}" 
-                      class="row floating-labels-form m-0" method="post" id="item_update">
+                      class="row floating-labels-form m-0" method="post">
 
                     {% crispy item_type_form item_type_form.helper %}
                     {% crispy item_form item_form.helper %}

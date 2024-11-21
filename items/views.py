@@ -1,18 +1,20 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404, redirect  # , reverse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import slugify
 from django.utils.decorators import method_decorator
+from django.utils.safestring import mark_safe
 from django.views.generic import ListView
 
 from pathlib import Path
 from PIL import Image
 
 from .models import Item, ItemType
-from .forms import ItemTypeForm, ItemTypeEditForm, ItemForm
+from .forms import (
+    ItemTypeForm, ItemTypeEditForm, ItemForm, ItemCreateForm)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -165,6 +167,10 @@ def item_type_update_inline(request, item_id, type_id):
                 Q(name__iexact=submit_type_name) &
                 Q(category__iexact=submit_type_category))
 
+            item_type_check = ItemType.objects.get(
+                Q(name__iexact=submit_type_name) &
+                Q(category__iexact=submit_type_category))
+
             image_name = submit_type_form.data['image-input-name']
             previous_image_exists = False
 
@@ -220,7 +226,8 @@ def item_type_update_inline(request, item_id, type_id):
                 update_type.name = submit_type_name
                 # sku is unique and should be kept
                 update_type.sku = submit_type_form.data['edit-type-sku']
-                update_type.category = submit_type_form.data['edit-type-category']
+                update_type.category = (
+                    submit_type_form.data['edit-type-category'])
                 update_type.cost_initial = (
                     submit_type_form.data['edit-type-cost_initial'])
                 update_type.cost_week = (
@@ -242,7 +249,6 @@ def item_type_update_inline(request, item_id, type_id):
 
                 # Then needs to set this type to the item (this allows for
                 # updated to different type, or updated original type)
-                
 
                 # Auto increment key means that the id
                 # can be gained after save())
@@ -312,3 +318,79 @@ def item_type_update_inline(request, item_id, type_id):
         # The query is a GET. So data/context/template needs to
         # sent to the form to load.
         pass
+
+
+@login_required
+def item_create(request):
+
+    account_type = request.user.profile.get_account_type()
+
+    # This will determine if they have navigated by the url directly.
+    # If they are a customer, it will bump that to the main menu, all
+    # other accounts (Staff,HR,Administrator) are permitted to do this.
+    if account_type == 'Customer':
+        messages.error(
+            request, 'Permission denied : Customer cannot add items.')
+        return redirect('menu')
+    else:
+        if request.method == 'POST':
+            form = ItemCreateForm(request.POST)
+            if form.is_valid():
+                # Only one extra validation, there should not be an instance
+                # where the serial and type already exist together
+
+                new_item = form.save(commit=False)
+
+                try:
+                    item_check = Item.objects.get(
+                        Q(item_type__exact=new_item.item_type) &
+                        Q(item_serial=new_item.item_serial))
+                    print(item_check)
+                    print(item_check.id)
+
+                    check_type_id = item_check.id
+                    check_serial = item_check.item_serial
+                    url_construct = (
+                        f'<span>'
+                        f'<a href="/items/{check_type_id}">{check_serial}</a>'
+                        f' Already exists.</span>'
+                    )
+
+                    messages.error(
+                        request,
+                        mark_safe(
+                            (
+                                url_construct
+                                # f'{check_type} already has'
+                                # f' an entry with Serial:'
+                                # f'<a href="/items/'
+                                # f'{check_type_id}">{check_serial}</a>'
+                                # <a href="/items/'
+                                # f'{check_type_id}">{check_serial}</a>'
+                            )
+                        )
+                    )
+                except ObjectDoesNotExist:
+
+                    new_item = form.save()
+                    new_item_id = new_item.id
+                    messages.success(
+                        request, 'This Item has been newly created')
+                    return redirect('item_view', new_item_id)
+            else:
+                messages.error(
+                    request,
+                    (
+                        'Failed to add product.'
+                        'Please ensure the form is valid.'
+                    )
+                )
+        else:
+            form = ItemCreateForm()
+
+        template = 'items/item_create.html'
+        context = {
+            'item_create_form': form,
+        }
+
+        return render(request, template, context)
