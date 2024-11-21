@@ -189,7 +189,11 @@ class ItemTypeEditForm(forms.ModelForm):
                 # Dropdown button menu for types + categories.
                 # Created with help from :
                 # https://getbootstrap.com/docs/5.3/forms/input-group/
-
+                HTML(
+                    '<strong id="id-edit-progress"'
+                    'class="text-primary mt-0 mb-1 d-none">'
+                    'Currently Editing</strong>'
+                ),
                 HTML(
                     '<img class="item-image img-fluid border-black'
                     ' d-flex justify-content-center mb-3 p-0" '

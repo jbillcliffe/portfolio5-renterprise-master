@@ -71,6 +71,9 @@ function typeCategoryChanged(categoryString, from_where){
             console.log("Same category as before");
         } else {
 
+            //enable updates in progress field to be visible as an edit is in progress
+            document.getElementById('id-edit-progress').className = "text-primary mt-0 mb-1";
+
             imageElement.src = '/static/images/default.webp';
             imageElement.alt = 'No Image';
             imageTextElement.value = 'No Image';
@@ -93,6 +96,9 @@ function typeCategoryChanged(categoryString, from_where){
             typeCategoryChanged(categoryString, "rerun");
         } else {
             
+            //enable updates in progress field to be visible as an edit is in progress
+            document.getElementById('id-edit-progress').className = "text-primary mt-0 mb-1";
+
             dropdownButton.disabled = true;
             imageElement.src = '/static/images/default.webp';
             imageElement.alt = 'No Image';
@@ -154,6 +160,10 @@ function typeChanged(typeId = null){
     if (typeId == null) {
         //This change is sent from the input field.
 
+        // Initially no type is found, if this remains it will then have to determine if there
+        // previously was a type, by using the image value.
+        let foundType = false;
+
         // Get a collection of elements (ignoring any d-none classes), these are for other
         // categories ignoring all those with d-none
         //let typeListElements = document.getElementsByClassName('edit-type-list-item');
@@ -178,16 +188,42 @@ function typeChanged(typeId = null){
                 skuElement.value = selectedTypeOption.dataset.sku;
                 initialCostElement.value = selectedTypeOption.dataset.initial;
                 weekCostElement.value = selectedTypeOption.dataset.week;
-
-                // no need to change the name field, it has already been typed in.
+                
+                // Let the function know that a type has been found by field input
+                foundType = true;
+                //reset the updates in progress field to not be visible as a type is found
+                document.getElementById('id-edit-progress').className = "text-primary mt-0 mb-1 d-none";
 
             } else {
                 document.getElementById(relationalId).className = "dropdown-item type-name-list-item";
             }
         }
-        
+
+        if (!foundType) {
+            // Will use a secret field to determine if this has previously been reset or not,
+            // Only wants resetting once.
+            let changingPElement = document.getElementById('id-edit-progress');
             
+            if (changingPElement.className == "text-primary mt-0 mb-1 d-none") {
+                //if this element is not visible, set it to visible and reset the form
+                changingPElement.className = "text-primary mt-0 mb-1"
+
+                imageElement.src = '/static/images/default.webp';
+                imageElement.alt = 'No Image';
+                imageTextElement.value = 'No Image';
+
+                skuElement.value = "";
+                initialCostElement.value = "";
+                weekCostElement.value = "";
+      
+            } else {
+                // Let the user continue their edits uninterrupted.
+            }
+        }
     } else {
+
+        // The type was selected from a dropdown, so edits are not happening at this point
+        document.getElementById('id-edit-progress').className = "text-primary mt-0 mb-1 d-none";
 
         let selectedTypeOption = document.getElementById("li-a-"+typeId);
 
@@ -212,6 +248,9 @@ function resetForm(){
     dropdownButton.disabled = false;
     typeImage.src = document.getElementById('item-image-id').src;
     typeImage.alt = document.getElementById('item-image-id').alt;
+
+    //reset the updates in progress field to not be visible as a type is found
+    document.getElementById('id-edit-progress').className = "text-primary mt-0 mb-1 d-none";
 
     // Other elements in the form are reset from Crispy Forms "Reset"
 }
