@@ -28,3 +28,8 @@
         </div>
     </div>
 {% endblock content %}
+
+{% block postloadjs %}
+    {{ block.super }}
+    <script src="{% static 'items/js/create_type.js' %}"></script>
+{% endblock postloadjs %}

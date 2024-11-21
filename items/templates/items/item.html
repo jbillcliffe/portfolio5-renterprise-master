@@ -58,7 +58,6 @@
 
 {% block postloadjs %}
     {{ block.super }}
-    {{ item_id|json_script:"script_item_id" }}
     <script src="{% static 'items/js/edit_type.js' %}"></script>
     <script src="{% static 'items/js/get_files.js' %}"></script>
 {% endblock postloadjs %}

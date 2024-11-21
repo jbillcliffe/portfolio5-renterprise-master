@@ -3,7 +3,6 @@ from django.shortcuts import reverse
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, HTML, Reset, Submit
-# , Row  # , Submit
 from crispy_forms.bootstrap import StrictButton, Modal
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
@@ -44,7 +43,7 @@ class ItemForm(forms.ModelForm):
                     self.fields[field].widget.attrs['disabled'] = True
             elif field == 'item_type':
                 self.fields[field].widget.attrs['disabled'] = True
-
+        
         self.helper.layout = Layout(
             Div(
                 FloatingField(
@@ -71,6 +70,7 @@ class ItemForm(forms.ModelForm):
                 wrapper_class="col-12 order-3 p-0"),
         )
 
+
 class ItemCreateForm(forms.ModelForm):
     """
     Defining the ItemForm, assigning correctly formatted
@@ -92,14 +92,97 @@ class ItemCreateForm(forms.ModelForm):
         Add placeholders and classes, remove auto-generated
         labels and set autofocus on first field
         """
-        super().__init__(*args, **kwargs)
 
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = False
+        # Starts as true, to force a category selection first.
+        self.fields['item_type'].widget.attrs['disabled'] = True
+
         self.helper.layout = Layout(
-            FloatingField("item_type"),
-            FloatingField("item_serial")
+            # Create the left side div of the form (class=row) which
+            # will hold the image. It will then stack on top when the
+            # screen width shrinks
+            Div(
+                # Create an image display, with default blank image.
+                # An image can then be shown when a type is chosen
+                HTML(
+                    '<img class="item-image img-fluid border-black'
+                    ' d-flex justify-content-center p-0" '
+                    'id="id-image-display"'
+                    'src="/static/images/default.webp"'
+                    'alt="default no image">'
+                ),
+                css_class=(
+                    'd-flex flex-column '
+                    'd-lg-block col-12 col-lg-3 col-xxl-4 pb-3')
+            ),
+            # Create the right side div, which will have the
+            # category select, the type select and serial input.
+            Div(
+                # Create the category floating field
+                Div(
+                    HTML(
+                        '<select name="category-select"'
+                        ' class="select form-select"'
+                        ' placeholder="Category"'
+                        ' id="id-category-select"'
+                        ' onchange="getAvailableTypes()">'
+                        '<option selected>---------</option>'
+                        '{% for type in all_types %}'
+                        '   {% ifchanged type.category %}'
+                        '<option>{{ type.category }}</option>'
+                        '   {% endifchanged %}'
+                        '{% endfor %}'
+                        '</select>'
+                        '<label for="id-category-select">'
+                        'Item Category</label>'
+                    ),
+                    css_id="div_id_category",
+                    css_class="form-floating order-1 mb-3"
+                ),
+                Div(
+                    HTML(
+                        '<select name="item_type"'
+                        ' class="select form-select"'
+                        ' placeholder="item_type"'
+                        ' id="id_item_type"'
+                        ' onchange="displayTypeImage()"'
+                        ' required'
+                        ' disabled>'
+                        '<option>---------</option>'
+                        '{% for type in all_types %}'
+                        '<option '
+                        ' class="type-option-item"'
+                        ' data-category="{{ type.category }}"'
+                        ' data-image="{{ type.image.url }}"'
+                        ' value="{{ type.id }}">'
+                        '{{ type.name }}'
+                        '</option>'
+                        '{% endfor %}'
+                        '</select>'
+                        '<label for="id_item_type">'
+                        'Item Type'
+                        '<span class="asteriskField">*</span>'
+                        '</label>'
+                    ),
+                    css_id="div_id_item_type",
+                    css_class="form-floating mb-3 col-12 order-2 p-0"
+                ),
+
+                # Create item_type as HTML to include data-category
+                # FloatingField(
+                #     "item_type",
+                #     wrapper_class="col-12 order-2 p-0"),
+                # Create item_serial field from model
+                FloatingField(
+                    "item_serial",
+                    wrapper_class="col-12 order-3 p-0"),
+
+                # Set class for the right side div
+                css_class="col-12 col-lg-9 col-xxl-8"
+            )
         )
 
 
@@ -223,9 +306,10 @@ class ItemTypeEditForm(forms.ModelForm):
                     ' d-flex justify-content-center mb-3 p-0" '
                     'id="edit-type-image" '
                     'src="{% if not item_type_image %}'
-                    '{{ STATIC_URL }}"images/default.webp" %}'
+                    '{{ STATIC_URL }}"images/default.webp"'
                     '{% else %}'
-                    '{{ item_type_image.url }}{% endif %}" '
+                    '{{ item_type_image.url }}'
+                    '{% endif %}" '
                     'alt="{% if not item_type_image %}'
                     'default no image'
                     '{% else %}'

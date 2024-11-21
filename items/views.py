@@ -325,6 +325,9 @@ def item_create(request):
 
     account_type = request.user.profile.get_account_type()
 
+    item_type_queryset = ItemType.objects.all()
+    item_type_list = list(item_type_queryset)
+
     # This will determine if they have navigated by the url directly.
     # If they are a customer, it will bump that to the main menu, all
     # other accounts (Staff,HR,Administrator) are permitted to do this.
@@ -358,18 +361,9 @@ def item_create(request):
 
                     messages.error(
                         request,
-                        mark_safe(
-                            (
-                                url_construct
-                                # f'{check_type} already has'
-                                # f' an entry with Serial:'
-                                # f'<a href="/items/'
-                                # f'{check_type_id}">{check_serial}</a>'
-                                # <a href="/items/'
-                                # f'{check_type_id}">{check_serial}</a>'
-                            )
-                        )
+                        mark_safe(url_construct)
                     )
+
                 except ObjectDoesNotExist:
 
                     new_item = form.save()
@@ -381,8 +375,8 @@ def item_create(request):
                 messages.error(
                     request,
                     (
-                        'Failed to add product.'
-                        'Please ensure the form is valid.'
+                        'Could not add the item.'
+                        'Check the form for validation.'
                     )
                 )
         else:
@@ -390,6 +384,7 @@ def item_create(request):
 
         template = 'items/item_create.html'
         context = {
+            'all_types': item_type_list,
             'item_create_form': form,
         }
 
