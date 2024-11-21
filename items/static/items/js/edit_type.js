@@ -69,6 +69,7 @@ function typeCategoryChanged(categoryString, from_where){
         if (originalCategory == categoryString && from_where == "drop"){
             // Do Nothing, there has been no change
             console.log("Same category as before");
+            skuElement.readOnly = true;
         } else {
 
             //enable updates in progress field to be visible as an edit is in progress
@@ -81,6 +82,7 @@ function typeCategoryChanged(categoryString, from_where){
             categoryElement.value = categoryString;
             typeNameElement.value = '';
             skuElement.value = '';
+            skuElement.readOnly = false;
             initialCostElement.value = '';
             weekCostElement.value = '';
 
@@ -107,6 +109,7 @@ function typeCategoryChanged(categoryString, from_where){
             categoryElement.value = categoryString;
             typeNameElement.value = '';
             skuElement.value = '';
+            skuElement.readOnly = false;
             initialCostElement.value = '';
             weekCostElement.value = '';
 
@@ -155,10 +158,11 @@ function typeChanged(typeId = null){
     let skuElement = document.getElementById('id_edit-type-sku');
     let initialCostElement = document.getElementById('id_edit-type-cost_initial');
     let weekCostElement = document.getElementById('id_edit-type-cost_week');
-
+    
 
     if (typeId == null) {
         //This change is sent from the input field.
+        console.log("nullid")
 
         // Initially no type is found, if this remains it will then have to determine if there
         // previously was a type, by using the image value.
@@ -184,7 +188,7 @@ function typeChanged(typeId = null){
                 imageElement.src = '/media/'+selectedTypeOption.dataset.img;
                 imageElement.alt = selectedTypeOption.value;
                 imageTextElement.value = selectedTypeOption.dataset.img;
-
+                skuElement.readOnly = true;
                 skuElement.value = selectedTypeOption.dataset.sku;
                 initialCostElement.value = selectedTypeOption.dataset.initial;
                 weekCostElement.value = selectedTypeOption.dataset.week;
@@ -212,6 +216,7 @@ function typeChanged(typeId = null){
                 imageElement.alt = 'No Image';
                 imageTextElement.value = 'No Image';
 
+                skuElement.readOnly = false;
                 skuElement.value = "";
                 initialCostElement.value = "";
                 weekCostElement.value = "";
@@ -222,23 +227,73 @@ function typeChanged(typeId = null){
         }
     } else {
 
-        // The type was selected from a dropdown, so edits are not happening at this point
-        document.getElementById('id-edit-progress').className = "text-primary mt-0 mb-1 d-none";
+        //let typeListElements = document.querySelectorAll('.edit-type-list-item:not(.d-none)');
+        let typeListElements = document.getElementsByClassName('dropdown-item type-name-list-item');
 
         let selectedTypeOption = document.getElementById("li-a-"+typeId);
+
+        console.log(typeListElements);
+        console.log("some id")
+        console.log(selectedTypeOption);
+
+        for ( let x = 0; x < typeListElements.length; x++) {
+            typeListElements[x].className = "dropdown-item type-name-list-item";
+
+        }
 
         imageElement.src = '/media/'+selectedTypeOption.dataset.img;
         imageElement.alt = selectedTypeOption.value;
         imageTextElement.value = selectedTypeOption.dataset.img;
-
         typeNameElement.value = selectedTypeOption.innerText;
+        skuElement.readOnly = true;
         skuElement.value = selectedTypeOption.dataset.sku;
         initialCostElement.value = selectedTypeOption.dataset.initial;
         weekCostElement.value = selectedTypeOption.dataset.week;
+
+        selectedTypeOption.className = "dropdown-item type-name-list-item list-active";
+
+
+        // for ( let x = 0; x < typeListElements.length; x++) {
+        //     //get relational id 
+        //     let relationalId = (typeListElements[x].id).replace('li-', 'li-a-');
+        //     console.log(relationalId)
+        //     let typeAvailableValue = document.getElementById(relationalId).innerHTML.trim();
+        //     console.log(typeAvailableValue+" : "+typeNameElement.value.trim());
+
+        //     if (typeAvailableValue == typeNameElement.value.trim()) {
+        //         console.log(typeAvailableValue);
+                
+        //         //set the found type to be "active"
+        //         document.getElementById(relationalId).className = "dropdown-item type-name-list-item list-active";
+
+                
+                
+        //         // Let the function know that a type has been found by field input
+        //         foundType = true;
+        //         //reset the updates in progress field to not be visible as a type is found
+        //         document.getElementById('id-edit-progress').className = "text-primary mt-0 mb-1 d-none";
+
+        //     } else {
+        //         document.getElementById(relationalId).className = "dropdown-item type-name-list-item";
+        //     }
+        // }
+
+        // The type was selected from a dropdown, so edits are not happening at this point
+        document.getElementById('id-edit-progress').className = "text-primary mt-0 mb-1 d-none";
+
+        // let selectedTypeOption = document.getElementById("li-a-"+typeId);
+
+        // imageElement.src = '/media/'+selectedTypeOption.dataset.img;
+        // imageElement.alt = selectedTypeOption.value;
+        // imageTextElement.value = selectedTypeOption.dataset.img;
+
+        // typeNameElement.value = selectedTypeOption.innerText;
+        // skuElement.readOnly = true;
+        // skuElement.value = selectedTypeOption.dataset.sku;
+        // initialCostElement.value = selectedTypeOption.dataset.initial;
+        // weekCostElement.value = selectedTypeOption.dataset.week;
     }
 }
-
-
 
 function resetForm(){
     /* Set the image to be the same as the one from the item view */

@@ -182,7 +182,8 @@ class ItemTypeEditForm(forms.ModelForm):
             self.fields[field].required = True
             self.fields[field].widget.attrs['disabled'] = False
 
-        # self.fields['image'].widget.attrs['disabled'] = True
+        # except sku
+        self.fields['sku'].widget.attrs['readonly'] = True
 
         self.helper.layout = Layout(
             Modal(

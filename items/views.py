@@ -135,8 +135,7 @@ def item_type_update_inline(request, item_id, type_id):
     Or
     - If it is an old item type that has been modified
     """
-    # item = get_object_or_404(Item, pk=item_id)
-    # item_type = get_object_or_404(ItemType, pk=type_id)
+    item = get_object_or_404(Item, pk=item_id)
     account_type = request.user.profile.get_account_type()
 
     # When form is submitted.
@@ -147,6 +146,8 @@ def item_type_update_inline(request, item_id, type_id):
             submit_type_form = ItemTypeForm(request.POST, request.FILES)
             submit_type_name = submit_type_form.data['edit-type-name']
             submit_type_category = submit_type_form.data['edit-type-category']
+            print("----- FORM DATA ----")
+            print(submit_type_form.data)
             new_or_old_type = "new"
 
             try:
@@ -164,24 +165,33 @@ def item_type_update_inline(request, item_id, type_id):
                 Q(name__iexact=submit_type_name) &
                 Q(category__iexact=submit_type_category))
 
-            # Create the image name to use
-            image_name = slugify(submit_type_name) + ".webp"
+            
+            # image_name = slugify(submit_type_name) + ".webp"
+            image_name = submit_type_form.data['image-input-name']
             previous_image_exists = False
 
             # Check the file does not already exist
             if Path(f"{settings.MEDIA_ROOT}/{image_name}").exists():
                 # If it exists, another one should not be created
                 previous_image_exists = True
+            # Check that the user has not submitted a "No Image"
+            elif submit_type_form.data['image-input-name'] == ("No Image"):
+                # Although no image exists, another is not required
+                previous_image_exists = False
+                image_name = settings.DEFAULT_NO_IMAGE
             else:
                 # If the file does not exist, then create one
                 previous_image_exists = False
                 # If there is a file with edit-image-button as a key
                 if 'edit-image-button' in request.FILES:
+                    image_name = slugify(submit_type_name) + ".webp"
                     try:
+                        print("In the files")
                         with (
                             Image.open(
                                 request.FILES['edit-image-button']) as img):
                             img.convert('RGB')
+                            # Create the image name to use
                             img.name = image_name
                             img_path = f"{settings.MEDIA_ROOT}/{image_name}"
                             img.save(img_path, 'webp')
@@ -205,13 +215,14 @@ def item_type_update_inline(request, item_id, type_id):
                 # If entry found, then this is an update of a previous object
                 # Use the found item for data update and save
                 new_or_old_type = "old"
-
+                
                 # Get a copy of the ItemType object
                 update_type = get_object_or_404(ItemType, pk=type_id)
                 # Amend the ItemType for the new values
                 update_type.name = submit_type_name
+                # sku is unique and should be kept
                 update_type.sku = submit_type_form.data['edit-type-sku']
-                update_type.category = submit_type_category
+                update_type.category = submit_type_form.data['edit-type-category']
                 update_type.cost_initial = (
                     submit_type_form.data['edit-type-cost_initial'])
                 update_type.cost_week = (
@@ -226,7 +237,22 @@ def item_type_update_inline(request, item_id, type_id):
 
                 # Until implementation, do not update the meta_tags field
                 update_type.meta_tags = update_type.meta_tags
+                print("----- UPDATE DATA ----")
+                print(update_type)
+                print("old save")
                 update_type.save()
+
+                # Then needs to set this type to the item (this allows for
+                # updated to different type, or updated original type)
+                
+
+                # Auto increment key means that the id
+                # can be gained after save())
+                item.item_type = get_object_or_404(
+                    ItemType, pk=update_type.id)
+
+                # Then save the item with updated type
+                item.save()
 
             else:
 
@@ -243,8 +269,23 @@ def item_type_update_inline(request, item_id, type_id):
                     image=image_name,
                     meta_tags=None
                 )
+                print("----- NEW DATA ----")
+                print(new_item_type)
+                print("new save")
                 # Save the new object
                 new_item_type.save()
+
+                # Then needs to set this type to the item
+                item = get_object_or_404(Item, pk=item_id)
+
+                # Auto increment key means that the id
+                # can be gained after save())
+                item.item_type = get_object_or_404(
+                    ItemType, pk=new_item_type.id)
+
+                # Then save the item with updated type
+                item.save()
+
         else:
             # This person is not an administrator
             # Display a message to the user to tell them no access
