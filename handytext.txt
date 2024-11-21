@@ -55,3 +55,21 @@ https://getbootstrap.com/docs/5.3/forms/input-group/#buttons-with-dropdowns
 --- GETTING ELEMENTS BY JUST ONE CLASS NAME - USED FOR ITEMTYPE EDITS ---
 https://stackoverflow.com/questions/19492716/get-elements-with-one-class-but-not-another-without-iterating
 Change from getElementsByClassName, to use a querySelectorAll
+
+--- UNIQUE CONSTRAINT ERROR ON FORM SUBMIT ---
+
+The issue is the <form action="">. The action is generated in the view, but if the type is changed then it does not change.
+Create a dynamic form action to send the data to a new action url. This will then correspond to the correct type_id.
+Issue is, using the original ID, for an ItemType, then the SKU is blocking it as it needs to be unique and you cannot update 
+the original type of the edit to have an SKU of a previously selected item. eg:
+ITEM - ITEM1
+INITIAL - TYPE1 : SKU1
+SELECTED - TYPE2 : SKU2
+SENT - items/"ITEM1"/type/"TYPE1"/edit
+
+Now in this case, the rest of the data sent relates to TYPE2, including SKU2. So it cannot assign SKU2 to TYPE1 as it already exists
+on TYPE2. So the update fails.
+
+--- Creating variables in context to send to a script ---
+Used for keeping the Item.id when editing ItemType, to be able to create the form action dynimcally.
+https://docs.djangoproject.com/en/5.1/ref/templates/builtins/#json-script

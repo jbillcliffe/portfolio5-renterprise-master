@@ -165,8 +165,6 @@ def item_type_update_inline(request, item_id, type_id):
                 Q(name__iexact=submit_type_name) &
                 Q(category__iexact=submit_type_category))
 
-            
-            # image_name = slugify(submit_type_name) + ".webp"
             image_name = submit_type_form.data['image-input-name']
             previous_image_exists = False
 
@@ -215,7 +213,7 @@ def item_type_update_inline(request, item_id, type_id):
                 # If entry found, then this is an update of a previous object
                 # Use the found item for data update and save
                 new_or_old_type = "old"
-                
+
                 # Get a copy of the ItemType object
                 update_type = get_object_or_404(ItemType, pk=type_id)
                 # Amend the ItemType for the new values
@@ -276,7 +274,7 @@ def item_type_update_inline(request, item_id, type_id):
                 new_item_type.save()
 
                 # Then needs to set this type to the item
-                item = get_object_or_404(Item, pk=item_id)
+                # item = get_object_or_404(Item, pk=item_id)
 
                 # Auto increment key means that the id
                 # can be gained after save())

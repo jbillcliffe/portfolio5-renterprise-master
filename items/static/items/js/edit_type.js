@@ -158,6 +158,8 @@ function typeChanged(typeId = null){
     let skuElement = document.getElementById('id_edit-type-sku');
     let initialCostElement = document.getElementById('id_edit-type-cost_initial');
     let weekCostElement = document.getElementById('id_edit-type-cost_week');
+
+    let itemId = document.getElementById('item-type-edit-modal').dataset.formId;
     
 
     if (typeId == null) {
@@ -174,11 +176,13 @@ function typeChanged(typeId = null){
         let typeListElements = document.querySelectorAll('.edit-type-list-item:not(.d-none)');
         console.log("I am null typeid");
         for ( let x = 0; x < typeListElements.length; x++) {
-            //get relational id 
-            let relationalId = (typeListElements[x].id).replace('li-', 'li-a-');
+            //get relational id
+            let foundTypeId = (typeListElements[x].id).replace('li-', '')
+            let relationalId = `li-a-${foundTypeId}`;
             let typeAvailableValue = document.getElementById(relationalId).innerHTML.trim();
     
             console.log(typeAvailableValue+" : "+typeNameElement.value.trim());
+
             if (typeAvailableValue == typeNameElement.value.trim()) {
                 //set the found type to be "active"
                 document.getElementById(relationalId).className = "dropdown-item type-name-list-item list-active";
@@ -198,12 +202,20 @@ function typeChanged(typeId = null){
                 //reset the updates in progress field to not be visible as a type is found
                 document.getElementById('id-edit-progress').className = "text-primary mt-0 mb-1 d-none";
 
+                // update the form action to have a type_id deliberately non-existant to force
+                // a new creation of an ItemType. Item.id is obtained from within the form.
+                document.getElementById("item-inline-type-form-id").action = `/items/${itemId}/type/${foundTypeId}/edit`;
+
             } else {
                 document.getElementById(relationalId).className = "dropdown-item type-name-list-item";
             }
         }
 
         if (!foundType) {
+            // update the form action to have a type_id deliberately non-existant to force
+            // a new creation of an ItemType, itemId was obtained at the top of this function.
+            document.getElementById("item-inline-type-form-id").action = `/items/${itemId}/type/-1/edit`;
+
             // Will use a secret field to determine if this has previously been reset or not,
             // Only wants resetting once.
             let changingPElement = document.getElementById('id-edit-progress');
@@ -222,12 +234,15 @@ function typeChanged(typeId = null){
                 weekCostElement.value = "";
       
             } else {
-                // Let the user continue their edits uninterrupted.
+                //Let the user continue uninterrupted with edits.
             }
         }
     } else {
 
-        //let typeListElements = document.querySelectorAll('.edit-type-list-item:not(.d-none)');
+        // update the form action to have the found/selected type id.
+        // a new creation of an ItemType, itemId was obtained at the top of this function.
+        document.getElementById("item-inline-type-form-id").action = `/items/${itemId}/type/${typeId}/edit`;
+
         let typeListElements = document.getElementsByClassName('dropdown-item type-name-list-item');
 
         let selectedTypeOption = document.getElementById("li-a-"+typeId);
@@ -252,46 +267,8 @@ function typeChanged(typeId = null){
 
         selectedTypeOption.className = "dropdown-item type-name-list-item list-active";
 
-
-        // for ( let x = 0; x < typeListElements.length; x++) {
-        //     //get relational id 
-        //     let relationalId = (typeListElements[x].id).replace('li-', 'li-a-');
-        //     console.log(relationalId)
-        //     let typeAvailableValue = document.getElementById(relationalId).innerHTML.trim();
-        //     console.log(typeAvailableValue+" : "+typeNameElement.value.trim());
-
-        //     if (typeAvailableValue == typeNameElement.value.trim()) {
-        //         console.log(typeAvailableValue);
-                
-        //         //set the found type to be "active"
-        //         document.getElementById(relationalId).className = "dropdown-item type-name-list-item list-active";
-
-                
-                
-        //         // Let the function know that a type has been found by field input
-        //         foundType = true;
-        //         //reset the updates in progress field to not be visible as a type is found
-        //         document.getElementById('id-edit-progress').className = "text-primary mt-0 mb-1 d-none";
-
-        //     } else {
-        //         document.getElementById(relationalId).className = "dropdown-item type-name-list-item";
-        //     }
-        // }
-
         // The type was selected from a dropdown, so edits are not happening at this point
         document.getElementById('id-edit-progress').className = "text-primary mt-0 mb-1 d-none";
-
-        // let selectedTypeOption = document.getElementById("li-a-"+typeId);
-
-        // imageElement.src = '/media/'+selectedTypeOption.dataset.img;
-        // imageElement.alt = selectedTypeOption.value;
-        // imageTextElement.value = selectedTypeOption.dataset.img;
-
-        // typeNameElement.value = selectedTypeOption.innerText;
-        // skuElement.readOnly = true;
-        // skuElement.value = selectedTypeOption.dataset.sku;
-        // initialCostElement.value = selectedTypeOption.dataset.initial;
-        // weekCostElement.value = selectedTypeOption.dataset.week;
     }
 }
 

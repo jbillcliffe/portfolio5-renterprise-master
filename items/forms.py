@@ -43,6 +43,8 @@ class ItemForm(forms.ModelForm):
                     self.fields[field].widget.attrs['disabled'] = False
                 else:
                     self.fields[field].widget.attrs['disabled'] = True
+            elif field == 'item_type':
+                self.fields[field].widget.attrs['disabled'] = True
 
         self.helper.layout = Layout(
             Div(
@@ -162,6 +164,7 @@ class ItemTypeEditForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = True
+        self.helper.form_id = "item-inline-type-form-id"
         # self.helper.form_action = 'item_type_update'
         self.helper.form_action = reverse(
             'item_type_update_inline',
@@ -324,5 +327,8 @@ class ItemTypeEditForm(forms.ModelForm):
                 ),
                 css_id="item-type-edit-modal",
                 title="Edit Item Type",
+                # Send Item Id. This stays fixed when creating 
+                # the dynamic form action
+                data_form_id=self.item_id,
             )
         )
