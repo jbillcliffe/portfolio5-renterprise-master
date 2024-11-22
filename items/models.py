@@ -59,6 +59,14 @@ class Item(models.Model):
         (REPAIR, 'Repair')
     )
 
+    TEMPLATE_STATUS = (
+        ('available', 'Available'),
+        ('scrapped', 'Scrapped'),
+        ('missing', 'Missing'),
+        ('sold', 'Sold'),
+        ('repair', 'In For Repair')
+    )
+
     # Creating tuples under the CSS_STATUS variable where an integer has
     # a relation to a string
     CSS_STATUS = (
@@ -101,6 +109,20 @@ class Item(models.Model):
         frequently and is in a different model
         """
         return self.item_type.category
+
+    def template_status(self):
+        """
+        Returning the full list of statuses that are
+        appropriate for use in templates
+        """
+        return self.TEMPLATE_STATUS
+
+    def this_template_status(self):
+        """
+        Returns the (x, y) of the index of the
+        TEMPLATE_STATUS
+        """
+        return self.TEMPLATE_STATUS[self.status]
 
     def status_str(self):
         """

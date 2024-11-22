@@ -4,6 +4,7 @@
 {% load crispy_forms_tags %}
 
 {% block extra_css %}
+    <link href="{% static "css/renterprise-switches.css" %}" rel="stylesheet">
 {% endblock extra_css %}
 
 {% block extra_title %}{% blocktrans %}View An Item{% endblocktrans %}{% endblock extra_title %}
@@ -24,6 +25,17 @@
                     class="item-image-sku border-{{ status_css }} border-top-0 bg-{{ status_css }} bg-opacity-75
                     {% if status_css == 'warning' or status_css == 'info' %}{% else %}white-text{% endif %}" 
                     value="{{ item_type_sku }}" readonly>
+                {% if account_type == 'Customer' %}
+                {% else %}
+                    <button class="default-button item-image-sku mt-1 px-1 py-0" type="button"
+                            data-bs-target="#item-status-change-modal" data-bs-toggle="modal"
+                            onclick='statusSwitchChanger("{{ item_status.0 }}")'>
+                        <span class="d-flex flex-row align-items-center justify-content-center mx-0 gap-2">
+                            <p class="d-block white-text my-1">Edit Status</p>
+                            <i class="bi bi-toggles"></i>
+                        </span>
+                    </button>
+                {% endif %}
             </div>
             <div class="col-12 col-lg-9 col-xxl-8">
                 <form id="item_view_form" action="{% url 'item_view' item_id %}" 
@@ -51,8 +63,11 @@
                 </div>
             </div>
         </div>
+        <p id="id-lower-status" class="d-none" hidden>{{ item_status.0 }}</p>
+        <p id="id-nice-status" class="d-none" hidden>{{ item_status.1 }}</p>
     </div>
     {% crispy item_type_edit_form item_type_edit_form.helper %}
+    {% crispy item_status_form item_status_form.helper %}
 
 {% endblock content %}
 
@@ -60,4 +75,5 @@
     {{ block.super }}
     <script src="{% static 'items/js/edit_type.js' %}"></script>
     <script src="{% static 'items/js/get_files.js' %}"></script>
+    <script src="{% static 'items/js/item_status.js' %}"></script>
 {% endblock postloadjs %}

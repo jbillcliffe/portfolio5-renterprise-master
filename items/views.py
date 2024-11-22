@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.template.defaultfilters import slugify
 from django.utils.decorators import method_decorator
 from django.utils.safestring import mark_safe
@@ -14,7 +14,8 @@ from PIL import Image
 
 from .models import Item, ItemType
 from .forms import (
-    ItemTypeForm, ItemTypeEditForm, ItemForm, ItemCreateForm)
+    ItemTypeForm, ItemTypeEditForm, ItemForm,
+    ItemCreateForm, ItemStatusForm)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -101,6 +102,8 @@ def item_view(request, item_id):
         item_type_edit_form = ItemTypeEditForm(
             account_type=account_type, item_id=item.id,
             instance=item.item_type, prefix="edit-type")
+        item_status_form = ItemStatusForm(
+            prefix="status", item_id=item.id)
 
     # Set template and context
     template = 'items/item.html'
@@ -113,12 +116,15 @@ def item_view(request, item_id):
         'item_income': item.income,
         'item_type_image': item.item_type.image,
         'item_type_name': item.item_type.name,
+        'item_status': item.this_template_status(),
+        'template_status': item.template_status(),
         'status_css': item.item_css_status(),
         'account_type': account_type,
         'all_types': item_type_list,
         'item_type_form': item_type_form,
         'item_form': item_form,
         'item_type_edit_form': item_type_edit_form,
+        'item_status_form': item_status_form,
     }
 
     return render(request, template, context)
@@ -163,9 +169,9 @@ def item_type_update_inline(request, item_id, type_id):
                     )
                 )
 
-            item_type_check = ItemType.objects.filter(
-                Q(name__iexact=submit_type_name) &
-                Q(category__iexact=submit_type_category))
+            # item_type_check = ItemType.objects.filter(
+            #     Q(name__iexact=submit_type_name) &
+            #     Q(category__iexact=submit_type_category))
 
             item_type_check = ItemType.objects.get(
                 Q(name__iexact=submit_type_name) &
@@ -333,7 +339,7 @@ def item_create(request):
     # other accounts (Staff,HR,Administrator) are permitted to do this.
     if account_type == 'Customer':
         messages.error(
-            request, 'Permission denied : Customer cannot add items.')
+            request, 'Permission Denied : A customer cannot add items.')
         return redirect('menu')
     else:
         if request.method == 'POST':
@@ -389,3 +395,39 @@ def item_create(request):
         }
 
         return render(request, template, context)
+
+
+@login_required
+def item_status_edit(request, item_id):
+    print("-----------------")
+    print(request.POST)
+    print(item_id)
+    print("-----------------")
+    account_type = request.user.profile.get_account_type()
+    if account_type == 'Customer':
+        messages.error(
+            request,
+            "Permission Denied : A customer cannot edit an item's status.")
+        return redirect('menu')
+    else:
+        if request.method == 'POST':
+            item = get_object_or_404(Item, pk=item_id)
+            form = ItemStatusForm(
+                request.POST, item_id=item_id, prefix="status")
+            item.status = form.data['status-status']
+            item.save()
+            # item.status = form.data['status-status']
+            # item.save()
+            messages.success(
+                request, 'The status has been updated')
+            return redirect('item_view', item_id)
+        else:
+            # form = ItemStatusForm(item_id=item_id, prefix="status-")
+            pass
+            messages.error(
+                    request,
+                    (
+                        'Could not update the status.'
+                        'Contact an IT Administrator.'
+                    )
+                )
