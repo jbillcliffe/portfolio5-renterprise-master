@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'items',
     'menu',
+    'orders',
     'profiles',
 
     # Add On Packages
