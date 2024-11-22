@@ -1,15 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.functions import Now
 
 from items.models import Item
 from profiles.models import Profile
 
 from datetime import date
 
+
 # https://docs.djangoproject.com/en/5.1/topics/i18n/timezones/
 # Store UTC, but interactions done with timezones (GMT/BST)
-
 # Create your models here.
 class Order(models.Model):
     # profile.user.first_name

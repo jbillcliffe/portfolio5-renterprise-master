@@ -7,7 +7,7 @@ Path navigation for Item/ItemType
 """
 urlpatterns = [
     path(
-        'order/',
+        'create/',
         views.order_create,
         name='order_create'),
 ]

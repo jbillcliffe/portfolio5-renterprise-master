@@ -6,24 +6,25 @@
 {% block extra_css %}
 {% endblock extra_css %}
 
-{% block extra_title %}{% blocktrans %}Create An Item{% endblocktrans %}{% endblock extra_title %}
+{% block extra_title %}{% blocktrans %}Create An Order{% endblocktrans %}{% endblock extra_title %}
 
 <!-- Creating the form for creating an item -->
 {% block content %}
     <div class="app-container">
         <hr>
-            <h1>{% trans "Create An Item" %}</h1>
+            <h1>{% trans "Create An Order" %}</h1>
         <hr>
         <div class="row">
             <div class="col-12 col-lg-9 col-xxl-8">
-                <form action="{% url 'item_create' %}" 
-                      class="floating-labels-form" method="post" id="item-create">
+                {% comment %} <form action="{% url 'order_create' %}" 
+                      class="floating-labels-form" method="post" id="order-update">
                     {% crispy item_create_form item_create_form.helper %}
                     <a class="not-submit no-decoration" 
                         href="{% url 'item_list' %}">{% trans "Return To Item Listing" %}
                     </a>
 		            <button type="submit" class="white-text">{% trans "Create Item" %}</button>
-                </form>
+                </form> {% endcomment %}
+                {% crispy order_form %}
             </div>
         </div>
     </div>
