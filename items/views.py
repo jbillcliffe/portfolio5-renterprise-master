@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import slugify
 from django.utils.decorators import method_decorator
 from django.utils.safestring import mark_safe
@@ -416,8 +416,7 @@ def item_status_edit(request, item_id):
                 request.POST, item_id=item_id, prefix="status")
             item.status = form.data['status-status']
             item.save()
-            # item.status = form.data['status-status']
-            # item.save()
+
             messages.success(
                 request, 'The status has been updated')
             return redirect('item_view', item_id)

@@ -2,18 +2,16 @@ from django.contrib import admin
 from .models import Item, ItemType
 
 
-class ItemTypeAdmin(admin.ModelAdmin):
+class ItemTypeAdmin(ItemType):
     model = ItemType
     can_delete = False
-    verbose_name = "Item Type"
-    verbose_name_plural = "Item Types"
+    verbose_name_plural = "item types"
     list_display = ('name',)
 
 
-class ItemAdmin(admin.ModelAdmin):
+class ItemAdmin(Item):
     model = Item
-    verbose_name_plural = "Items"
+    verbose_name_plural = "items"
 
 
-admin.site.register(ItemType, ItemAdmin)
-admin.site.register(Item, ItemAdmin)
+admin.register(ItemTypeAdmin, ItemAdmin)
