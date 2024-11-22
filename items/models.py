@@ -25,6 +25,8 @@ class ItemType(models.Model):
     # in the list view
     class Meta:
         ordering = ["category", "name"]
+        verbose_name = "Item Type"
+        verbose_name_plural = "Item Types"
 
     # so the name will replace "ItemType Object" in all instances
     def __str__(self):

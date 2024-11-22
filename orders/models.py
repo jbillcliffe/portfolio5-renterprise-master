@@ -64,6 +64,8 @@ class OrderNote(models.Model):
 
     class Meta:
         ordering = ["created_by"]
+        verbose_name = "Order Note"
+        verbose_name_plural = "Order Notes"
 
     def __str__(self):
         return f"{self.id}"
@@ -101,7 +103,7 @@ class Invoice(models.Model):
     due_on = models.DateField(default=date.today)
     amount_paid = models.DecimalField(max_digits=6, decimal_places=2)
     note = models.TextField()
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=False, verbose_name="Paid")
 
     # order by item_type name 0-9 then A-Z
     class Meta:
@@ -117,3 +119,4 @@ class Invoice(models.Model):
             return (
                 f"{self.order.customer.first_name}"
                 f" {self.order.customer.last_name}")
+
