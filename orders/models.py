@@ -1,9 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.functions import Now
 
 from items.models import Item
 from profiles.models import Profile
 
+from datetime import date
+
+# https://docs.djangoproject.com/en/5.1/topics/i18n/timezones/
+# Store UTC, but interactions done with timezones (GMT/BST)
 
 # Create your models here.
 class Order(models.Model):
@@ -77,12 +82,23 @@ class OrderNote(models.Model):
 
 class Invoice(models.Model):
 
+    # https://docs.djangoproject.com/en/5.1/ref/...
+    # models/fields/#django.db.models.DateField.auto_now_add
     null_values = [None, 'None', 'none', 'null', 'Null']
 
     order = models.ForeignKey(
         Order, on_delete=models.CASCADE, related_name="invoice_order"
     )
+    # USE_TZ in settings will be used, so it will use the timezone set
+    # which is UTC for auto_now_add
     created_on = models.DateField(auto_now_add=True)
+
+    # Different to created on, created on is the day it was done
+    # But the due date could be different, although more often than not,
+    # it is the date of creation.
+    # Django docs states how auto_now_add cannot be overridden.
+    # So date.today has a similar effect but can be changed.
+    due_on = models.DateField(default=date.today)
     amount_paid = models.DecimalField(max_digits=6, decimal_places=2)
     note = models.TextField()
     status = models.BooleanField(default=False)
