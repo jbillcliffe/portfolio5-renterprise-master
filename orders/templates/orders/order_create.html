@@ -4,6 +4,7 @@
 {% load crispy_forms_tags %}
 
 {% block extra_css %}
+    <link href="{% static "orders/css/order_forms.css" %}" rel="stylesheet">
 {% endblock extra_css %}
 
 {% block extra_title %}{% blocktrans %}Create An Order{% endblocktrans %}{% endblock extra_title %}
@@ -22,6 +23,10 @@
             </div>
         </div>
     </div>
+    {% comment %} https://docs.djangoproject.com/en/5.1/ref/templates/builtins/#json-script {% endcomment %}
+    {{ json_item_list|json_script:"json-item-list" }}
+    {{ json_order_list|json_script:"json_order_list" }}
+
 {% endblock content %}
 
 {% block postloadjs %}

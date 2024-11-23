@@ -38,11 +38,13 @@ class OrderForm(forms.Form):
 
     class Meta:
         model = Order
-        exclude = ('created_on', 'created_by',)
-        # widgets = {
-        #     'deliver_date': forms.TextInput(attrs={'type': 'date'}),
-        #     'end_date': forms.TextInput(attrs={'type': 'date'}),
-        # }
+        fields = '__all__'
+        # fields = [
+        #     'first_name', 'last_name', 'email', 'address_line_1',
+        #     'address_line_2', 'address_line_3', 'town', 'county',
+        #     'country', 'postcode', 'phone_number', 'delivery_date',
+        #     'collect_date', 'status', 'category', 'item_type'
+        # ]
 
     def __init__(self, *args, **kwargs):
 
@@ -92,15 +94,13 @@ class OrderForm(forms.Form):
                 max_length=40, required=True, initial="",
                 label="Phone Number")
 
-        self.fields['delivery_date'] = forms.TextField(
-            required=True, initial="",
-            attrs={'type': 'date'},
-            label="Delivery Date")
+        self.fields['delivery_date'] = (
+            forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
+        )
 
-        self.fields['collect_date'] = forms.TextField(
-            required=True, initial="",
-            attrs={'type': 'date'},
-            label="Delivery Date")
+        self.fields['collect_date'] = (
+            forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
+        )
 
         self.fields['status'] = forms.ChoiceField(
             choices=self.STATUS, initial="",
@@ -162,24 +162,27 @@ class OrderForm(forms.Form):
                     FloatingField("postcode", wrapper_class="col-12 p-0")
                 ),
                 AccordionGroup(
-                    "Order",
+                    'Order',
                     FloatingField(
-                        "category",
-                        wrapper_class="col-12 p-0",
-                        onchange="getCreateOrderItemTypes()"),
+                        'category',
+                        wrapper_class='col-12 p-0',
+                        onchange='getCreateOrderItemTypes()'),
                     FloatingField(
-                        "item_type",
-                        wrapper_class="col-12 p-0"),
-                    # FloatingField(
-                    "delivery_date",
-                    #    wrapper_class="col-12 p-0"),
-                    # FloatingField(
-                    "collect_date",
-                    #     wrapper_class="col-12 p-0")
+                        'item_type',
+                        onchange="validateDates()",
+                        wrapper_class='col-12 p-0'),
+                    FloatingField(
+                        'delivery_date',
+                        onchange='validateDates()',
+                        wrapper_class='col-12 p-0'),
+                    FloatingField(
+                        'collect_date',
+                        onchange='validateDates()',
+                        wrapper_class='col-12 p-0'),
                 ),
                 flush=True,
                 always_open=False,
-            )
+            ),
         )
 
         #         HTML(

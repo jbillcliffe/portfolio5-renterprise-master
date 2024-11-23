@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
+from django.core.serializers import serialize
+from django.core.serializers.json import DjangoJSONEncoder
 from django.forms import inlineformset_factory
 
 from django.shortcuts import render, get_object_or_404, redirect
@@ -15,6 +17,17 @@ def order_create(request):
 
     account_type = request.user.profile.get_account_type()
 
+    json_item_list = serialize(
+        "json", Item.objects.all(),
+        fields=[
+            "item_type", "delivery_date", "collect_date",
+            "repair_date", "status"], cls=DjangoJSONEncoder)
+
+    json_order_list = serialize(
+        "json", Item.objects.all(), fields=[
+            'item', 'delivery_date', 'collect_date'],
+            cls=DjangoJSONEncoder)
+
     if account_type == 'Customer':
         messages.error(
             request,
@@ -22,7 +35,6 @@ def order_create(request):
         return redirect('menu')
     else:
         order_form = OrderForm()
-        # order_item = Order()
         inline_item_set = inlineformset_factory(
             Item, Order,  fields=["item"],
             fk_name='item', can_delete=False
@@ -32,26 +44,13 @@ def order_create(request):
             fk_name='profile', can_delete=False
         )
 
-        # if request.method == 'POST':
-        #     form = OrderForm(request.POST)
-        #     if form.is_valid():
-        #         order = form.save()
-        #         messages.success(request, 'New order has been created')
-        #         # return redirect(reverse('or', args=[product.id]))
-        #     else:
-        #         messages.error(
-        #             request,
-        #             'Failed to create the order.'
-        #             ' Please ensure the form is valid.'
-        #         )
-        # else:
-        #     form = OrderForm()
-
         template = 'orders/order_create.html'
         context = {
             'order_form': order_form,
             'inline_item_form': inline_item_set,
             'inline_profile_form': inline_profile_set,
+            'json_item_list': json_item_list,
+            'json_order_list': json_order_list
         }
 
         return render(request, template, context)

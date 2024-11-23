@@ -1,0 +1,7 @@
+.select.form-select {
+    cursor: pointer;
+}
+
+input[type="date"] {
+    cursor: pointer;
+}

@@ -80,3 +80,5 @@ https://docs.djangoproject.com/en/5.1/topics/forms/modelforms/#inline-formsets
 https://www.reddit.com/r/django/comments/z04yuj/how_to_have_children_list_in_parent_model_one_to/#:~:text=When%20you%20set%20a%20ForeignKey,reverse%20relationship%20would%20be%20Parent.
 --Create field without saving to model or db --
 https://stackoverflow.com/questions/76372367/add-a-select-field-on-django-form-without-saving-on-database
+
+-- Datepicker, just use TextInput widget in DateField to change type.
