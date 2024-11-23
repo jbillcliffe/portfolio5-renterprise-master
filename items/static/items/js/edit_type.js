@@ -1,27 +1,3 @@
-// 
-// setCategoryFunctions();
-
-// function setCategoryFunctions(){
-//     for ( let x = 0; x < categoryListElements.length; x++ ) {
-//         if (categoryListElements[x].innerText == categoryString) {
-//             categoryListElements[x].className = "dropdown-item type-category-list-item list-active";
-//             categoryListElements[x].onclick = function(){};
-//         } else {
-            
-//             categoryListElements[x].onclick = function(){setTypeCategory(categoryString)};
-//             categoryListElements[x].className = "dropdown-item type-category-list-item";
-//         }
-//     }
-// }
-
-// function submitItemTypeForm(event){
-//     // Prevent default form submission (navigate to the URL)
-//     event.preventDefault();
-//     //Want to disable further submissions while waiting for response.
-//     $('#edit-type-submit-button').attr('disabled', true)
-//     $('#edit-type-cancel-button').attr('disabled', true)
-// }
-
 function typeCategoryChanged(categoryString, from_where){
     console.log("category value : " +categoryString);
     console.log("1."+from_where);

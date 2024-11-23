@@ -16,15 +16,9 @@
         <hr>
         <div class="row">
             <div class="col-12 col-lg-9 col-xxl-8">
-                {% comment %} <form action="{% url 'order_create' %}" 
-                      class="floating-labels-form" method="post" id="order-update">
-                    {% crispy item_create_form item_create_form.helper %}
-                    <a class="not-submit no-decoration" 
-                        href="{% url 'item_list' %}">{% trans "Return To Item Listing" %}
-                    </a>
-		            <button type="submit" class="white-text">{% trans "Create Item" %}</button>
-                </form> {% endcomment %}
-                {% crispy order_form %}
+                <form id="order_create_form" action="{% url 'item_create' %}">
+                    {% crispy order_form %}
+                </form>
             </div>
         </div>
     </div>
@@ -32,5 +26,5 @@
 
 {% block postloadjs %}
     {{ block.super }}
-    <script src="{% static 'items/js/create_type.js' %}"></script>
+    <script src="{% static 'orders/js/order_create.js' %}"></script>
 {% endblock postloadjs %}

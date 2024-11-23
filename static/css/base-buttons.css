@@ -28,6 +28,8 @@ a.url-nav-button {
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+
+
 button.inline-form-button {
     display: flex;
     justify-content: center;
@@ -87,6 +89,8 @@ label[class*="default-button"]:hover,
     border-color: #000000;
 }
 
+
+
 button[class*="danger-button"]:hover,
 input[class*="danger-button"]:hover
 {
@@ -142,6 +146,18 @@ a.not-submit {
 a.not-submit:hover {
     background-color: #C9F0FF;
 }
+
+.accordion-button:not(.collapsed) {
+    color: #FFFFFF;
+    background-color: #2D8B60;
+    box-shadow: 1px 1px 4px 0px black;
+}
+.accordion-button.collapsed:hover {
+    color: #FFFFFF;
+    background-color: #2D8B60;
+    box-shadow: 1px 1px 4px 0px black;
+}
+
 
 
 /* At just below this resolution, form buttons "could"

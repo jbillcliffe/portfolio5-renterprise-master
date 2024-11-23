@@ -175,7 +175,7 @@ input::placeholder {
     display:flex;
     flex-direction: row;
     width:100%;
-    margin: 1rem auto;
+    margin: 1rem auto 0 auto;
 }
 /* Divs to be used to hold the app below the header */
 .app-container {

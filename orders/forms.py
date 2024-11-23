@@ -125,31 +125,75 @@ class OrderForm(forms.Form):
                 max_length=40, required=True, initial="",
                 label="Phone Number")
 
-        item_types = ItemType.objects.all()
-        categories = (
-            item_types.order_by("category")
-            .distinct("category").values("category"))
-        print(categories)
+        all_types_and_cats = list(
+            ItemType.objects.values('id', 'name', 'category'))
+        all_types = [('', '--- Please Select ---')]
+        all_categories = [('', '--- Please Select ---')]
+        counter = 0
 
-        # self.fields['category'] = forms.ModelChoiceField(
-        #     )
+        for x in all_types_and_cats:
+            id_cat_string = (
+                f"{x["id"]}|"
+                f"{x["category"]}"
+            )
+            all_types.append(
+                (id_cat_string, x["name"])
+            )
 
-        self.fields['item_type'] = forms.ModelChoiceField(
-            queryset=ItemType.objects.all())
+            if (any(x["category"] in i for i in all_categories)):
+                # Do not duplicate the entry
+                pass
+            else:
+                all_categories.append(
+                    (counter, x["category"])
+                )
+                counter += 1
 
-        
-
-        # User
-        # Profile
-        # Item
-
-        # User
-        # fields = ['first_name', 'last_name', 'email']
+        self.fields['category'] = forms.ChoiceField(
+            choices=all_categories, label="Category")
+        self.fields['item_type'] = forms.ChoiceField(
+            choices=all_types, label="Item Type")
 
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = False
-        # self.helper.layout = Layout()
+        self.fields["item_type"].widget.attrs["disabled"] = True
+        self.helper.layout = Layout(
+            BS5Accordion(
+                AccordionGroup(
+                    "Customer",
+                    FloatingField("first_name", wrapper_class="col-12 p-0"),
+                    FloatingField("last_name", wrapper_class="col-12 p-0"),
+                    FloatingField("email", wrapper_class="col-12 p-0"),
+                    FloatingField("phone_number", wrapper_class="col-12 p-0")
+                ),
+                AccordionGroup(
+                    "Address",
+                    FloatingField(
+                        "address_line_1", wrapper_class="col-12 p-0"),
+                    FloatingField(
+                        "address_line_2", wrapper_class="col-12 p-0"),
+                    FloatingField(
+                        "address_line_3", wrapper_class="col-12 p-0"),
+                    FloatingField("town", wrapper_class="col-12 p-0"),
+                    FloatingField("county", wrapper_class="col-12 p-0"),
+                    FloatingField("country", wrapper_class="col-12 p-0"),
+                    FloatingField("postcode", wrapper_class="col-12 p-0")
+                ),
+                AccordionGroup(
+                    "Order",
+                    FloatingField(
+                        "category",
+                        wrapper_class="col-12 p-0",
+                        onchange="getCreateOrderItemTypes()"),
+                    FloatingField(
+                        "item_type",
+                        wrapper_class="col-12 p-0")
+                ),
+                flush=True,
+                always_open=False,
+            )
+        )
 
         #         HTML(
         #             '{% with status_array=template_status %}'
