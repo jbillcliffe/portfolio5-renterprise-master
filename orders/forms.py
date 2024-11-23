@@ -17,65 +17,32 @@ from .models import Order
 from items.models import Item, ItemType
 
 
-# class InlineOrderItemForm(forms.ModelForm):
-
-#     class Meta:
-#         model = Item
-#         fields = '__all__'
-
-#     def __init__(self, data=None, files=None,
-#                  auto_id='id_%s', prefix=None, queryset=None,
-#                  *args, **kwargs):
-
-#         # initial = kwargs.get('initial', {})
-#         # initial['item_type'] = Item()
-#         super().__init__(*args, **kwargs)
-#         self.helper = FormHelper(self)
-#         self.helper.attrs['autocomplete'] = 'off'
-#         self.helper.form_tag = False
-
-#         self.helper.layout = (
-#             Field('delivery_date', type="hidden", id="id_status"),
-#             Field('collect_date', type="hidden", id="id_status"),
-#             Field('repair_date', type="hidden", id="id_status"),
-#             Field('status', type="hidden", id="id_status")
-#         )
-
-
-# class InlineOrderProfileForm(forms.ModelForm):
-
-#     class Meta:
-#         model = Profile
-#         exclude = ('user', )
-
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-
-#         self.helper = FormHelper(self)
-#         self.helper.attrs['autocomplete'] = 'off'
-#         self.helper.form_tag = False
-#         self.helper.layout = Layout(
-#             FloatingField("phone_number"),
-#             FloatingField("account_type"),
-#             FloatingField("address_line_1"),
-#             FloatingField("address_line_2"),
-#             FloatingField("address_line_3"),
-#             FloatingField("town"),
-#             FloatingField("county"),
-#             FloatingField("country"),
-#             FloatingField("postcode")
-#         )
-
-
 class OrderForm(forms.Form):
 
-    # item_type = forms.ForeignKey(
-    #     ItemType, on_delete=models.CASCADE, related_name="item_type",
-    #     label="Item Type")
+    # Creating word variables to integer values
+    AVAILABLE = 0
+    SCRAPPED = 1
+    MISSING = 2
+    SOLD = 3
+    REPAIR = 4
+
+    # Creating tuples under the STATUS variable where an integer has a
+    # relation to a string
+    STATUS = (
+        (AVAILABLE, 'Available'),
+        (SCRAPPED, 'Scrapped'),
+        (MISSING, 'Missing'),
+        (SOLD, 'Sold'),
+        (REPAIR, 'Repair')
+    )
 
     class Meta:
         model = Order
         exclude = ('created_on', 'created_by',)
+        # widgets = {
+        #     'deliver_date': forms.TextInput(attrs={'type': 'date'}),
+        #     'end_date': forms.TextInput(attrs={'type': 'date'}),
+        # }
 
     def __init__(self, *args, **kwargs):
 
@@ -124,6 +91,20 @@ class OrderForm(forms.Form):
         self.fields['phone_number'] = forms.CharField(
                 max_length=40, required=True, initial="",
                 label="Phone Number")
+
+        self.fields['delivery_date'] = forms.TextField(
+            required=True, initial="",
+            attrs={'type': 'date'},
+            label="Delivery Date")
+
+        self.fields['collect_date'] = forms.TextField(
+            required=True, initial="",
+            attrs={'type': 'date'},
+            label="Delivery Date")
+
+        self.fields['status'] = forms.ChoiceField(
+            choices=self.STATUS, initial="",
+            label="Status")
 
         all_types_and_cats = list(
             ItemType.objects.values('id', 'name', 'category'))
@@ -188,7 +169,13 @@ class OrderForm(forms.Form):
                         onchange="getCreateOrderItemTypes()"),
                     FloatingField(
                         "item_type",
-                        wrapper_class="col-12 p-0")
+                        wrapper_class="col-12 p-0"),
+                    # FloatingField(
+                    "delivery_date",
+                    #    wrapper_class="col-12 p-0"),
+                    # FloatingField(
+                    "collect_date",
+                    #     wrapper_class="col-12 p-0")
                 ),
                 flush=True,
                 always_open=False,

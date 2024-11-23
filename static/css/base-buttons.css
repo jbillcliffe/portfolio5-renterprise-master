@@ -153,9 +153,9 @@ a.not-submit:hover {
     box-shadow: 1px 1px 4px 0px black;
 }
 .accordion-button.collapsed:hover {
-    color: #FFFFFF;
-    background-color: #2D8B60;
-    box-shadow: 1px 1px 4px 0px black;
+    color: #000000;
+    background-color: #C9F0FF;
+    box-shadow: 1px 1px 6px 0px black;
 }
 
 
