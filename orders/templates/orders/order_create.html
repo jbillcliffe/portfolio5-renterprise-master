@@ -25,7 +25,8 @@
     </div>
     {% comment %} https://docs.djangoproject.com/en/5.1/ref/templates/builtins/#json-script {% endcomment %}
     {{ json_item_list|json_script:"json-item-list" }}
-    {{ json_order_list|json_script:"json_order_list" }}
+    {{ json_order_list|json_script:"json-order-list" }}
+    {{ json_item_type_list|json_script:"json-item-type-list" }}
 
 {% endblock content %}
 

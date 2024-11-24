@@ -12,7 +12,7 @@ from datetime import date
 # Create your models here.
 class Order(models.Model):
     # profile.user.first_name
-    null_values = [None, 'None', 'none', 'null', 'Null']
+    null_values = [None, 'None', 'none', 'null', 'Null']    
 
     profile = models.ForeignKey(
         Profile, on_delete=models.PROTECT, related_name="order_profile"
@@ -24,7 +24,7 @@ class Order(models.Model):
     cost_week = models.DecimalField(max_digits=6, decimal_places=2)
 
     start_date = models.DateField()
-    end_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
         User, on_delete=models.PROTECT, related_name="order_created_by"
@@ -34,7 +34,7 @@ class Order(models.Model):
         ordering = ["id"]
 
     def __str__(self):
-        return f"Order ID : {self.id} - {self.profile.user.last_name}"
+        return f"Order ID : {self.id}"
 
     def order_customer_name(self):
         if self.profile.user.first_name in self.null_values:
@@ -67,7 +67,7 @@ class OrderNote(models.Model):
         verbose_name_plural = "Order Notes"
 
     def __str__(self):
-        return f"{self.id}"
+        return f"Note for Order : {self.id}"
 
     def order_note_full_name(self):
         if self.order.profile.user.first_name in self.null_values:
@@ -93,7 +93,9 @@ class Invoice(models.Model):
     # USE_TZ in settings will be used, so it will use the timezone set
     # which is UTC for auto_now_add
     created_on = models.DateField(auto_now_add=True)
-
+    created_by = models.ForeignKey(
+        User, on_delete=models.PROTECT, related_name="invoice_created_by"
+    )
     # Different to created on, created on is the day it was done
     # But the due date could be different, although more often than not,
     # it is the date of creation.
@@ -103,6 +105,8 @@ class Invoice(models.Model):
     amount_paid = models.DecimalField(max_digits=6, decimal_places=2)
     note = models.TextField()
     status = models.BooleanField(default=False, verbose_name="Paid")
+    stripe_pid = models.CharField(
+        max_length=254, null=False, blank=False, default='')
 
     # order by item_type name 0-9 then A-Z
     class Meta:

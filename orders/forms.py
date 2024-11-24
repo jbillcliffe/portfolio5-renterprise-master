@@ -5,8 +5,8 @@ from django.db import models
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, HTML, Reset, Submit, Field
-from crispy_forms.bootstrap import StrictButton, AccordionGroup
-from crispy_bootstrap5.bootstrap5 import BS5Accordion, FloatingField, Switch
+from crispy_forms.bootstrap import AccordionGroup
+from crispy_bootstrap5.bootstrap5 import BS5Accordion, FloatingField
 
 from django_countries.fields import CountryField
 from localflavor.gb.gb_regions import GB_REGION_CHOICES
@@ -14,7 +14,7 @@ from localflavor.gb.gb_regions import GB_REGION_CHOICES
 from .models import Order
 # from profiles.models import Profile, User
 # from profiles.forms import ProfileForm, UserForm
-from items.models import Item, ItemType
+from items.models import ItemType
 
 
 class OrderForm(forms.Form):
@@ -102,6 +102,13 @@ class OrderForm(forms.Form):
             forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
         )
 
+        self.fields['cost_initial'] = (
+            forms.DecimalField(max_digits=6, decimal_places=2)
+        )
+        self.fields['cost_week'] = (
+            forms.DecimalField(max_digits=6, decimal_places=2)
+        )
+
         self.fields['status'] = forms.ChoiceField(
             choices=self.STATUS, initial="",
             label="Status")
@@ -179,56 +186,37 @@ class OrderForm(forms.Form):
                         'collect_date',
                         onchange='validateDates()',
                         wrapper_class='col-12 p-0'),
+                    Div(
+                        Div(
+                            HTML(""),
+                            css_class="card card-body py-1 mb-3",
+                            id="stockCollapseInner"
+                        ),
+                        css_class="collapse",
+                        css_id="stockCollapse"
+                    ),
+                    FloatingField(
+                        'cost_initial',
+                        wrapper_class='col-12 p-0'),
+                    FloatingField(
+                        'cost_week',
+                        wrapper_class='col-12 p-0')
+                ),
+                AccordionGroup(
+                    'Payment',
+                    Div(
+                        HTML(
+                            '<textarea class="form-control"'
+                            ' placeholder="Extra invoice notes"'
+                            ' id="invoice_notes"'
+                            ' style="height: 100px"></textarea>'
+                            '<label for="invoice_notes">'
+                            'Extra invoice notes</label>'
+                        ),
+                        css_class="form-floating"
+                    )
                 ),
                 flush=True,
                 always_open=False,
             ),
         )
-
-        #         HTML(
-        #             '{% with status_array=template_status %}'
-        #             '{% for x, y in status_array %}'
-        #             # Create a div at each one.
-        #             '<div class="form-check form-switch mb-3">'
-        #             '<input'
-        #             ' class="form-check-input {{ x }} me-3"'
-        #             ' type="checkbox" role="switch"'
-        #             ' onchange="statusSwitchChanger(\'{{ x }}\')"'
-        #             ' value={{ forloop.counter0 }}'
-        #             ' id="id-status-{{ x }}">'
-        #             '<label class="form-check-label"'
-        #             ' for="id-status-{{ x }}">'
-        #             '{{ y }}</label>'
-        #             '</div>'
-        #             '{% endfor %}'
-        #             '{% endwith %}'
-        #         ),
-        #         Field('status', type="hidden", id="id_status"),
-        #         HTML(
-        #             '<input name="status-item_id"'
-        #             ' id="id_status_id" value="{{ item_id }}" hidden>'),
-        #         # Submit("status-submit", "Submit"),
-        #         Div(
-        #             # Submit means this defaults to performing the
-        #             # "form action"
-        #             Submit(
-        #                 'submit-status-edit', 'Update Status',
-        #                 css_id='edit-status-submit-button',
-        #                 css_class='default-button mb-2'
-        #             ),
-        #             # Returns the form to it's original state.
-        #             # Removing "editing" status field, making sure the type
-        #             # dropdown isn't disabled, resetting the image display
-        #             # and image text area are done in JS
-        #             Reset(
-        #                 'cancel-status-edit', 'Cancel',
-        #                 css_id='edit-status-cancel-button',
-        #                 css_class='danger-button',
-        #                 data_bs_dismiss='modal'),
-        #             css_class="row modal-footer justify-content-center pb-0"
-        #         ),
-        #         css_id="item-status-change-modal",
-        #         css_class="modal-sm",
-        #         title="Set Item Status"
-        #     )
-        # )
