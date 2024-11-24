@@ -8,8 +8,8 @@ console.log(fullOrderList);
 let categorySelectElement = document.getElementById("id_category");
 let typeSelectElement = document.getElementById('id_item_type');
 
-let stockCollapseDiv = document.getElementById('stockCollapse');
-let stockCollapseInner = document.getElementById('stockCollapseInner');
+let stockCollapseDiv = document.getElementById('stock-collapse');
+let stockCollapseInner = document.getElementById('stock-collapse-inner');
 
 let costInitialField = document.getElementById('id_cost_initial');
 let costWeekField = document.getElementById('id_cost_week');
@@ -214,6 +214,8 @@ function getAvailableStockAfterOrders(assetList, newDelivery, newCollection, sel
             stockCollapseInner.classList.remove("card-warning")
         }
         stockCollapseInner.innerHTML = `${availableChoices.length} out of ${assetList.length} available`;
+
+        autoSelectStock(JSON.stringify(availableChoices));
     } else {
         if (stockCollapseInner.classList.contains("card-warning")){
         } else {
@@ -225,6 +227,14 @@ function getAvailableStockAfterOrders(assetList, newDelivery, newCollection, sel
 }
 
 
+function autoSelectStock(availableItems) {
+    availableItems = JSON.parse(`${assetList}`);
+
+    for (let x = 0; x < availableItems.length; x++) {
+        let newItemObject = availableItems[x];
+        newItemObject[x].fields.income
+        
+}
 function areDatesClear(startDate, endDate, previousStartDate, previousEndDate) {
     /*  Situations -     
                         |---------OLDORDER---------|

@@ -141,6 +141,7 @@ class OrderForm(forms.Form):
             choices=all_categories, label="Category")
         self.fields['item_type'] = forms.ChoiceField(
             choices=all_types, label="Item Type")
+        self.fields['item'] = forms.IntegerField()
 
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
@@ -174,6 +175,7 @@ class OrderForm(forms.Form):
                         'category',
                         wrapper_class='col-12 p-0',
                         onchange='getCreateOrderItemTypes()'),
+                    Field('item', id="id_item", type="hidden"),
                     FloatingField(
                         'item_type',
                         onchange="validateDates()",
@@ -190,10 +192,10 @@ class OrderForm(forms.Form):
                         Div(
                             HTML(""),
                             css_class="card card-body py-1 mb-3",
-                            id="stockCollapseInner"
+                            id="stock-collapse-inner"
                         ),
                         css_class="collapse",
-                        css_id="stockCollapse"
+                        css_id="stock-collapse"
                     ),
                     FloatingField(
                         'cost_initial',
@@ -208,13 +210,18 @@ class OrderForm(forms.Form):
                         HTML(
                             '<textarea class="form-control"'
                             ' placeholder="Extra invoice notes"'
-                            ' id="invoice_notes"'
+                            ' id="id_invoice_notes"'
                             ' style="height: 100px"></textarea>'
                             '<label for="invoice_notes">'
                             'Extra invoice notes</label>'
                         ),
                         css_class="form-floating"
-                    )
+                    ),
+                    HTML(
+                        '{% include "orders/stripe_element.html"'
+                        ' with image_sent_url=item_type_image.url %}'
+                    ),
+                    Submit('submit-button', 'Confirm Order')
                 ),
                 flush=True,
                 always_open=False,

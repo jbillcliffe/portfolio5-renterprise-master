@@ -5,6 +5,7 @@
 
 {% block extra_css %}
     <link href="{% static "orders/css/order_forms.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'orders/css/stripe.css' %}">
 {% endblock extra_css %}
 
 {% block extra_title %}{% blocktrans %}Create An Order{% endblocktrans %}{% endblock extra_title %}
@@ -17,7 +18,7 @@
         <hr>
         <div class="row">
             <div class="col-12 col-lg-9 col-xxl-8">
-                <form id="order_create_form" action="{% url 'item_create' %}">
+                <form id="order_create_form" action="{% url 'order_create' %}">
                     {% crispy order_form %}
                 </form>
             </div>
@@ -28,9 +29,18 @@
     {{ json_order_list|json_script:"json-order-list" }}
     {{ json_item_type_list|json_script:"json-item-type-list" }}
 
+    <div id="loading-overlay">
+        <h1 class="text-light logo-font loading-spinner">
+            <span class="icon">
+                <i class="fas fa-3x fa-sync-alt fa-spin"></i>
+            </span>
+        </h1>
+    </div>
 {% endblock content %}
 
 {% block postloadjs %}
     {{ block.super }}
+    {{ stripe_public_key|json_script:"id_stripe_public_key" }}
+    {{ client_secret|json_script:"id_client_secret" }}
     <script src="{% static 'orders/js/order_create.js' %}"></script>
 {% endblock postloadjs %}

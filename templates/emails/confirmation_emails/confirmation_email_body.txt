@@ -1,0 +1,17 @@
+Hello {{ order.fullname }},
+
+This is a confrimation of your order :
+
+Order Number : {{ order.order_number }}
+Date : {{ order.date }}
+Total : £{{ order.order_total }}
+Delivery : £{{ order.delivery_cost }}
+Grand Total : £{{ order.grand_total }}
+
+Shipped to {{ order.street_address1 }} in {{ order.town_or_city }}, {{ order.country }}
+
+Phone : {{ order.phone_number }}
+
+Please contact @ {{ contact_email }}
+
+Thanks
