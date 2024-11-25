@@ -21,7 +21,9 @@ class InvoiceAdmin(admin.ModelAdmin):
     model = Invoice
     can_delete = False
     verbose_name_plural = "Invoices"
-    list_display = ('id', 'order', 'created_on', 'amount_paid', 'status')
+    list_display = (
+        'id', 'order', 'created_on', 'amount_paid',
+        'status', 'stripe_pid')
 
 
 admin.site.register(Order, OrderAdmin)

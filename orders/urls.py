@@ -11,11 +11,15 @@ urlpatterns = [
         'create/',
         views.order_create,
         name='order_create'),
-    path(
-        'cache_order_data/',
-        views.cache_order_data,
-        name='cache_order_data'),
-    path('wh/', webhook, name='webhook')
+    # path(
+    #     'checkout/',
+    #     views.create_checkout_session,
+    #     name="create_checkout_session")
+    # path(
+    #     'cache_order_data/',
+    #     views.cache_order_data,
+    #     name='cache_order_data'),
+    # path('wh/', webhook, name='webhook'),
 ]
 
 # path('type/create/', views.item_type_create, name="item_type_create"),

@@ -5,7 +5,7 @@ from django.db import models
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, HTML, Reset, Submit, Field
-from crispy_forms.bootstrap import AccordionGroup
+from crispy_forms.bootstrap import AccordionGroup, StrictButton
 from crispy_bootstrap5.bootstrap5 import BS5Accordion, FloatingField
 
 from django_countries.fields import CountryField
@@ -49,7 +49,7 @@ class OrderForm(forms.Form):
     def __init__(self, *args, **kwargs):
 
         super(OrderForm, self).__init__(*args, **kwargs)
-
+        self.fields['user_name'] = forms.CharField()
         self.fields['first_name'] = forms.CharField(
             max_length=30, required=True, initial="",
             label="First Name")
@@ -151,6 +151,9 @@ class OrderForm(forms.Form):
             BS5Accordion(
                 AccordionGroup(
                     "Customer",
+                    Field(
+                        'user_name', id="id_user_name",
+                        type="hidden", value=None),
                     FloatingField("first_name", wrapper_class="col-12 p-0"),
                     FloatingField("last_name", wrapper_class="col-12 p-0"),
                     FloatingField("email", wrapper_class="col-12 p-0"),
@@ -217,11 +220,14 @@ class OrderForm(forms.Form):
                         ),
                         css_class="form-floating"
                     ),
-                    HTML(
-                        '{% include "orders/stripe_element.html"'
-                        ' with image_sent_url=item_type_image.url %}'
+                    StrictButton(
+                        'Complete Payment',
+                        css_class=(
+                            "col-6 btn default-button"
+                            " d-flex "
+                            " justify-content-center align-items-center"
+                            " mb-3 p-0"),
                     ),
-                    Submit('submit-button', 'Confirm Order')
                 ),
                 flush=True,
                 always_open=False,

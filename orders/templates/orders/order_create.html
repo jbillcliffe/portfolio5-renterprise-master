@@ -20,6 +20,7 @@
             <div class="col-12 col-lg-9 col-xxl-8">
                 <form id="order_create_form" action="{% url 'order_create' %}">
                     {% crispy order_form %}
+                    
                 </form>
             </div>
         </div>
@@ -29,18 +30,11 @@
     {{ json_order_list|json_script:"json-order-list" }}
     {{ json_item_type_list|json_script:"json-item-type-list" }}
 
-    <div id="loading-overlay">
-        <h1 class="text-light logo-font loading-spinner">
-            <span class="icon">
-                <i class="fas fa-3x fa-sync-alt fa-spin"></i>
-            </span>
-        </h1>
-    </div>
 {% endblock content %}
 
 {% block postloadjs %}
     {{ block.super }}
-    {{ stripe_public_key|json_script:"id_stripe_public_key" }}
-    {{ client_secret|json_script:"id_client_secret" }}
+    {% comment %} {{ stripe_public_key|json_script:"id_stripe_public_key" }}
+    {{ client_secret|json_script:"id_client_secret" }} {% endcomment %}
     <script src="{% static 'orders/js/order_create.js' %}"></script>
 {% endblock postloadjs %}

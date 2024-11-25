@@ -228,12 +228,25 @@ function getAvailableStockAfterOrders(assetList, newDelivery, newCollection, sel
 
 
 function autoSelectStock(availableItems) {
-    availableItems = JSON.parse(`${assetList}`);
-
+    availableItems = JSON.parse(`${availableItems}`);
+    let itemSelect;
     for (let x = 0; x < availableItems.length; x++) {
         let newItemObject = availableItems[x];
-        newItemObject[x].fields.income
-        
+
+        // Iterate through the available items and see which has made the least money.
+        // Automatically assign that one to the order.
+        if (x ==  0)  {
+            itemSelect = availableItems[x];
+        } else {
+            // if they match (most likely at 0.00) then don't change.
+            if (newItemObject.fields.income < itemSelect.fields.income) {
+                itemSelect = newItemObect;
+            } else {
+            }
+        }
+    }
+    console.log(itemSelect);
+    document.getElementById('id_item').value = itemSelect.pk;   
 }
 function areDatesClear(startDate, endDate, previousStartDate, previousEndDate) {
     /*  Situations -     
