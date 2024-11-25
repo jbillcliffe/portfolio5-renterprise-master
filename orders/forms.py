@@ -1,7 +1,4 @@
 from django import forms
-from django.db import models
-# from django.forms import inlineformset_factory
-# from django.shortcuts import reverse
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, HTML, Reset, Submit, Field
@@ -49,7 +46,7 @@ class OrderForm(forms.Form):
     def __init__(self, *args, **kwargs):
 
         super(OrderForm, self).__init__(*args, **kwargs)
-        self.fields['user_name'] = forms.CharField()
+        self.fields['profile'] = forms.IntegerField()
         self.fields['first_name'] = forms.CharField(
             max_length=30, required=True, initial="",
             label="First Name")
@@ -142,6 +139,12 @@ class OrderForm(forms.Form):
         self.fields['item_type'] = forms.ChoiceField(
             choices=all_types, label="Item Type")
         self.fields['item'] = forms.IntegerField()
+        self.fields['invoice_notes'] = forms.CharField(
+            widget=forms.Textarea(
+                attrs={
+                    "rows": "4"
+                })
+        )
 
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
@@ -152,7 +155,7 @@ class OrderForm(forms.Form):
                 AccordionGroup(
                     "Customer",
                     Field(
-                        'user_name', id="id_user_name",
+                        'profile', id="id_profile",
                         type="hidden", value=None),
                     FloatingField("first_name", wrapper_class="col-12 p-0"),
                     FloatingField("last_name", wrapper_class="col-12 p-0"),
@@ -209,15 +212,22 @@ class OrderForm(forms.Form):
                 ),
                 AccordionGroup(
                     'Payment',
+                    # Div(
+                    #     HTML(
+                    #         '<textarea class="form-control"'
+                    #         ' placeholder="Extra invoice notes"'
+                    #         ' id="id_invoice_notes"'
+                    #         ' style="height: 100px"></textarea>'
+                    #         '<label for="invoice_notes">'
+                    #         'Extra invoice notes</label>'
+                    #     ),
+                    #     css_class="form-floating"
+                    # ),
                     Div(
-                        HTML(
-                            '<textarea class="form-control"'
-                            ' placeholder="Extra invoice notes"'
-                            ' id="id_invoice_notes"'
-                            ' style="height: 100px"></textarea>'
-                            '<label for="invoice_notes">'
-                            'Extra invoice notes</label>'
-                        ),
+                        FloatingField(
+                            'invoice_notes',
+                            wrapper_class='col-12 p-0',
+                            style="height: 6.5rem;"),
                         css_class="form-floating"
                     ),
                     StrictButton(

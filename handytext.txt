@@ -82,3 +82,7 @@ https://www.reddit.com/r/django/comments/z04yuj/how_to_have_children_list_in_par
 https://stackoverflow.com/questions/76372367/add-a-select-field-on-django-form-without-saving-on-database
 
 -- Datepicker, just use TextInput widget in DateField to change type.
+
+
+-- STRIPE SAVE DURING PAYMENT (SAVE FOR FUTURE USE - Ongoing payments)
+https://docs.stripe.com/payments/save-during-payment

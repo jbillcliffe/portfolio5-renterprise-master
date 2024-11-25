@@ -1,26 +1,18 @@
 from . import views
 from django.urls import path
-from .webhooks import webhook
+# from .webhooks import webhook
 
 
 """
-Path navigation for Item/ItemType
+Path navigation for Order/OrderNote/Invoice
 """
 urlpatterns = [
     path(
         'create/',
         views.order_create,
         name='order_create'),
-    # path(
-    #     'checkout/',
-    #     views.create_checkout_session,
-    #     name="create_checkout_session")
-    # path(
-    #     'cache_order_data/',
-    #     views.cache_order_data,
-    #     name='cache_order_data'),
-    # path('wh/', webhook, name='webhook'),
+    path(
+        'order/create/success?session_id={CHECKOUT_SESSION_ID}',
+        views.order_create_success,
+        name="order_create_success")
 ]
-
-# path('type/create/', views.item_type_create, name="item_type_create"),
-# path('type/<int:id>/', views.item_type_view, name="item_type_view"),

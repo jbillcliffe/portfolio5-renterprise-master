@@ -75,6 +75,9 @@ class Profile(models.Model):
     phone_number = models.CharField(
         max_length=20, null=True, blank=True
     )
+    stripe_id = models.CharField(
+        max_length=254, null=True, blank=True, default=''
+    )
 
     # Ordering alphabetically by last name from the User Model
     class Meta:

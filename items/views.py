@@ -297,14 +297,19 @@ def item_type_update_inline(request, item_id, type_id):
                 item.save()
 
         else:
-            # This person is not an administrator
-            # Display a message to the user to tell them no access
-            messages.error(
-                request,
-                'Unauthorised to make these changes'
-            )
-
-            return redirect('item_view', item_id=item_id)
+            if account_type == "Customer":
+                messages.error(
+                    request,
+                    "Permission Denied: A customer cannot edit an item")
+                return redirect('menu')
+            else:
+                # This person staff but not an administrator
+                # Display a message to the user to tell them no access
+                messages.error(
+                    request,
+                    'Permission Denied: Unauthorised to make these changes'
+                )
+                return redirect('item_view', item_id=item_id)
 
         # Display a message to the user to show it has worked
         if new_or_old_type == "new":

@@ -12,7 +12,7 @@ from datetime import date
 # Create your models here.
 class Order(models.Model):
     # profile.user.first_name
-    null_values = [None, 'None', 'none', 'null', 'Null']    
+    null_values = [None, 'None', 'none', 'null', 'Null']
 
     profile = models.ForeignKey(
         Profile, on_delete=models.PROTECT, related_name="order_profile"
@@ -45,7 +45,7 @@ class Order(models.Model):
                 f" {self.profile.user.last_name}")
 
     def order_item_name(self):
-        return f"{self.item.item_type.name}"
+        return self.item.item_type.name
 
 
 class OrderNote(models.Model):
@@ -75,7 +75,7 @@ class OrderNote(models.Model):
         else:
             return (
                 f"{self.order.profile.user.first_name}"
-                f" {self.order.customer.last_name}")
+                f" {self.order.profile.user.last_name}")
 
     def created_on_by(self):
         return f"{self.created_on.strftime("%d-%m-%Y")}"
@@ -105,8 +105,7 @@ class Invoice(models.Model):
     amount_paid = models.DecimalField(max_digits=6, decimal_places=2)
     note = models.TextField()
     status = models.BooleanField(default=False, verbose_name="Paid")
-    stripe_pid = models.CharField(
-        max_length=254, null=False, blank=False, default='')
+    stripe_pid = models.CharField(max_length=254, default='')
 
     # order by item_type name 0-9 then A-Z
     class Meta:
@@ -115,11 +114,10 @@ class Invoice(models.Model):
     def __str__(self):
         return f"Invoice ID : {self.id}"
 
-    def invoice_customer_name(self):
-        if self.order.customer.first_name in self.null_values:
-            return f"{self.order.customer.last_name}"
+    def invoice_name(self):
+        if self.order.profile.user.first_name in self.null_values:
+            return f"{self.order.profile.user.last_name}"
         else:
             return (
-                f"{self.order.customer.first_name}"
-                f" {self.order.customer.last_name}")
-
+                f"{self.order.profile.user.first_name}"
+                f" {self.order.profile.user.last_name}")
