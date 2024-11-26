@@ -26,7 +26,7 @@ def webhook(request):
             payload, sig_header, wh_secret
         )
 
-        print("Event")
+        print("WH Event")
         print(event)
 
     except ValueError as e:
@@ -45,7 +45,7 @@ def webhook(request):
 
     # Set up a webhook handler
     handler = StripeWH_Handler(request)
-    print("handler")
+    print("WH handler")
     print(handler)
     # Map webhook events to relevant handler functions
     event_map = {

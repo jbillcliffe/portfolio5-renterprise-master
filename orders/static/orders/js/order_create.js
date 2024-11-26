@@ -16,11 +16,11 @@ let costWeekField = document.getElementById('id_cost_week');
 
 function validateDates(){
 
-    let deliveryDate = new Date(document.getElementById("id_delivery_date").value);
-    let collectDate = new Date(document.getElementById("id_collect_date").value);
+    let startDate = new Date(document.getElementById("id_start_date").value);
+    let endDate = new Date(document.getElementById("id_end_date").value);
     let today = new Date();
-    deliveryDate.setHours(0);
-    collectDate.setHours(0);
+    startDate.setHours(0);
+    endDate.setHours(0);
     today.setHours(0);
 
     let preType = typeSelectElement.value.split("|");
@@ -40,16 +40,16 @@ function validateDates(){
         }
     }
 
-    if (deliveryDate == "Invalid Date" || collectDate == "Invalid Date") {
+    if (startDate == "Invalid Date" || endDate == "Invalid Date") {
         console.log("only one date set")
         
-        if (deliveryDate < today) {
+        if (startDate < today) {
             console.log("Less than today");
-        } else if (collectDate < today) {
+        } else if (endDate < today) {
             console.log("Less than today");
         }
-    } else if (deliveryDate && collectDate) {
-        if (deliveryDate < today || collectDate < today) {
+    } else if (startDate && endDate) {
+        if (startDate < today || endDate < today) {
 
             if (stockCollapseInner.classList.contains("card-warning")){
             } else {
@@ -61,23 +61,23 @@ function validateDates(){
                 $(stockCollapseDiv).collapse('show');
             }
 
-        } else if (collectDate < deliveryDate) {
+        } else if (endDate < startDate) {
             if (stockCollapseInner.classList.contains("card-warning")){
             } else {
                 stockCollapseInner.classList.add("card-warning")
             }
-            stockCollapseInner.innerHTML = `Collection must be after delivery`;
+            stockCollapseInner.innerHTML = `Order end must be after start`;
             if (stockCollapseDiv.classList.contains("show")) {
             } else {
                 $(stockCollapseDiv).collapse('show');
             }
             
-        } else if (deliveryDate == collectDate){
+        } else if (startDate == endDate){
             if (stockCollapseInner.classList.contains("card-warning")){
             } else {
                 stockCollapseInner.classList.add("card-warning")
             }
-            stockCollapseInner.innerHTML = `Cannot do collection and delivery on the same day`;
+            stockCollapseInner.innerHTML = `Cannot start and end the order on the same day`;
             if (stockCollapseDiv.classList.contains("show")) {
             } else {
                 $(stockCollapseDiv).collapse('show');
@@ -124,7 +124,7 @@ function validateDates(){
                     }
                     
                     $(stockCollapseDiv).collapse('hide');
-                    getAvailableStockAfterOrders(JSON.stringify(assetsOwned), deliveryDate, collectDate, typeCategory);
+                    getAvailableStockAfterOrders(JSON.stringify(assetsOwned), startDate, endDate, typeCategory);
                 }
             }
         }
@@ -136,8 +136,8 @@ function validateDates(){
 
 /**
  * @param {JSON} assetList - list of items that match the type searched
- * @param {Date} deliveryCheck - Date for delivery.
- * @param {Date} collectCheck - Date for collection.
+ * @param {Date} startCheck - Date for order to start.
+ * @param {Date} endCheck - Date for order to end.
  * @param {String} categoryOption - To offer others in the same category if none available.
  * 
  * 
@@ -145,7 +145,7 @@ function validateDates(){
  * an old order. If it does, the function returns false to imply it is invalid.
  */
 
-function getAvailableStockAfterOrders(assetList, newDelivery, newCollection, selectedCategory) {
+function getAvailableStockAfterOrders(assetList, newStart, newEnd, selectedCategory) {
     
     //console.log("INIT: "+assetList)
     let availableChoices = [];
@@ -162,17 +162,16 @@ function getAvailableStockAfterOrders(assetList, newDelivery, newCollection, sel
             //if they both resolve correctly, it needs to be checked against the orders.    
             //begin searching the order history
             for (let y = 0; y < fullOrderList.length; y++) {
-                //get the delivery and collection of this order
-                let oldDelivery = new Date(fullOrderList[y].fields.start_date);
-                let oldCollection = new Date(fullOrderList[y].fields.end_date);
+                //get the start date and end date of this order
+                let oldStart = new Date(fullOrderList[y].fields.start_date);
+                let oldEnd = new Date(fullOrderList[y].fields.end_date);
                 let oldItem = fullOrderList[y].fields.item;
 
-                //console.log(`OrderItem : ${oldItem}, OrderDel : ${oldDelivery}, OrderCol : ${oldCollection}`)
                 
                 //first is the item x, in the order of y.
                 if (newItem == oldItem) {
                     //Although there is another booking, do the dates clash?
-                    if (areDatesClear(newDelivery, newCollection, oldDelivery, oldCollection) == true) {
+                    if (areDatesClear(newStart, newEnd, oldStart, oldEnd) == true) {
                         //resolving as true, means the dates are clear.
                         if (y == fullOrderList.length - 1) {
                             // If this is the final order to check in the order list.
@@ -248,7 +247,7 @@ function autoSelectStock(availableItems) {
     console.log(itemSelect);
     document.getElementById('id_item').value = itemSelect.pk;   
 }
-function areDatesClear(startDate, endDate, previousStartDate, previousEndDate) {
+function areDatesClear(newStartDate, newEndDate, previousStartDate, previousEndDate) {
     /*  Situations -     
                         |---------OLDORDER---------|
     1.        |----NEWORDER----|                      
@@ -267,17 +266,17 @@ function areDatesClear(startDate, endDate, previousStartDate, previousEndDate) {
         Comment directly taken from Portfolio 4 as it explains it well
         Check each item available for date clashes with historical orders
     */
-    if ((startDate < previousStartDate) && (endDate < previousStartDate)) {
-        // Both new delivery and new collection are before the
-        // delivery of the historical order (4)
+    if ((newStartDate < previousStartDate) && (newEndDate < previousStartDate)) {
+        // Both the new start date and new end date are before the
+        // start date of the historical order (4)
         return true;
-    } else if ((startDate > previousEndDate) && (previousEndDate != null)) {
-        // Both new delivery and new collection are after the
+    } else if ((newStartDate > previousEndDate) && (previousEndDate != null)) {
+        // Both new start date and new end date are after the
         // collection of the historical order (5). Also allowing for
         // it to not have an unknown collection date.
         return true;
-    } else if ((deliveryCheck > thisCol) && (previousEndDate == null)) {
-        // even though delivery is after the collection. If the historical order
+    } else if ((newStartDate > previousEndDate) && (previousEndDate == null)) {
+        // even though the start date is after the end date. If the historical order
         // still has no collection value, it could still be on hire at this time and 
         // is not available for the new order
         return false;

@@ -77,9 +77,6 @@ class OrderNote(models.Model):
                 f"{self.order.profile.user.first_name}"
                 f" {self.order.profile.user.last_name}")
 
-    def created_on_by(self):
-        return f"{self.created_on.strftime("%d-%m-%Y")}"
-
 
 class Invoice(models.Model):
 

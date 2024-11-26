@@ -37,7 +37,8 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.herokuapp.com",
-    "https://*.codeinstitute-ide.net"
+    "https://*.codeinstitute-ide.net",
+    "https://*.stripe.com",
 ]
 
 
@@ -50,7 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    # 'django.contrib.sites',
     # Apps
     'allauth',
     'allauth.account',

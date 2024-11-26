@@ -36,12 +36,6 @@ class OrderForm(forms.Form):
     class Meta:
         model = Order
         fields = '__all__'
-        # fields = [
-        #     'first_name', 'last_name', 'email', 'address_line_1',
-        #     'address_line_2', 'address_line_3', 'town', 'county',
-        #     'country', 'postcode', 'phone_number', 'delivery_date',
-        #     'collect_date', 'status', 'category', 'item_type'
-        # ]
 
     def __init__(self, *args, **kwargs):
 
@@ -91,11 +85,11 @@ class OrderForm(forms.Form):
                 max_length=40, required=True, initial="",
                 label="Phone Number")
 
-        self.fields['delivery_date'] = (
+        self.fields['start_date'] = (
             forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
         )
 
-        self.fields['collect_date'] = (
+        self.fields['end_date'] = (
             forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
         )
 
@@ -188,11 +182,11 @@ class OrderForm(forms.Form):
                         onchange="validateDates()",
                         wrapper_class='col-12 p-0'),
                     FloatingField(
-                        'delivery_date',
+                        'start_date',
                         onchange='validateDates()',
                         wrapper_class='col-12 p-0'),
                     FloatingField(
-                        'collect_date',
+                        'end_date',
                         onchange='validateDates()',
                         wrapper_class='col-12 p-0'),
                     Div(
@@ -213,17 +207,6 @@ class OrderForm(forms.Form):
                 ),
                 AccordionGroup(
                     'Payment',
-                    # Div(
-                    #     HTML(
-                    #         '<textarea class="form-control"'
-                    #         ' placeholder="Extra invoice notes"'
-                    #         ' id="id_invoice_notes"'
-                    #         ' style="height: 100px"></textarea>'
-                    #         '<label for="invoice_notes">'
-                    #         'Extra invoice notes</label>'
-                    #     ),
-                    #     css_class="form-floating"
-                    # ),
                     Div(
                         FloatingField(
                             'invoice_notes',
