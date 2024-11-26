@@ -20,6 +20,8 @@ class ItemType(models.Model):
     cost_week = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(null=True, blank=True)
     meta_tags = models.TextField(null=True, blank=True)
+    product_stripe_id = models.CharField(
+        max_length=254, null=True, blank=True, default="")
 
     # Order by category and then name to create the category separation
     # in the list view

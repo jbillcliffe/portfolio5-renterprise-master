@@ -67,17 +67,8 @@ def order_create_checkout(request):
 
     # Using a hosted payment page. Greater security provided
     # Check session data required
-    get_order_form_data(request)
-
-    print("--- SESSION ORDER ---")
-    print(request.session['new_order'])
-    print("--- SESSION INVOICE ---")
-    print(request.session['new_invoice'])
-    print("--- SESSION ITEM ---")
-    print(request.session['new_item_id'])
-    print("--- SESSION PROFILE ---")
-    print(request.session['new_profile_id'])
-
+    local_key = get_order_form_data(request)
+    storage_update = SessionStore(session_key=local_key)
     stripe_order = request.session["new_order"]
     stripe_order_id = request.session["new_order_id"]
     stripe_order_item_id = request.session["new_item_id"]
@@ -92,11 +83,6 @@ def order_create_checkout(request):
     stripe_ref = (
         f"{stripe_order["last_name"]}_{stripe_order_id}"
     )
-
-
-
-    # stripe_public_key = settings.STRIPE_PUBLIC_KEY
-    # stripe_secret_key = settings.STRIPE_SECRET_KEY
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -133,17 +119,24 @@ def order_create_checkout(request):
         )
 
         update_profile_stripe.stripe_id = stripe_customer.id
+        
         update_profile_stripe.save()
         print("--- Stripe new customer --- ")
         print(stripe_customer)
+    # KEY HERE
+    # ------------------------------------------------------
 
+    # stripe_order = request.session["new_order"]
+    # stripe_order_id = request.session["new_order_id"]
+    # stripe_order_item_id = request.session["new_item_id"]
+    # stripe_order_profile_id = request.session['new_profile_id']
     # These will be in a modal.
     stripe_success_url = (
         f"https://{request.META['HTTP_HOST']}"
-        "/orders/create/success")
+        f"/orders/create/success/?session={local_key}")
     stripe_cancel_url = (
         f"https://{request.META['HTTP_HOST']}"
-        f"/orders/create/cancel")
+        f"/orders/create/cancel/?session={local_key}")
     stripe_image_url = (
         f"https://{request.META['HTTP_HOST']}"
         f"/media/{stripe_line_item.item_type.image}"
@@ -156,7 +149,7 @@ def order_create_checkout(request):
     # and so would price_data -> product
 
     # Tax Code : https://docs.stripe.com/tax/tax-codes?type=services
-    
+
     checkout_session = stripe.checkout.Session.create(
         customer=stripe_customer.id,
         client_reference_id=stripe_ref,
@@ -179,6 +172,9 @@ def order_create_checkout(request):
         payment_intent_data={"setup_future_usage": "off_session"}
     )
 
+    storage_update["checkout_session"] = checkout_session.id
+    storage_update.save()
+
     # As "request" is not the method used. It uses a GET with the return of the 
     # hosted payment page. This creates a session storage and posts the key to get in.
     # https://docs.djangoproject.com/en/5.1/topics/http/sessions/#using-sessions-out-of-views
@@ -191,22 +187,34 @@ def order_create_success(request):
     # Set your secret key.
     # See your keys here: https://dashboard.stripe.com/apikeys
     # get_order_form_data(request)
+    get_session = request.GET.get('lc_session', '')
 
-    stripe.api_key = settings.STRIPE_SECRET_KEY
-    stripe_session = stripe.checkout.Session.retrieve(
-        request.args.get('session_id'))
-    stripe_customer = stripe.Customer.retrieve(stripe_session.stripe_customer)
-    print("ORDERCREATESUCCESS")
-    print("STRIPESESSION: ")
-    print(stripe_session)
-    print("CUSTOMERSESSION: ")
-    print(stripe_customer)
-    template = 'orders/order_create_success.html'
-    context = {
-        'stripe_session': stripe_session,
-        'stripe_customer': stripe_customer,
-        'end_of_order': True,
-    }
+    if get_session == '':
+        messages.error(
+            request,
+            "Could not get session data")
+        return redirect('menu')
+    else:
+
+        retrieve_session = SessionStore(session_key=get_session)
+        print("DECODED_SESSION")
+        print(retrieve_session.get_decoded())
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe_session = stripe.checkout.Session.retrieve(
+            request.args.get(retrieve_session["checkout_session"]))
+        stripe_customer = stripe.Customer.retrieve(
+            stripe_session.stripe_customer)
+        print("ORDERCREATESUCCESS")
+        print("STRIPESESSION: ")
+        print(stripe_session)
+        print("CUSTOMERSESSION: ")
+        print(stripe_customer)
+        template = 'orders/order_create_success.html'
+        context = {
+            'stripe_session': stripe_session,
+            'stripe_customer': stripe_customer,
+            'end_of_order': True,
+        }
 
     return render(request, template, context)
 
@@ -238,6 +246,9 @@ def order_create_cancel(request):
 
 
 def get_order_form_data(request):
+
+    session_store_data = SessionStore()
+
     form_data = {
         # Accordion - Customer
         # user_name will default null, unless order is created
@@ -342,6 +353,8 @@ def get_order_form_data(request):
         print(" --- EXISTING PEOFILE DATA FROM CUSTOMER PAGE --- ")
         print(new_profile)
 
+    session_store_data["new_profile_id"] = new_profile.id
+
     # Create a model object from some of the form data and save()
     new_item = Item.objects.get(pk=form_data['item'])
     new_order = Order.objects.create(
@@ -360,6 +373,9 @@ def get_order_form_data(request):
     new_order.save()
     print(" --- NEW ORDER DATA --- ")
     print(new_order)
+
+    session_store_data["new_order_id"] = new_order.id
+    session_store_data["new_item_id"] = new_item.id
 
     # Create an invoice with a blank payment reference and status of 0
     # This will then attach a "bill" to an order, which will be :
@@ -392,9 +408,15 @@ def get_order_form_data(request):
     print(" --- NEW INVOICE DATA --- ")
     print(new_invoice)
 
+    session_store_data["new_invoice_id"] = new_invoice.id
+    session_store_data["new_order"] = form_data
+    session_store_data.create()
+    store_key = session_store_data.key
+
+    return (store_key)
+
     # This method was used, however data is lost in between. So a session
     # store can be created to keep the values
-
     # request.session['new_order'] = form_data
     # request.session['new_order_id'] = new_order.id
     # request.session['new_invoice'] = new_invoice.id
