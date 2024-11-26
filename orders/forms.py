@@ -140,6 +140,7 @@ class OrderForm(forms.Form):
             choices=all_types, label="Item Type")
         self.fields['item'] = forms.IntegerField()
         self.fields['invoice_notes'] = forms.CharField(
+            required=False,
             widget=forms.Textarea(
                 attrs={
                     "rows": "4"
@@ -230,13 +231,11 @@ class OrderForm(forms.Form):
                             style="height: 6.5rem;"),
                         css_class="form-floating"
                     ),
-                    StrictButton(
-                        'Complete Payment',
-                        css_class=(
-                            "col-6 btn default-button"
-                            " d-flex "
-                            " justify-content-center align-items-center"
-                            " mb-3 p-0"),
+                    Submit(
+                        'submit-order', 'Complete Payment',
+                        css_id='submit-order',
+                        css_class="col-12 btn default-button"
+                        " d-flex justify-content-center align-items-center"
                     ),
                 ),
                 flush=True,

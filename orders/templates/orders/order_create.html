@@ -18,9 +18,8 @@
         <hr>
         <div class="row">
             <div class="col-12 col-lg-9 col-xxl-8">
-                <form id="order_create_form" action="{% url 'order_create' %}">
+                <form id="order_create_form" action="{% url 'order_create_success' %}">
                     {% crispy order_form %}
-                    
                 </form>
             </div>
         </div>

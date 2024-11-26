@@ -8,6 +8,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.views.decorators.http import require_POST
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.db.models import When
+from django.contrib.sessions.models import Session
 
 from .forms import OrderForm
 from .models import Order, Invoice
@@ -36,6 +37,12 @@ import stripe
 def order_create(request):
 
     account_type = request.user.profile.get_account_type()
+
+    sessions = Session.objects.iterator()
+    for session in sessions:
+        data = session.get_decoded()
+        data["session_key"] = session.session_key 
+        print(data)
 
     json_item_list = serialize(
         'json', Item.objects.all(),
@@ -135,7 +142,7 @@ def order_create(request):
                 # If it did not, it will create a new one because there cannot
                 # be a profile without a user.
 
-                profile_new, profile_created = Profile.objects.create(
+                profile_new, profile_created = Profile.objects.get_or_create(
                     user=user_new,
                     defaults={
                         "address_line_1": form_data['address_line_1'],
@@ -157,7 +164,7 @@ def order_create(request):
             else:
                 # print("Profile - From Form")
                 profile_new = Profile.objects.get(pk=form_data['profile'])
-                print(" --- EXISTING PEOFILE DATA --- ")
+                print(" --- EXISTING PEOFILE DATA FROM CUSTOMER PAGE --- ")
                 print(profile_new)
 
             # Create a model object from some of the form data and save()
@@ -219,15 +226,15 @@ def order_create(request):
             # form
             order_form = OrderForm()
 
-        template = 'orders/order_create.html'
-        context = {
-            'order_form': order_form,
-            # 'stripe_public_key': stripe_public_key,
-            # 'client_secret': intent.client_secret,
-            'json_item_list': json_item_list,
-            'json_order_list': json_order_list,
-            'json_item_type_list': json_item_type_list,
-        }
+            template = 'orders/order_create.html'
+            context = {
+                'order_form': order_form,
+                # 'stripe_public_key': stripe_public_key,
+                # 'client_secret': intent.client_secret,
+                'json_item_list': json_item_list,
+                'json_order_list': json_order_list,
+                'json_item_type_list': json_item_type_list,
+            }
 
         return render(request, template, context)
 
@@ -306,10 +313,10 @@ def stripe_new_order_payment(request):
     print("--- Stripe customer pt2. ---")
     print(update_profile_stripe.values())
 
-    # These will be in a modal. 
+    # These will be in a modal.
     stripe_success_url = (
         f"https://{request.META['HTTP_HOST']}"
-        f"/order/create/success?session_id={CHECKOUT_SESSION_ID}")
+        "/order/create/success?session_id={CHECKOUT_SESSION_ID}")
     stripe_cancel_url = (
         f"https://{request.META['HTTP_HOST']}"
         f"/order/create/cancel")

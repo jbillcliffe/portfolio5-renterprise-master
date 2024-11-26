@@ -36,13 +36,13 @@ cardElement.addEventListener('change', function (event){
     }
 });
 
-var form = document.getElementById('payment-form');
+var form = document.getElementById('order_create_form');
 
 form.addEventListener('submit', function(ev) {
     ev.preventDefault();
     cardElement.update({ 'disabled': true });
     $('#submit-button').attr('disabled', true);
-    $('#payment-form').fadeToggle(100);
+    $('#order_create_form').fadeToggle(100);
     $('#loading-overlay').fadeToggle(100);
 
     // From using {% csrf_token %} in the form
@@ -53,7 +53,7 @@ form.addEventListener('submit', function(ev) {
         'client_secret': _clientSecret,
     };
 
-    var url = '/checkout/cache_checkout_data/';
+    var url = '/orders/cache_order_data/';
 
     $.post(url, postData).done(function () {
         stripe.confirmCardPayment(_clientSecret, {
@@ -94,7 +94,7 @@ form.addEventListener('submit', function(ev) {
                     </span>
                     <span>${result.error.message}</span>`;
                 $(errorDiv).html(html);
-                $('#payment-form').fadeToggle(100);
+                $('#order_create_form').fadeToggle(100);
                 $('#loading-overlay').fadeToggle(100);
                 cardElement.update({ 'disabled': false});
                 $('#submit-button').attr('disabled', false);
