@@ -10,62 +10,61 @@
 {% block extra_title %}{% blocktrans %}View An Item{% endblocktrans %}{% endblock extra_title %}
 
 <!-- Creating the form for an Item allowing a user to update the details if they have the authorisation -->
+<!-- div app container holds this -->
 {% block content %}
-    <div class="app-container">
-        <hr>
-            <h1>Item: {{ item_serial }}</h1>
-        <hr>
-        
-        <div class="row">
-            <div class="d-flex flex-column d-lg-block col-12 col-lg-3 col-xxl-4 pb-3">
-                <img class="item-image img-fluid border-{{ status_css }} border-bottom-0" id="item-image-id"
-                    src="{% if not item_type_image %}{% static 'images/default.webp' %}{% else %}{{ item_type_image.url }}{% endif %}"
-                    alt="{% if not item_type_image %}default no image{% else %}{{ item_type_name }}{% endif %}">
-                <input type="text" id="id_item_type_sku" 
-                    class="item-image-sku border-{{ status_css }} border-top-0 bg-{{ status_css }} bg-opacity-75
-                    {% if status_css == 'warning' or status_css == 'info' %}{% else %}white-text{% endif %}" 
-                    value="{{ item_type_sku }}" readonly>
-                {% if account_type == 'Customer' %}
-                {% else %}
-                    <button class="default-button item-image-sku mt-1 px-1 py-0" type="button"
-                            data-bs-target="#item-status-change-modal" data-bs-toggle="modal"
-                            onclick='statusSwitchChanger("{{ item_status.0 }}")'>
-                        <span class="d-flex flex-row align-items-center justify-content-center mx-0 gap-2">
-                            <p class="d-block white-text my-1">Edit Status</p>
-                            <i class="bi bi-toggles"></i>
-                        </span>
-                    </button>
-                {% endif %}
-            </div>
-            <div class="col-12 col-lg-9 col-xxl-8">
-                <form id="item_view_form" action="{% url 'item_view' item_id %}" 
-                      class="row floating-labels-form m-0" method="post">
+    <hr>
+        <h1>Item: {{ item_serial }}</h1>
+    <hr>
+    
+    <div class="row">
+        <div class="d-flex flex-column d-lg-block col-12 col-lg-3 col-xxl-4 pb-3">
+            <img class="item-image img-fluid border-{{ status_css }} border-bottom-0" id="item-image-id"
+                src="{% if not item_type_image %}{% static 'images/default.webp' %}{% else %}{{ item_type_image.url }}{% endif %}"
+                alt="{% if not item_type_image %}default no image{% else %}{{ item_type_name }}{% endif %}">
+            <input type="text" id="id_item_type_sku" 
+                class="item-image-sku border-{{ status_css }} border-top-0 bg-{{ status_css }} bg-opacity-75
+                {% if status_css == 'warning' or status_css == 'info' %}{% else %}white-text{% endif %}" 
+                value="{{ item_type_sku }}" readonly>
+            {% if account_type == 'Customer' %}
+            {% else %}
+                <button class="default-button item-image-sku mt-1 px-1 py-0" type="button"
+                        data-bs-target="#item-status-change-modal" data-bs-toggle="modal"
+                        onclick='statusSwitchChanger("{{ item_status.0 }}")'>
+                    <span class="d-flex flex-row align-items-center justify-content-center mx-0 gap-2">
+                        <p class="d-block white-text my-1">Edit Status</p>
+                        <i class="bi bi-toggles"></i>
+                    </span>
+                </button>
+            {% endif %}
+        </div>
+        <div class="col-12 col-lg-9 col-xxl-8">
+            <form id="item_view_form" action="{% url 'item_view' item_id %}" 
+                    class="row floating-labels-form m-0" method="post">
 
-                    {% crispy item_type_form item_type_form.helper %}
-                    {% crispy item_form item_form.helper %}
-                    
-                </form>
-                <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="id_edit-income" placeholder="Income (£)" value={{ item_income }} disabled>
-                    <label for="id_edit-income">Income (£)*</label>
-                </div>
-                <div class="row flex-column-reverse flex-md-row justify-content-center m-0">
-                    <a class="col-12 col-md-5 not-submit no-decoration mb-3 me-1"
-                        href="{% url 'item_list' %}">
-                        {% trans "Return To Item List" %}
-                    </a>
-                    <button type="submit"
-                        class="{% if account_type == 'Administrator' %}white-text{% else %}{% endif %}
-                        col-12 col-md-5 mb-3"
-                        {% if account_type == 'Administrator' %}{% else %}disabled{% endif %}
-                        form="item_view_form">{% trans "Update Item" %}
-                    </button>
-                </div>
+                {% crispy item_type_form item_type_form.helper %}
+                {% crispy item_form item_form.helper %}
+                
+            </form>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" id="id_edit-income" placeholder="Income (£)" value={{ item_income }} disabled>
+                <label for="id_edit-income">Income (£)*</label>
+            </div>
+            <div class="row flex-column-reverse flex-md-row justify-content-center m-0">
+                <a class="col-12 col-md-5 not-submit no-decoration mb-3 me-1"
+                    href="{% url 'item_list' %}">
+                    {% trans "Return To Item List" %}
+                </a>
+                <button type="submit"
+                    class="{% if account_type == 'Administrator' %}white-text{% else %}{% endif %}
+                    col-12 col-md-5 mb-3"
+                    {% if account_type == 'Administrator' %}{% else %}disabled{% endif %}
+                    form="item_view_form">{% trans "Update Item" %}
+                </button>
             </div>
         </div>
-        <p id="id-lower-status" class="d-none" hidden>{{ item_status.0 }}</p>
-        <p id="id-nice-status" class="d-none" hidden>{{ item_status.1 }}</p>
     </div>
+    <p id="id-lower-status" class="d-none" hidden>{{ item_status.0 }}</p>
+    <p id="id-nice-status" class="d-none" hidden>{{ item_status.1 }}</p>
     {% crispy item_type_edit_form item_type_edit_form.helper %}
     {% crispy item_status_form item_status_form.helper %}
 

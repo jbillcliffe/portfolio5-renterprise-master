@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timedelta
 from decimal import Decimal
 from django.conf import settings
 from django.contrib import messages
@@ -12,6 +13,9 @@ from .models import Order, Invoice
 from profiles.models import Profile
 from items.models import Item, ItemType
 from django.contrib.sessions.backends.db import SessionStore
+from django_countries.data import COUNTRIES
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
 
 import stripe
 
@@ -119,7 +123,7 @@ def order_create_checkout(request):
         )
 
         update_profile_stripe.stripe_id = stripe_customer.id
-        
+
         update_profile_stripe.save()
         print("--- Stripe new customer --- ")
         print(stripe_customer)
@@ -186,8 +190,7 @@ def order_create_checkout(request):
 def order_create_success(request):
     # Set your secret key.
     # See your keys here: https://dashboard.stripe.com/apikeys
-    # get_order_form_data(request)
-    get_session = request.GET.get('lc_session', '')
+    get_session = request.GET.get('session', '')
 
     if get_session == '':
         messages.error(
@@ -197,25 +200,46 @@ def order_create_success(request):
     else:
 
         retrieve_session = SessionStore(session_key=get_session)
-        print("DECODED_SESSION")
-        print(retrieve_session.get_decoded())
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        stripe_session = stripe.checkout.Session.retrieve(
-            request.args.get(retrieve_session["checkout_session"]))
-        stripe_customer = stripe.Customer.retrieve(
-            stripe_session.stripe_customer)
-        print("ORDERCREATESUCCESS")
-        print("STRIPESESSION: ")
-        print(stripe_session)
-        print("CUSTOMERSESSION: ")
-        print(stripe_customer)
+        # stripe.api_key = settings.STRIPE_SECRET_KEY
+        # stripe_session = stripe.checkout.Session.retrieve(
+        #     retrieve_session["checkout_session"])
+
+        # stripe_customer = stripe.Customer.retrieve(
+        #     stripe_session.customer)
+        get_item = Item.objects.get(pk=retrieve_session["new_item_id"])
+        format_start_date = datetime.strptime(
+            retrieve_session["new_order"]["start_date"],
+            "%Y-%m-%d").date()
+        format_end_date = datetime.strptime(
+            retrieve_session["new_order"]["end_date"],
+            "%Y-%m-%d").date()
+
+        # https://www.geeksforgeeks.org/how-to-add-days-to-a-date-in-python/
+        next_rental_date = format_start_date + timedelta(days=7)
+        print(next_rental_date)
+
+        if next_rental_date < format_end_date:
+            # rental ends before next payment date
+            next_payment = next_rental_date
+        else:
+            next_payment = None
+
         template = 'orders/order_create_success.html'
         context = {
-            'stripe_session': stripe_session,
-            'stripe_customer': stripe_customer,
+            # 'stripe_session': stripe_session,
+            # 'stripe_customer': stripe_customer,
+            'item_ordered': get_item,
+            'new_start_date': format_start_date,
+            'new_end_date': format_end_date,
+            'next_payment': next_payment,
+            'order_form_data': retrieve_session["new_order"],
+            "order_order_id": retrieve_session["new_order_id"],
+            "order_profile_id": retrieve_session["new_profile_id"],
+            "order_item_id": retrieve_session["new_item_id"],
+            "order_invoice_id": retrieve_session["new_invoice_id"],
             'end_of_order': True,
         }
-
+    send_confirmation_email(retrieve_session["new_order"])
     return render(request, template, context)
 
 
@@ -223,24 +247,34 @@ def order_create_success(request):
 def order_create_cancel(request):
     # Set your secret key.
     # See your keys here: https://dashboard.stripe.com/apikeys
+    get_session = request.GET.get('session', '')
 
-    stripe.api_key = settings.STRIPE_SECRET_KEY
-    stripe_session = stripe.checkout.Session.retrieve(
-        request.args.get('session_id'))
-    stripe_customer = stripe.Customer.retrieve(stripe_session.stripe_customer)
-    print("ORDERCREATECANCEL")
-    print("STRIPESESSION: ")
-    print(stripe_session)
-    print("CUSTOMERSESSION: ")
-    print(stripe_customer)
-    # print("LOCALSESSION:  ")
-    # print(request.session['new_order'])
-    template = 'orders/order_create_cancel.html'
-    context = {
-        'stripe_session': stripe_session,
-        'stripe_customer': stripe_customer,
-        'end_of_order': True,
-    }
+    if get_session == '':
+        messages.error(
+            request,
+            "Could not get session data")
+        return redirect('menu')
+    else:
+        retrieve_session = SessionStore(session_key=get_session)
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe_session = stripe.checkout.Session.retrieve(
+            retrieve_session["checkout_session"])
+        stripe_customer = stripe.Customer.retrieve(
+            stripe_session.customer)
+        print("ORDERCREATECANCEL")
+        print("STRIPESESSION: ")
+        print(stripe_session)
+        print("CUSTOMERSESSION: ")
+        print(stripe_customer)
+        # print("LOCALSESSION:  ")
+        # print(request.session['new_order'])
+        template = 'orders/order_create_cancel.html'
+        context = {
+            'stripe_session': stripe_session,
+            'stripe_customer': stripe_customer,
+            'submitted_form_data': retrieve_session["new_order"],
+            'end_of_order': True,
+        }
 
     return render(request, template, context)
 
@@ -272,6 +306,7 @@ def get_order_form_data(request):
         'town': request.POST['town'],
         'county': request.POST['county'],
         'country': request.POST['country'],
+        'country_name': COUNTRIES[request.POST['country']],
         'postcode': request.POST['postcode'],
         # Accordion - Order
         'item': request.POST['item'],
@@ -354,7 +389,7 @@ def get_order_form_data(request):
         print(new_profile)
 
     session_store_data["new_profile_id"] = new_profile.id
-
+    
     # Create a model object from some of the form data and save()
     new_item = Item.objects.get(pk=form_data['item'])
     new_order = Order.objects.create(
@@ -411,21 +446,9 @@ def get_order_form_data(request):
     session_store_data["new_invoice_id"] = new_invoice.id
     session_store_data["new_order"] = form_data
     session_store_data.create()
-    store_key = session_store_data.key
+    store_key = session_store_data.session_key
 
     return (store_key)
-
-    # This method was used, however data is lost in between. So a session
-    # store can be created to keep the values
-    # request.session['new_order'] = form_data
-    # request.session['new_order_id'] = new_order.id
-    # request.session['new_invoice'] = new_invoice.id
-    # request.session['new_item_id'] = new_item.id
-    # request.session['new_profile_id'] = new_profile.id
-
-    # order_session = SessionStore()
-    # checkout_id["checkout_id"] = checkout_session.id
-    # checkout_id.create()
 
 
 def check_username(user_name):
@@ -445,3 +468,26 @@ def check_username(user_name):
             # so it can be used
             return internal_username
             break
+
+
+def send_confirmation_email(email_data):
+    """
+    Will accept different lengths with email_data.
+    As long as it contains the fields it needs
+    """
+    customer_email = email_data.email
+    company_name = settings.COMPANY_NAME
+
+    subject = render_to_string(
+        'emails/confirmation_emails/confirmation_email_subject.txt',
+        {'order': email_data})
+    body = render_to_string(
+        'emails/confirmation_emails/confirmation_email_body.txt',
+        {'order': email_data, 'contact_email': settings.DEFAULT_FROM_EMAIL})
+
+    send_mail(
+        subject,
+        body,
+        settings.DEFAULT_FROM_EMAIL,
+        [customer_email]
+    )

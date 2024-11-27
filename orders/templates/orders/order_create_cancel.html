@@ -9,23 +9,22 @@
 {% block extra_title %}{% blocktrans %}Order Cancel{% endblocktrans %}{% endblock extra_title %}
 
 <!-- Creating the form for creating an item -->
+<!-- div app container holds this -->
 {% block content %}
-    <div class="app-container">
-        <hr>
-            <h1>{% trans "Order Cancel" %}</h1>
-        <hr>
-        <div class="row">
-            {% comment %} <div class="col-12 col-lg-9 col-xxl-8"> {% endcomment %}
-                    {{ stripe_session }}
-                    {{ stripe_customer }}
-                    {{ end_of_order }}
-                    {{ request.session.new_order_id }}
-                    {{ request.session.new_order }}
-                    {{ request.session.new_invoice }}
-                    
+    <hr>
+        <h1>{% trans "Order Cancel" %}</h1>
+    <hr>
+    <div class="row">
+        {% comment %} <div class="col-12 col-lg-9 col-xxl-8"> {% endcomment %}
+                {{ stripe_session }}
+                {{ stripe_customer }}
+                {{ end_of_order }}
+                {{ request.session.new_order_id }}
+                {{ request.session.new_order }}
+                {{ request.session.new_invoice }}
+                
 
-            {% comment %} </div> {% endcomment %}
-        </div>
+        {% comment %} </div> {% endcomment %}
     </div>
     {% comment %} https://docs.djangoproject.com/en/5.1/ref/templates/builtins/#json-script {% endcomment %}
 

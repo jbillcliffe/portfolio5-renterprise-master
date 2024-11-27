@@ -86,3 +86,6 @@ https://stackoverflow.com/questions/76372367/add-a-select-field-on-django-form-w
 
 -- STRIPE SAVE DURING PAYMENT (SAVE FOR FUTURE USE - Ongoing payments)
 https://docs.stripe.com/payments/save-during-payment
+
+-- CSS Inline converter
+https://templates.mailchimp.com/resources/inline-css/

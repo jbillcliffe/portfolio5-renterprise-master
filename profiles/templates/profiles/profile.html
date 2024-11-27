@@ -9,24 +9,23 @@
 {% block extra_title %}{%if self_or_manage == "self"%}{% trans "My Profile" %}{% else %}{% trans "Manage User Profile" %}{% endif %}{% endblock extra_title %}
 
 <!-- Creating the form for Profiles allowing a user to update their details -->
+<!-- div app container holds this -->
 {% block content %}
-    <div class="app-container">
-        <hr>
-            <h1>{% if self_or_manage == "self" %}My Profile{% else %}Manage User Profile{% endif %}</h1>
-        <hr>
-        <div class="row">
-            <div class="col-12 col-lg-9 col-xxl-8">
-                <form action="{% if self_or_manage == "self" %}{% url 'profile_view' %}{% else %}{% url 'profile_manage' user_id %}{% endif %}" 
-                      class="floating-labels-form" method="post" id="profile-update">
-                    {% crispy user_form user_form.helper %}
-                    {% crispy profile_form profile_form.helper %}
-                    <a class="not-submit no-decoration" 
-                        href="{% if self_or_manage == "self" %}{% url 'menu' %}{% else %}{% url 'profile_list' %}{% endif %}">
-                        {% if self_or_manage == "self" %}{% trans "Return To Menu" %}{% else %}{% trans "Return To Profiles" %}{% endif %}
-                    </a>
-		            <button type="submit" class="white-text">{% trans "Update Profile" %}</button>
-                </form>
-            </div>
+    <hr>
+        <h1>{% if self_or_manage == "self" %}My Profile{% else %}Manage User Profile{% endif %}</h1>
+    <hr>
+    <div class="row">
+        <div class="col-12 col-lg-9 col-xxl-8">
+            <form action="{% if self_or_manage == "self" %}{% url 'profile_view' %}{% else %}{% url 'profile_manage' user_id %}{% endif %}" 
+                    class="floating-labels-form" method="post" id="profile-update">
+                {% crispy user_form user_form.helper %}
+                {% crispy profile_form profile_form.helper %}
+                <a class="not-submit no-decoration" 
+                    href="{% if self_or_manage == "self" %}{% url 'menu' %}{% else %}{% url 'profile_list' %}{% endif %}">
+                    {% if self_or_manage == "self" %}{% trans "Return To Menu" %}{% else %}{% trans "Return To Profiles" %}{% endif %}
+                </a>
+                <button type="submit" class="white-text">{% trans "Update Profile" %}</button>
+            </form>
         </div>
     </div>
 {% endblock content %}

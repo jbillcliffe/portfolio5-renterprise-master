@@ -1,6 +1,5 @@
 from . import views
 from django.urls import path
-from .webhooks import webhook
 
 
 """
@@ -23,5 +22,4 @@ urlpatterns = [
         'create/cancel/',
         views.order_create_cancel,
         name="order_create_cancel"),
-    path('wh/', webhook, name='webhook')
 ]

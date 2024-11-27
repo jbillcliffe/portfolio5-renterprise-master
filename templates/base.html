@@ -52,6 +52,8 @@
         <title>Renterprise | {% block extra_title %}{% endblock extra_title %}</title>
     </head>
     <body>
+        <!-- this will stop a user clicking on areas outside of the "loading" overlay -->
+        <div class="clear-overlay d-none"></div>
         <!-- Include the headers for the base template-->
         <header>
             {% include "includes/small-header.html" %}
@@ -83,9 +85,17 @@
                 </div>
             {% endif %}
             {% include "includes/side-nav.html" %}
-            <!-- Content from each app page -->
-            {% block content %}
-            {% endblock content %}
+            
+            
+            <div class="app-container">
+                <!-- div app container holds this loading overlay designed to fit the "app" area-->
+                <!-- d-none for now-->
+                <div class="app-loading-overlay"></div>
+                <!-- Content from each app page -->
+                {% block content %}
+                
+                {% endblock content %}
+            </div>
         </div>
 
         <!-- *** Javascript from each app page *** -->

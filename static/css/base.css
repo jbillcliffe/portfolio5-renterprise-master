@@ -175,7 +175,7 @@ input::placeholder {
     display:flex;
     flex-direction: row;
     width:100%;
-    margin: 1rem auto 0 auto;
+    margin: 0 auto;
 }
 /* Divs to be used to hold the app below the header */
 .app-container {
@@ -230,6 +230,15 @@ as placeholders show the user required input data */
     border-radius: 0;
 }
 
+.app-loading-overlay {
+    width: 100%;
+    display: none;
+    position: absolute;
+    height: -webkit-fill-available;
+    margin-left: -1rem;
+    margin-top: 0.20rem;
+}
+
 
 /* --- Media Queries --- */
 
@@ -243,11 +252,14 @@ as placeholders show the user required input data */
     }
 }
 
-/*   
+ 
 /* For Desktop Screens */
-/* @media (min-width: 992px) {
-    
-} */
+@media (min-width: 992px) {
+    .item-image,
+    .item-image-sku {
+        min-width: 296px;
+    }
+}
   
 /* For Mobile Devices */
 /* @media (max-width: 991px) {
@@ -264,6 +276,12 @@ resolution, without quite making it to the XS breakpoint*/
 Increase height to
 allow the drop down menu to move */
 @media (max-width: 575px) {
+
+    h1, hr, .row {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
     .main-header {
         height: 135px;
     }
@@ -271,9 +289,17 @@ allow the drop down menu to move */
     .program-holder {
         flex-direction: column;
         width: 100%;
-        margin: 0 auto;
+    }
+
+    .app-container {
+        width: 100%;
+        margin-right: 0;
     }
     
+    .app-loading-overlay {
+        margin-left: 0;
+        margin-top: 0;
+    }
 
     .renterprise-dropdown .login-dropdown,
     .renterprise-dropdown-menu {

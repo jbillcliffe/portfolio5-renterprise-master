@@ -255,7 +255,7 @@ DEFAULT_FROM_EMAIL = 'info@renterprise.com'
 
 
 # CUSTOM SETTINGS
-
+COMPANY_NAME = "Renterprise"
 FROM_EMAIL = 'Renterprise <info@renterprise.com>'
 HELP_EMAIL = 'Renterprise Support <admin@renterprise.com>'
 NULL_VALUES = [None, 'None', 'none', 'null', 'Null']
@@ -263,13 +263,8 @@ NULL_VALUES = [None, 'None', 'none', 'null', 'Null']
 for django-countries "monkey patch"
 https://code.djangoproject.com/ticket/35046#comment:4
 """
-# LazyChoicesMixin.get_choices = lambda self: self._choices
-# LazyChoicesMixin.choices = property(
-#     LazyChoicesMixin.get_choices,
-#     LazyChoicesMixin.set_choices)
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

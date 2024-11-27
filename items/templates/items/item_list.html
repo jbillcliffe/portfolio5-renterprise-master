@@ -7,83 +7,82 @@
 {% endblock extra_css %}
 
 {% block extra_title %}{% blocktrans %}Item Listing{% endblocktrans %}{% endblock extra_title %}
+<!-- div app container holds this -->
 {% block content %}
-    <div class="app-container">
-        <hr>
-            <h1>Item Listing</h1>
-        <hr>
-        <div class="row">
-            <div class="col-12 col-xxl-10">
-                <!-- If user is logged in -->
-                {% if user.is_authenticated %}
-                    <!-- Create "account_type" variable -->
-                    {% with account_type=user.profile.account_type %}
-                        <!-- 2 & 3 = HR & Administrator privileges -->
-                        {% if account_type != 0 %}
-                            <!-- Create Table Div-->
-                            <div class="renterprise-table">
-                                <!-- Create Table Header -->
-                                 <!-- Header is not visible from 767px and less -->
-                                <div class="renterprise-table-row table-head d-none d-md-flex">
-                                    <div class="col-7">
-                                        <strong>Item</strong>
+    <hr>
+        <h1>Item Listing</h1>
+    <hr>
+    <div class="row">
+        <div class="col-12 col-xxl-10">
+            <!-- If user is logged in -->
+            {% if user.is_authenticated %}
+                <!-- Create "account_type" variable -->
+                {% with account_type=user.profile.account_type %}
+                    <!-- 2 & 3 = HR & Administrator privileges -->
+                    {% if account_type != 0 %}
+                        <!-- Create Table Div-->
+                        <div class="renterprise-table">
+                            <!-- Create Table Header -->
+                                <!-- Header is not visible from 767px and less -->
+                            <div class="renterprise-table-row table-head d-none d-md-flex">
+                                <div class="col-7">
+                                    <strong>Item</strong>
+                                </div>
+                                <div class="col-5">
+                                    <strong>Serial No.</strong>
+                                </div>
+                            </div>
+                            <!-- For each item object -->
+                            {% for item in item_list %}
+                                <!-- If the category is different from the previous one -->
+                                {% ifchanged item.item_type_category %}
+                                    <!-- Add a category header -->
+                                    <div class="renterprise-table-row bottom-row bg-info-subtle">
+                                        <div class="col-12">
+                                            <strong>{{ item.item_type_category|upper }}</strong>
+                                        </div>
                                     </div>
-                                    <div class="col-5">
-                                        <strong>Serial No.</strong>
+                                {% endifchanged %}
+                                <!-- Create a row for type name, type category and serial number -->
+                                <!-- Spans are visible from 767px and less -->
+                                <!-- Each column essentially becomes full width (a row) at 767px and less -->
+                                <div class="renterprise-table-row item-list">
+                                    <div class="col-12 col-md-7">
+                                        <span class="d-block d-md-none"><strong>Item: </strong></span>{{ item.item_type_name }}
+                                    </div>
+                                    <div class="col-12 col-md-5">
+                                        <span class="d-block d-md-none"><strong>Serial No: </strong></span>{{ item.item_serial }}
                                     </div>
                                 </div>
-                                <!-- For each item object -->
-                                {% for item in item_list %}
-                                    <!-- If the category is different from the previous one -->
-                                    {% ifchanged item.item_type_category %}
-                                        <!-- Add a category header -->
-                                        <div class="renterprise-table-row bottom-row bg-info-subtle">
-                                            <div class="col-12">
-                                                <strong>{{ item.item_type_category|upper }}</strong>
-                                            </div>
-                                        </div>
-                                    {% endifchanged %}
-                                    <!-- Create a row for type name, type category and serial number -->
-                                    <!-- Spans are visible from 767px and less -->
-                                    <!-- Each column essentially becomes full width (a row) at 767px and less -->
-                                    <div class="renterprise-table-row item-list">
-                                        <div class="col-12 col-md-7">
-                                            <span class="d-block d-md-none"><strong>Item: </strong></span>{{ item.item_type_name }}
-                                        </div>
-                                        <div class="col-12 col-md-5">
-                                            <span class="d-block d-md-none"><strong>Serial No: </strong></span>{{ item.item_serial }}
-                                        </div>
+                                <!-- Create a row for email and button to navigate to profile  -->
+                                <div class="renterprise-table-row bottom-row">
+                                    <div class="col-7 d-none d-md-block"></div>
+                                    <div class="col-12 col-md-5 multi-element-column">
+                                        <span><strong>Status : </strong>{{ item.status_str }}</span>
+                                        <a 
+                                        href="{% url 'item_view' item.id %}">
+                                            <i class="bi bi-arrow-right-circle-fill icon-button text-{{ item.item_css_status }}"></i>
+                                        </a>
                                     </div>
-                                    <!-- Create a row for email and button to navigate to profile  -->
-                                    <div class="renterprise-table-row bottom-row">
-                                        <div class="col-7 d-none d-md-block"></div>
-                                        <div class="col-12 col-md-5 multi-element-column">
-                                            <span><strong>Status : </strong>{{ item.status_str }}</span>
-                                            <a 
-                                            href="{% url 'item_view' item.id %}">
-                                                <i class="bi bi-arrow-right-circle-fill icon-button text-{{ item.item_css_status }}"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                                {% include "includes/paginate.html" %}
-                            </div>                        
-                            
-                        {% else %}
-                            {% blocktrans %}<h3 class="text-danger">Not Authorised</h3>{% endblocktrans %}
-                            {% blocktrans %}<p>Customers do not have access to this area.</p>{% endblocktrans %}
-                            <a class="url-nav-button" href="{% url 'menu' %}">{% trans "Return To Menu" %}</a>
-                        {% endif %}
-                    {% endwith %}
-                {% else %}
-                    {% blocktrans %}<h3 class="text-danger">Not Authorised</h3>{% endblocktrans %}
-                    {% blocktrans %}
-                        <p>You need to be logged in to access the program.</p>
-                        <p>Log in to continue using this application.</p>
-                    {% endblocktrans %}
-                    <a class="button white-text" href="{% url 'account_login' %}">{% trans "Log In" %}</a>
-                {% endif %}
-            </div>
+                                </div>
+                            {% endfor %}
+                            {% include "includes/paginate.html" %}
+                        </div>                        
+                        
+                    {% else %}
+                        {% blocktrans %}<h3 class="text-danger">Not Authorised</h3>{% endblocktrans %}
+                        {% blocktrans %}<p>Customers do not have access to this area.</p>{% endblocktrans %}
+                        <a class="url-nav-button" href="{% url 'menu' %}">{% trans "Return To Menu" %}</a>
+                    {% endif %}
+                {% endwith %}
+            {% else %}
+                {% blocktrans %}<h3 class="text-danger">Not Authorised</h3>{% endblocktrans %}
+                {% blocktrans %}
+                    <p>You need to be logged in to access the program.</p>
+                    <p>Log in to continue using this application.</p>
+                {% endblocktrans %}
+                <a class="button white-text" href="{% url 'account_login' %}">{% trans "Log In" %}</a>
+            {% endif %}
         </div>
     </div>
 {% endblock content %}

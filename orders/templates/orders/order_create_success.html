@@ -9,25 +9,59 @@
 {% block extra_title %}{% blocktrans %}Order Success{% endblocktrans %}{% endblock extra_title %}
 
 <!-- Creating the form for creating an item -->
+<!-- div app container holds this -->
 {% block content %}
-    <div class="app-container">
-        <hr>
-            <h1>{% trans "Order Success" %}</h1>
-        <hr>
-        <div class="row">
-            {% comment %} <div class="col-12 col-lg-9 col-xxl-8"> {% endcomment %}
-                    {{ stripe_session }}
-                    {{ stripe_customer }}
-                    {{ end_of_order }}
-                    {{ request.session.new_order_id }}
-                    {{ request.session.new_order }}
-                    {{ request.session.new_invoice }}
-                    
-
-            {% comment %} </div> {% endcomment %}
+    <hr>
+        <h1>{% trans "Order Success" %}</h1>
+    <hr>
+    <div class="row">
+        <div class="d-flex flex-column mx-auto pb-3">
+            <img class="item-image img-fluid border-success border-bottom-0" id="item-image-id"
+                    src="{% if not item_ordered.item_type.image %}{% static 'images/default.webp' %}{% else %}{{ item_ordered.item_type.image.url }}{% endif %}"
+                    alt="{% if not item_ordered.item_type.image %}default no image{% else %}{{ item_ordered.item_type.name }}{% endif %}">
+                <input type="text" id="id_item_type_sku" 
+                    class="item-image-sku border-success border-top-0 bg-success bg-opacity-75 white-text" 
+                    value="{{ item_ordered.item_type.sku }}" readonly>
         </div>
     </div>
-    {% comment %} https://docs.djangoproject.com/en/5.1/ref/templates/builtins/#json-script {% endcomment %}
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <span><strong>Customer : </strong>{{ order_form_data.full_name }}</span><br>
+            <hr>
+            <strong>Address :</strong><br>
+            <span>
+                {{ order_form_data.address_line_1 }}<br>
+                {% if order_form_data.address_line_2 == "" %}{% else %}{{ order_form_data.address_line_2 }}<br>{% endif %}
+                {% if order_form_data.address_line_3 == "" %}{% else %}{{ order_form_data.address_line_3 }}<br>{% endif %}
+                {{ order_form_data.town }}<br>
+                {{ order_form_data.county }}<br>
+                {{ order_form_data.postcode }}<br>
+                {{ order_form_data.country_name }}<br>
+            </span>
+            <span><strong>Phone : </strong>{{ order_form_data.phone_number }}</span><br>
+            <span><strong>Email : </strong>{{ order_form_data.email }}</span>
+        </div>
+        <div class="col-12 d-block d-lg-none"><hr></div>
+        <div class="col-12 col-lg-6">
+            <span><strong>Item : </strong>{{ item_ordered.item_type.name }}</span><br>
+            <hr>
+            <span><strong>Category : </strong>{{ item_ordered.item_type.category }}</span><br>
+            <span><strong>Serial No. : </strong>{{ item_ordered.item_serial }}</span><br>
+            <br>
+            <span><strong>Start Date : </strong>{{ new_start_date | date:'jS F Y' }}</span><br>
+            <span><strong>End Date : </strong>{{ new_end_date | date:'jS F Y' }}</span><br>
+            <br>
+            <span><strong>Initial Payment : </strong>£{{ order_form_data.cost_initial }}</span><br>
+            <span><strong>Next Payment : </strong>
+                {% if next_payment is None %}
+                    None Scheduled
+                {% else %}
+                    £{{ order_form_data.cost_week }}<br>
+                    <span><strong>Due On : </strong>{{ next_payment| date:'jS F Y' }}</span>
+                {% endif %}
+            </span><br>
+        </div>
+    </div>
 
 {% endblock content %}
 

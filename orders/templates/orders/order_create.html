@@ -11,17 +11,16 @@
 {% block extra_title %}{% blocktrans %}Create An Order{% endblocktrans %}{% endblock extra_title %}
 
 <!-- Creating the form for creating an item -->
+<!-- div app container holds this -->
 {% block content %}
-    <div class="app-container">
-        <hr>
-            <h1>{% trans "Create An Order" %}</h1>
-        <hr>
-        <div class="row">
-            <div class="col-12 col-lg-9 col-xxl-8">
-                <form id="order_create_form" action="{% url 'order_create_checkout' %}" method="POST">
-                    {% crispy order_form %}
-                </form>
-            </div>
+    <hr>
+        <h1>{% trans "Create An Order" %}</h1>
+    <hr>
+    <div class="row">
+        <div class="col-12 col-lg-9 col-xxl-8">
+            <form id="order_create_form" action="{% url 'order_create_checkout' %}" method="POST">
+                {% crispy order_form %}
+            </form>
         </div>
     </div>
     {% comment %} https://docs.djangoproject.com/en/5.1/ref/templates/builtins/#json-script {% endcomment %}
