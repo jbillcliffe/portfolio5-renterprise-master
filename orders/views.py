@@ -192,6 +192,14 @@ def order_create_success(request):
     # See your keys here: https://dashboard.stripe.com/apikeys
     get_session = request.GET.get('session', '')
 
+    # Two parts need to happen at this point to reflect the successful payment
+    #
+    # - The invoice needs to be set to paid
+    # - The item needs to have the income added to it.
+    #
+    # It can only do this with the session data. But it also cannot do it
+    # before this function, because the payment could still be unsuccessful.
+
     if get_session == '':
         messages.error(
             request,
@@ -200,12 +208,6 @@ def order_create_success(request):
     else:
 
         retrieve_session = SessionStore(session_key=get_session)
-        # stripe.api_key = settings.STRIPE_SECRET_KEY
-        # stripe_session = stripe.checkout.Session.retrieve(
-        #     retrieve_session["checkout_session"])
-
-        # stripe_customer = stripe.Customer.retrieve(
-        #     stripe_session.customer)
         get_item = Item.objects.get(pk=retrieve_session["new_item_id"])
         format_start_date = datetime.strptime(
             retrieve_session["new_order"]["start_date"],
@@ -213,11 +215,18 @@ def order_create_success(request):
         format_end_date = datetime.strptime(
             retrieve_session["new_order"]["end_date"],
             "%Y-%m-%d").date()
-
+        print(f"pre income add : {Decimal(get_item.income)}")
+        print(
+            f"pre income add cost: "
+            f"{Decimal(retrieve_session["new_order"]["cost_initial"])}")
+        trace_test = (
+            Decimal(get_item.income) +
+            Decimal(retrieve_session["new_order"]["cost_initial"]))
+        print(trace_test)
+        print(f"post income add : {trace_test}")
 
         # https://www.geeksforgeeks.org/how-to-add-days-to-a-date-in-python/
         next_rental_date = format_start_date + timedelta(days=7)
-        print(next_rental_date)
 
         if next_rental_date < format_end_date:
             # rental ends before next payment date
