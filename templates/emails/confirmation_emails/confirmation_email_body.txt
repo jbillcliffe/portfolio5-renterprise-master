@@ -1,17 +1,25 @@
-Hello {{ order.fullname }},
+Dear {{ email_data.name }},
 
-This is a confrimation of your order :
+Thank you for hiring from us. Please find further details of your order below :
 
-Order Number : {{ order.order_number }}
-Date : {{ order.date }}
-Total : £{{ order.order_total }}
-Delivery : £{{ order.delivery_cost }}
-Grand Total : £{{ order.grand_total }}
+Item Ordered : {{ email_data.item }}
 
-Shipped to {{ order.street_address1 }} in {{ order.town_or_city }}, {{ order.country }}
+Amount Paid : £{{ email_data.cost_initial }}
 
-Phone : {{ order.phone_number }}
+Start Date : {{ email_data.start_date }}
+End Date : {{ email_data.end_date }}
 
-Please contact @ {{ contact_email }}
+Delivery to :
+{{ email_data.address_line_1 }}
+{{ email_data.address_lines_23 }}
+{{ email_data.town }}
+{{ email_data.county }}
+{{ email_data.postcode }}
+{{ email_data.country }}
 
-Thanks
+Contact : {{ email_data.phone_number }}
+
+If you need assistance please contact us at : {{ contact_email }}
+
+Many Thanks,
+{{ company_name }}

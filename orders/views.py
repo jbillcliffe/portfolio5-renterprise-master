@@ -214,6 +214,7 @@ def order_create_success(request):
             retrieve_session["new_order"]["end_date"],
             "%Y-%m-%d").date()
 
+
         # https://www.geeksforgeeks.org/how-to-add-days-to-a-date-in-python/
         next_rental_date = format_start_date + timedelta(days=7)
         print(next_rental_date)
@@ -239,7 +240,14 @@ def order_create_success(request):
             "order_invoice_id": retrieve_session["new_invoice_id"],
             'end_of_order': True,
         }
-    send_confirmation_email(retrieve_session["new_order"])
+    send_confirmation_email(
+        retrieve_session["new_order"],
+        get_item,
+        retrieve_session["new_order_id"],
+        format_start_date,
+        format_end_date,
+        next_payment)
+
     return render(request, template, context)
 
 
@@ -470,24 +478,57 @@ def check_username(user_name):
             break
 
 
-def send_confirmation_email(email_data):
+def send_confirmation_email(
+        email_data, get_item, order_id,
+        start_date, end_date, next_date):
     """
     Will accept different lengths with email_data.
     As long as it contains the fields it needs
     """
-    customer_email = email_data.email
-    company_name = settings.COMPANY_NAME
+    address_line_list = [
+        f"{email_data['address_line_2']}",
+        f"{email_data['address_line_3']}",
+        ]
+
+    address_format = ""
+    for x in address_line_list:
+        if x == "":
+            pass
+        else:
+            address_format += (x + "\n")
+
+    email_data_format = {
+        'order_id': order_id,
+        'name': email_data["full_name"],
+        'phone_number': email_data["phone_number"],
+        'item': get_item.item_type.name,
+        'category': get_item.item_type.category,
+        'start_date': start_date.strftime("%d-%m-%Y"),
+        'end_date': end_date.strftime("%d-%m-%Y"),
+        'cost_initial': email_data["cost_initial"],
+        'cost_week': email_data["cost_week"],
+        'address_line_1': email_data["address_line_1"],
+        'address_lines_23': address_format,
+        'town': email_data["town"],
+        'county': email_data["county"],
+        'country': COUNTRIES[email_data["country"]],
+        'postcode': email_data["postcode"]
+    }
 
     subject = render_to_string(
-        'emails/confirmation_emails/confirmation_email_subject.txt',
-        {'order': email_data})
+        'emails/confirmation_emails/confirmation_email_subject.txt', {
+            'email_data': email_data_format,
+            'company_name': settings.COMPANY_NAME})
     body = render_to_string(
-        'emails/confirmation_emails/confirmation_email_body.txt',
-        {'order': email_data, 'contact_email': settings.DEFAULT_FROM_EMAIL})
+        'emails/confirmation_emails/confirmation_email_body.txt', {
+            'email_data': email_data_format,
+            'company_name': settings.COMPANY_NAME,
+            'contact_email': settings.DEFAULT_FROM_EMAIL
+        })
 
     send_mail(
         subject,
         body,
         settings.DEFAULT_FROM_EMAIL,
-        [customer_email]
+        [email_data["email"]]
     )

@@ -1,1 +1,1 @@
-Confirmation of your {{ company_name }} order. Order : {{ order.order_number }}
+Confirmation of your {{ company_name }} order. Order : {{ email_data.order_id }}
