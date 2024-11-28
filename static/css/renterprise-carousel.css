@@ -1,0 +1,146 @@
+/* ------------- CARDS ------------- */
+.renterprise-card {
+    width: 15rem;
+    padding: 0;
+    background-color: #2D8B60;
+    color: #FFFFFF;
+    text-shadow: 0px 1px 5px #000000;
+    box-shadow: 3px 0px 7px 0px rgba(57, 61, 63, 0.8);
+    max-width: 300px;
+    height: 514px;
+    max-height: 514px;
+}
+
+.renterprise-card-small {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    padding: 0;
+    background-color: #FFFFFF;
+    color: #FFFFFF;
+    text-shadow: 0px 1px 5px #000000;
+    box-shadow: 3px 0px 7px 0px rgba(57, 61, 63, 0.8);
+    align-items: center;
+    border: #2D8B60 1px solid;
+    max-height: 400px;
+    min-height: 368px;
+}
+
+/* .renterprise-card-row {
+    display:flex;
+    justify-content: space-evenly;
+} */
+
+.carousel {
+    max-width: 800px;
+}
+
+.card-img-top {
+    /* Explicitly set so to stop odd heights between cards of 298/299px */
+    max-width: 298px;
+    height: auto;
+}
+
+.card-body {
+    background-color: #2D8B60;
+    border: #2D8B60 1px solid;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.card-title {
+    min-height: 50px;
+}
+.card-subtitle {
+    min-height: 40px;
+}
+
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item.active {
+    display: flex;
+    justify-content: center;
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+    display: flex;
+    top: 0;
+    bottom: 0;
+    z-index: 3;
+    align-items: center;
+    width: 15%;
+    padding: 0;
+    color: #FFFFFF;
+    text-align: center;
+    background: 0 0;
+    border: 0;
+    opacity: .5;
+    transition: opacity .15s ease;
+}
+
+.carousel-control-next {
+    justify-content: flex-start;
+}
+
+.carousel-control-prev {
+    justify-content: flex-end;
+}
+
+.carousel-control-next,
+.carousel-control-next:hover,
+.carousel-control-prev,
+.carousel-control-prev:hover {
+    background: none;
+    
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #154D33;
+}
+
+@media (min-width: 1200px) {
+    .carousel {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 950px) {
+    .carousel-control-prev,
+    .carousel-control-next {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 850px) {
+    .carousel {
+        max-width: 600px;
+    }
+    
+    .renterprise-card {
+        height: 480px;
+        max-width: 200px;
+    }
+    .card-img-top {
+        max-width: 198px;
+    }
+    
+    .carousel-control-next,
+    .carousel-control-prev {
+        width: 10%;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .card-title {
+        min-height: 0;
+    }
+    .card-subtitle {
+        min-height: 0;
+    }
+    .card-img-top {
+        max-height: 200px;
+    }
+}

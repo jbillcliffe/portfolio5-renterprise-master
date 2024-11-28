@@ -84,9 +84,9 @@
                     {% endfor %}
                 </div>
             {% endif %}
-            {% include "includes/side-nav.html" %}
-            
-            
+            {% if user.is_authenticated %}
+                {% include "includes/side-nav.html" %}
+            {% endif %}
             <div class="app-container">
                 <!-- div app container holds this loading overlay designed to fit the "app" area-->
                 <!-- d-none for now-->

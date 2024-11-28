@@ -182,25 +182,6 @@ input::placeholder {
     color: #FFFFFF;
 }
 
-
-/* ------------- CARDS ------------- */
-.renterprise-card {
-    width: 15rem;
-    padding: 0;
-    background-color: #2D8B60;
-    color: #FFFFFF;
-    text-shadow: 0px 1px 5px #000000;
-    box-shadow: 2px -2px 2px 0px rgba(57, 61, 63, 0.8);
-    width: 300px;
-    max-width: 100%;
-    height: auto;
-}
-
-.renterprise-card-row {
-    display:flex;
-    justify-content: space-evenly;
-}
-
 .program-holder {
     display:flex;
     flex-direction: row;
@@ -208,32 +189,7 @@ input::placeholder {
     margin: 0 auto;
 }
 
-.carousel {
-    max-width: 800px;
-}
 
-.carousel-control-prev,
-.carousel-control-prev:hover {
-    margin-left: 0.75rem;
-    align-items: flex-start;
-    padding-top: 2rem;
-}
-
-.carousel-control-next,
-.carousel-control-next:hover {
-    margin-right: 0.75rem;
-    align-items: flex-start;
-    padding-top: 2rem;
-}
-
-
-.carousel-control-prev-icon {
-    background-color: #154D33;
-}
-
-.carousel-control-next-icon {
-    background-color: #154D33;
-}
 
 /* Divs to be used to hold the app below the header */
 .app-container {
@@ -314,10 +270,10 @@ as placeholders show the user required input data */
  
 /* For Desktop Screens */
 @media (min-width: 992px) {
-    .item-image,
+    /* .item-image,
     .item-image-sku {
         min-width: 296px;
-    }
+    } */
 }
   
 /* For Mobile Devices */
@@ -330,6 +286,21 @@ resolution, without quite making it to the XS breakpoint*/
 /* @media (max-width:600px) {
 
 } */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+    h2 {
+        font-size: 1.3rem;
+        margin-bottom:0;
+    }
+    .app-container {
+        width: 100%;
+        /* margin-bottom: 1rem; */
+        margin-right: 1rem;
+        margin-left: 1rem;
+    }
+}
 
 /* For Bootstrap XS sizing for header menu. 
 Increase height to
@@ -353,6 +324,7 @@ allow the drop down menu to move */
     .app-container {
         width: 100%;
         margin-right: 0;
+        margin-left: 0;
     }
     
     .app-loading-overlay {

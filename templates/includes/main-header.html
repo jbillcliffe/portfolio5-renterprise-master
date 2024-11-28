@@ -22,7 +22,7 @@
                 {% if user.is_authenticated %}
                     {% trans "Welcome, " as welcome_start %}
                     
-                    <div class="dropdown renterprise-dropdown">
+                    <div class="dropdown renterprise-dropdown justify-content-center justify-content-sm-end">
                         <button class="btn login-dropdown dropdown-toggle white-text pb-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                             {% if user.first_name %}{{ welcome_start }}{{ user.first_name }}{% else %}{{ welcome_start }}{{ user.last_name }}{% endif %}
                         </button>

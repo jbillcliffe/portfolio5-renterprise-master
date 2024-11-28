@@ -100,3 +100,17 @@ https://getbootstrap.com/docs/5.3/helpers/icon-link/
 --- CARD CAROUSEL ---
 https://gosnippets.com/snippets/bootstrap-carousel-with-cards-in-3-columns
 
+--- STREAMLINE VECTOR IMAGE REF --- 
+https://www.freepik.com/author/vectorjuice
+
+--- OPPORTUNITIES VECTOR IMAGE REF ---
+https://www.freepik.com/author/pch-vector
+
+--- CAROUSEL CALC ----
+
+1250+ - 3 images 15 rem
+1249 - 800 2 images 17rem
+799 and less 1 image 20rem
+
+--- CAROUSEL PREVENT BUTTON FOCUS ---
+https://forum.freecodecamp.org/t/how-to-remove-focus-from-button-after-click/450169
