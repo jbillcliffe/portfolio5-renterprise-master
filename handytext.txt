@@ -89,3 +89,14 @@ https://docs.stripe.com/payments/save-during-payment
 
 -- CSS Inline converter
 https://templates.mailchimp.com/resources/inline-css/
+
+-- CLICK WHOLE DATE -- 
+
+https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/showPicker
+
+-- HIND SIGHT FOR ICONS -- 
+https://getbootstrap.com/docs/5.3/helpers/icon-link/
+
+--- CARD CAROUSEL ---
+https://gosnippets.com/snippets/bootstrap-carousel-with-cards-in-3-columns
+

@@ -21,4 +21,3 @@
 );
 
 var $mcj = jQuery.noConflict(true);
-
