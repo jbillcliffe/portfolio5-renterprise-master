@@ -114,3 +114,6 @@ https://www.freepik.com/author/pch-vector
 
 --- CAROUSEL PREVENT BUTTON FOCUS ---
 https://forum.freecodecamp.org/t/how-to-remove-focus-from-button-after-click/450169
+
+--- STOP UNECESSARY MODAL CLOSURES ---
+https://getbootstrap.com/docs/5.0/components/modal/#static-backdrop

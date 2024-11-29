@@ -42,6 +42,48 @@ header {
     z-index: 20;
 }
 
+footer {
+    background-color: #2D8B60;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+}
+.social-networks {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-evenly;
+    width: 50%;
+    margin-bottom: 0;
+    padding: 1rem 0 .5rem 0;
+}
+footer>ul>li>a>i {
+    font-size:2rem;
+}
+
+/* #facebook-link, #twitter-link,
+#youtube-link, #instagram-link {
+    transition: color 2s;
+} */
+
+#facebook-link, #facebook-link:visited,
+#twitter-link, #twitter-link:visited,
+#youtube-link, #youtube-link:visited,
+#instagram-link, #instagram-link:visited {
+    color: #FFFFFF;
+    transition: color 0.6s;
+}
+
+#facebook-link:hover,
+#twitter-link:hover,
+#youtube-link:hover,
+#instagram-link:hover {
+    color: #41f2ff;
+}
+
+
+
 /* Make the document full height */
 html {
     height: 100%;
@@ -262,7 +304,8 @@ as placeholders show the user required input data */
 
     /* Margins created at edges */
     .main-header,
-    .program-holder {
+    .program-holder,
+    footer {
         width: 80%;
     }
 }

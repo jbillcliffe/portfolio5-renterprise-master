@@ -59,7 +59,7 @@
             {% include "includes/small-header.html" %}
             {% include "includes/main-header.html" %}
         </header>
-
+        {% if request.path == "" or request.path == "/" %}{% include "includes/facebook-modal.html" %}{% endif %}
         <div class="program-holder">
             <!-- If there are any messages sent, and are in the MESSAGE_STORAGE-->
             {% if messages %}
@@ -97,7 +97,7 @@
                 {% endblock content %}
             </div>
         </div>
-
+        {% if request.path == "" or request.path == "/" %}{% include "includes/footer.html" %}{% endif %}
         <!-- *** Javascript from each app page *** -->
         <!-- As toast is included on the base.html, it will always be included in account_type
         block.super statement as it always takes the parent content and adds to it. -->

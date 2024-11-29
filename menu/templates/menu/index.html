@@ -36,9 +36,9 @@
             </button> {% endcomment %}
         {% comment %} </div> {% endcomment %}
     </section>
-    <section class="row enquiry-form-section">
+    <section class="row enquiry-form-section justify-content-center">
         <div class="row">
-            <div class="col-12 d-flex justify-content-end">
+            <div class="col-12 d-flex justify-content-center">
                 <!-- ENQUIRY FORM FOR PEOPLE WHO CANNOT LOG IN -->
                 <!-- THOSE WHO ARE LOGGED IN ARE SIGNED UP *TBC*-->
                 <div id="mc_embed_shell" class=""> 
@@ -53,19 +53,17 @@
                                 </div> {% endcomment %}
                                 <div class="mc-field-group w-100">
                                     <label for="mce-EMAIL" class="d-flex justify-content-end align-items-end">Email Address<span class="asterisk">*</span></label>
-                                    <input type="email" name="EMAIL" class="required email mb-3 mce_inline_error" id="mce-EMAIL" required="" value="" placeholder="Enter email for more information!">
+                                    <input type="email" name="EMAIL" class="required email mb-3" id="mce-EMAIL" required="" value="" placeholder="Enter email for more information!">
                                 </div>
                                 <div class="row w-100 gx-0">
-                                    <div id="id-signup-validation" for="mce-EMAIL" class="col-6 mce_inline_error mb-0">This field is required.</div>
-                                    <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="col-6 default-button w-50" value="Subscribe">
+                                    {% comment %} <div id="id-signup-validation" for="mce-EMAIL" class="col-6 mb-0">This field is required.</div> {% endcomment %}
+                                    <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="default-button" value="Subscribe">
                                 </div>
 
                                 <div id="mce-responses" class="d-flex flex-column clear foot w-100">
                                     <div class="d-flex justify-content-end align-items-end response" id="mce-error-response" style="display: none;"></div>
                                     <div class="d-flex justify-content-end align-items-end response" id="mce-success-response" style="display: none;"></div>
                                 </div>
-                                
-                                
                                 <div aria-hidden="true" style="position: absolute; left: -5000px;">
                                     /* real people should not fill this in and expect good things - do not remove this or risk form bot signups */
                                     <input type="text" name="b_a69a075aeefc678e43946e18f_18ead7cd4f" tabindex="-1" value="">
@@ -78,7 +76,7 @@
         </div>
     </section>
 </main>
-  
+
 {% endblock content %}
 {% block postloadjs %}
     {{ block.super }}

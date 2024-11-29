@@ -254,6 +254,8 @@ class ItemStatusForm(forms.ModelForm):
                 ),
                 css_id="item-status-change-modal",
                 css_class="modal-sm",
+                data_bs_backdrop="static",
+                data_bs_keyboard="false",
                 title="Set Item Status"
             )
         )
@@ -529,5 +531,7 @@ class ItemTypeEditForm(forms.ModelForm):
                 # Send Item Id as the ID for this modal. This stays fixed
                 # when creating the dynamic form action
                 data_form_id=self.item_id,
+                data_bs_backdrop="static",
+                data_bs_keyboard="false"
             )
         )
