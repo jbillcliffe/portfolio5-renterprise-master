@@ -7,3 +7,11 @@ def main_menu(request):
     of the project. Render a template, nothing more.
     """
     return render(request, 'menu/index.html')
+
+
+def about_page(request):
+    """
+    Function to display the about page. 
+    Render a template, nothing more.
+    """
+    return render(request, 'menu/about.html')

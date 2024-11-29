@@ -15,4 +15,5 @@ the rest of the program
 
 urlpatterns = [
     path('', views.main_menu, name="menu"),
+    path('about/', views.about_page, name="about"),
 ]
