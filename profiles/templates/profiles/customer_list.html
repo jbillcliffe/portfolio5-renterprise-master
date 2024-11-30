@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block extra_css %}
+    <link href="{% static "css/renterprise-tables.css" %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block extra_title %}{% blocktrans %}Customer Listing{% endblocktrans %}{% endblock extra_title %}
+<!-- div app container holds this -->
+{% block content %}
+    <hr>
+        <h1>Customer Listing</h1>
+    <hr>
+    <div class="row">
+        <div class="col-12 col-xxl-10">
+            <!-- If user is logged in -->
+            {% if user.is_authenticated %}
+                <!-- Create "account_type" variable -->
+                {% with account_type=user.profile.account_type %}
+                    <!-- 2 & 3 = HR & Administrator privileges -->
+                    {% if account_type != 0 %}
+                        <!-- Create Table Div-->
+                        <div class="renterprise-table">
+                            <!-- Create Table Header -->
+                            <!--
+                            display: flex
+;
+    flex-direction: row !important;
+    height: 3vh;
+    align-items: center;
+    /* padding: 1rem; */
+    margin: 0;
+    background-color: #FFFFFF;
+    color: #000000;
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    justify-content: flex-start;
+                            
+                            
+                            -->
+                            <!-- For each profile/user object -->
+                            {% for customer in page_obj %}
+                                <!-- Create a row for first name, surname and username -->
+                                <div class="renterprise-table-row">
+                                    <strong>Name: </strong>{{ customer.get_full_name }}
+                                </div>
+                                <div class="renterprise-table-row">
+                                    <strong>Address: </strong>{{ customer.address_display }}
+                                </div>
+                                <!-- Create a row for email and button to navigate to profile  -->
+                                <div class="renterprise-table-row bottom-row">
+                                    <div class="col-12 multi-element-column">
+                                        <span><strong>Email: </strong>{{ customer.user.email }}</span>
+                                        <!-- Staff can be customers too! -->
+                                        <a 
+                                        href="{% if customer.user.id == request.user.id %}{% url 'profile_view' %}{% else %}#{% endif %}"> 
+                                        {% comment %} {% url 'customer_view' customer.user.id %} {% endcomment %}
+                                            <i class="bi bi-arrow-right-circle-fill icon-button"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% include "includes/paginate.html" %}
+                        </div>                        
+                        
+                    {% else %}
+                    <!-- This is for customers trying to get in via direct url navigation -->
+                    {% blocktrans %}<h3 class="text-danger">Not Authorised</h3>{% endblocktrans %}
+                        {% blocktrans %}
+                            <p>You need to be logged in to access the program.</p>
+                            <p>Log in to continue using this application.</p>
+                        {% endblocktrans %}
+                        <a class="button white-text" href="{% url 'account_login' %}">{% trans "Log In" %}</a>
+                    {% endif %}
+                {% endwith %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

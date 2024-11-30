@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
+from django.http.response import HttpResponse
+from django.core.paginator import Paginator
 
 from .models import Profile
 from .forms import UserForm, ProfileForm
@@ -15,6 +17,7 @@ class ProfileList(ListView):
     """
     Class ListView to display the items into a table.
     """
+
     paginate_by = 7
     model = Profile
     template_name = "profiles/profile_list.html"
@@ -24,6 +27,21 @@ class ProfileList(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProfileList, self).get_context_data(**kwargs)
         return context
+
+
+@login_required
+def customer_list(request):
+    queryset = Profile.objects.filter(account_type=0).all()
+    customers = Paginator(queryset, 7)
+
+    page_number = request.GET.get("page")
+    page_obj = customers.get_page(page_number)
+
+    print(queryset)
+    print(request)
+    return render(request, "profiles/customer_list.html", {"page_obj": page_obj})
+
+
 
 
 @login_required

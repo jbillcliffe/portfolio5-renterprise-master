@@ -104,7 +104,10 @@ class Profile(models.Model):
         Self contained function to get first and last name by
         calling a function and relating it to the NULL_VALUES in the settings
         """
-        if self.first_name in settings.NULL_VALUES:
+        if self.user.first_name in settings.NULL_VALUES:
             return f"{self.user.last_name}"
         else:
             return f"{self.user.first_name} {self.user.last_name}"
+
+    def address_display(self):
+        return f"{self.address_line_1}, {self.county}, {self.postcode}"
