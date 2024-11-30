@@ -1,0 +1,29 @@
+<modaldata>
+    <modaltitle>Get Support</modaltitle>
+    <modalbody>
+        <strong>Please Note!</strong><br/>
+        <span>Email, phone number and address are fictitious. This is for academic purposes <strong>ONLY!</strong></span>
+        <hr/>
+        <span>If you are having issues with your software please contact us!</span><br/>
+        <br/>
+        <span><strong>Email Us: </strong><a href="mailto:admin@renterprise.com">admin@renterprise.com</a></span><br/>
+        <span><strong>Call Us: </strong><a href="tel:(+44) 0000 000000">(+44) 0987 654321</a></span>
+        <br/>
+        <hr/>
+        <br/>
+        <span>If you would rather see us face to face then we are right here:</span><br/><br/>
+        <span><strong>Renterprise</strong></span><br/>
+        <span>Here</span><br/>
+        <span>In This Town</span><br/>
+        <span>And County</span><br/>
+        <span>RENT PRZ</span><br/>
+        <span>United Kingdom</span><br/>
+        <br/>
+        <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d19654.231425689853!2d-2.1524042!3d51.9926829!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4870e1bda52abb99%3A0xcd0491511441529!2sTewkesbury!5e0!3m2!1sen!2suk!4v1732933165772!5m2!1sen!2suk" style="embed-responsive-item" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Company Map"></iframe>
+        </div>
+    </modalbody>
+    <modalfooter>
+        <button type="button" class="btn default-button w-100" data-bs-dismiss="modal">Close</button>
+    </modalfooter>
+</modaldata>

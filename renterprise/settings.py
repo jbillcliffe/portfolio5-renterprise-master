@@ -100,7 +100,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'renterprise.contexts.system_emails',
+                'renterprise.contexts.settings_variables',
             ],
             'builtins': [
                 'crispy_forms.templatetags.crispy_forms_tags',
@@ -185,6 +185,30 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# CUSTOM SETTINGS
+# Please note that currently these are non-existent emails and
+# phone numbers. The address and company name too are fictional
+# and are purely for educational purposes.
+
+COMPANY_NAME = "Renterprise"
+INFO_EMAIL = 'Renterprise <info@renterprise.com>'
+HELP_EMAIL = 'Renterprise Support <admin@renterprise.com>'
+BASIC_INFO_EMAIL = 'info@renterprise.com'
+BASIC_HELP_EMAIL = 'admin@renterprise.com'
+COMPANY_PHONE = '(+44) 1234 567890'
+COMPANY_HELP_PHONE = '(+44) 0987 654321'
+COMPANY_ADDRESS = {
+    'line_1': 'Renterprise',
+    'line_2': 'Here',
+    'line_3': '',
+    'town': 'In This Town',
+    'county': 'And County',
+    'postcode': 'RENT PRZ',
+    'country': 'United Kingdom'
+}
+NULL_VALUES = [None, 'None', 'none', 'null', 'Null']
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -252,19 +276,16 @@ else:
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
-DEFAULT_FROM_EMAIL = 'info@renterprise.com'
 
-
-# CUSTOM SETTINGS
-COMPANY_NAME = "Renterprise"
-FROM_EMAIL = 'Renterprise <info@renterprise.com>'
-HELP_EMAIL = 'Renterprise Support <admin@renterprise.com>'
-NULL_VALUES = [None, 'None', 'none', 'null', 'Null']
-"""
-for django-countries "monkey patch"
-https://code.djangoproject.com/ticket/35046#comment:4
-"""
-
+# DEFAULT_FROM_EMAIL is not custom and is a part of django mail.
+# It is also only used, when an email address is not entered.
+# https://docs.djangoproject.com/en/5.1/topics/email/#send-mail
+# "from_email: A string. If None, Django will use the value of
+# the DEFAULT_FROM_EMAIL setting."
+# It is needed to be aware, that there are two different email variables
+# for the same value. Because, the INFO_EMAIL just allows for a standard
+# way for code. DEFAULT is specific to one feature of Django.
+DEFAULT_FROM_EMAIL = 'Renterprise <info@renterprise.com>'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

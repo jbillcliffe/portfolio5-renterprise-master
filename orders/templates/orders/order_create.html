@@ -4,7 +4,7 @@
 {% load crispy_forms_tags %}
 
 {% block extra_css %}
-    <link href="{% static "orders/css/order_forms.css" %}" rel="stylesheet">
+    <link href="{% static "orders/css/order-forms.css" %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'orders/css/stripe.css' %}">
 {% endblock extra_css %}
 
@@ -34,5 +34,5 @@
     {{ block.super }}
     {% comment %} {{ stripe_public_key|json_script:"id_stripe_public_key" }}
     {{ client_secret|json_script:"id_client_secret" }} {% endcomment %}
-    <script src="{% static 'orders/js/order_create.js' %}"></script>
+    <script src="{% static 'orders/js/orderCreate.js' %}"></script>
 {% endblock postloadjs %}

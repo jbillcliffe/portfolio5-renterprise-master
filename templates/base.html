@@ -1,5 +1,6 @@
 {% load static %}
 {% load i18n %}
+{% load custom_filters %}
 <!doctype html>
 <html lang="en">
     <head>
@@ -59,7 +60,30 @@
             {% include "includes/small-header.html" %}
             {% include "includes/main-header.html" %}
         </header>
-        {% if request.path == "" or request.path == "/" %}{% include "includes/facebook-modal.html" %}{% endif %}
+        
+        <!-- Creating an empty modal to use site wide, repopulating title, body and footer where neccessary
+         As this is created on the base, the ids will present on all pages -->
+        <div class="modal fade" id="id-renterprise-modal" data-bs-backdrop="static" data-bs-keyboard="false"  tabindex="-1" aria-labelledby="id-modal-title" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="id-modal-title"></h5> <!-- id-modal-title.innerText-->
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="id-modal-body">
+                        <!-- id-modal-body.innerText-->
+                    </div>
+                    <div class="modal-footer justify-content-center" id="id-modal-footer">
+                        <!-- id-modal-footer.innerText-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% comment %} {% include "includes/support-modal.html" %} {% endcomment %}
+        <!-- Facebook Modal is only included when on the main menu as the social media footer
+         is not present within the program itself -->
+        {% comment %} {% if request.path == "" or request.path == "/" %}{% include "includes/facebook-modal.html" %}{% endif %} {% endcomment %}
+        
         <div class="program-holder">
             <!-- If there are any messages sent, and are in the MESSAGE_STORAGE-->
             {% if messages %}
@@ -111,8 +135,9 @@
                     toastElement.show()
                 }
             </script>
-            <script src="{% static 'js/dynamic_collapse.js' %}"></script>
-            <script src="{% static 'js/numerical_calculations.js' %}"></script>
+            <script src="{% static 'js/dynamicModal.js' %}"></script>
+            <script src="{% static 'js/dynamicCollapse.js' %}"></script>
+            <script src="{% static 'js/numericalCalculations.js' %}"></script>
         {% endblock postloadjs %}
     </body>
 </html>

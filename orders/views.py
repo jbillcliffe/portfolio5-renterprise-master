@@ -532,12 +532,12 @@ def send_confirmation_email(
         'emails/confirmation_emails/confirmation_email_body.txt', {
             'email_data': email_data_format,
             'company_name': settings.COMPANY_NAME,
-            'contact_email': settings.DEFAULT_FROM_EMAIL
+            'contact_email': settings.INFO_EMAIL
         })
 
     send_mail(
         subject,
         body,
-        settings.DEFAULT_FROM_EMAIL,
+        settings.INFO_EMAIL,
         [email_data["email"]]
     )

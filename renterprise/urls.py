@@ -28,6 +28,8 @@ urlpatterns = [
     path('items/', include('items.urls')),
     path('orders/', include('orders.urls')),
     path('profiles/', include('profiles.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(
+    settings.MEDIA_URL,
+    document_root=settings.MEDIA_ROOT)
 
 handler404 = 'renterprise.views.handler404'

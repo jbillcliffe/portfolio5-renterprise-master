@@ -90,6 +90,19 @@
                         </li>
                     {% endif %}
                 {% endif %}
+                <!-- Always at the bottom of the bar -->
+                <hr>
+                <li class="nav-item">
+                    <a id="support-modal-link" href="#" data-bs-target="#id-renterprise-modal" data-bs-toggle="modal" onclick="loadDynamicModal('support-modal-data.xml');"
+                    class="side-bar nav-link" aria-hidden="true">
+                        <i class="nav-icon bi bi-tools"></i><strong>{% trans "Support" %}</strong>
+                    </a>
+                </li>
+                <li class="nav-item sidebar-base-option">
+                    <a href="{% url 'about' %}" target="_self" class="side-bar nav-link">
+                        <i class="nav-icon bi bi-question-circle"></i><strong>{% trans "About" %}</strong>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>

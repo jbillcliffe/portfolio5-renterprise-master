@@ -117,3 +117,9 @@ https://forum.freecodecamp.org/t/how-to-remove-focus-from-button-after-click/450
 
 --- STOP UNECESSARY MODAL CLOSURES ---
 https://getbootstrap.com/docs/5.0/components/modal/#static-backdrop
+
+--- CSS ORDER FOR PSEUDO CLASES ---
+https://www.w3schools.com/css/css_pseudo_classes.asp
+
+--SMOOTH A STUTTERING DROPDOWN ANIMATION ---
+https://stackoverflow.com/questions/27221332/bootstrap-collapse-animation-not-smooth
