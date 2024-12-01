@@ -41,14 +41,14 @@
                             <!-- For each profile/user object -->
                             {% for customer in page_obj %}
                                 <!-- Create a row for first name, surname and username -->
-                                <div class="renterprise-table-row">
+                                <div class="renterprise-table-row justify-content-start">
                                     <strong>Name: </strong>{{ customer.get_full_name }}
                                 </div>
-                                <div class="renterprise-table-row">
+                                <div class="renterprise-table-row justify-content-start">
                                     <strong>Address: </strong>{{ customer.address_display }}
                                 </div>
                                 <!-- Create a row for email and button to navigate to profile  -->
-                                <div class="renterprise-table-row bottom-row">
+                                <div class="renterprise-table-row bottom-row justify-content-start">
                                     <div class="col-12 multi-element-column">
                                         <span><strong>Email: </strong>{{ customer.user.email }}</span>
                                         <!-- Staff can be customers too! -->

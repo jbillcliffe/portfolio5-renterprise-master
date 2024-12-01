@@ -31,17 +31,18 @@ class ProfileList(ListView):
 
 @login_required
 def customer_list(request):
+    # Build query, users with account type 0 are customers
     queryset = Profile.objects.filter(account_type=0).all()
+    # 7 results per page
     customers = Paginator(queryset, 7)
 
+    # Determine number of pages in query
     page_number = request.GET.get("page")
     page_obj = customers.get_page(page_number)
 
     print(queryset)
     print(request)
-    return render(request, "profiles/customer_list.html", {"page_obj": page_obj})
-
-
+    return render(request, "customers/customer_list.html", {"page_obj": page_obj})
 
 
 @login_required
