@@ -10,6 +10,8 @@ from django.core.paginator import Paginator
 from .models import Profile
 from .forms import UserForm, ProfileForm
 
+from orders.models import Order
+
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
@@ -33,6 +35,14 @@ class ProfileList(ListView):
 def customer_list(request):
     # Build query, users with account type 0 are customers
     queryset = Profile.objects.filter(account_type=0).all()
+    queryset_two = Order.objects.values_list("profile", flat=True)
+    queryset_three = Profile.objects.values_list("id", flat=True)
+    # queryset_full = quert
+
+    print(f"---1----{queryset}")
+    print(f"---2----{queryset_two}")
+    print(f"---3----{queryset_three}")
+    # print(f"---UNI--- {query_union}")
     # 7 results per page
     customers = Paginator(queryset, 7)
 
@@ -40,8 +50,6 @@ def customer_list(request):
     page_number = request.GET.get("page")
     page_obj = customers.get_page(page_number)
 
-    print(queryset)
-    print(request)
     return render(request, "customers/customer_list.html", {"page_obj": page_obj})
 
 

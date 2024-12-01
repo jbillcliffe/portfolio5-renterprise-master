@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import os
 
 
 def main_menu(request):
@@ -6,6 +7,7 @@ def main_menu(request):
     Function to display the main menu at the root
     of the project. Render a template, nothing more.
     """
+    print(os.environ)
     return render(request, 'menu/index.html')
 
 
