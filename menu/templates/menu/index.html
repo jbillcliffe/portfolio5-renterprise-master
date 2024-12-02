@@ -4,7 +4,11 @@
 {% block extra_title %}{% blocktrans %}The Complete Rental Software Solution{% endblocktrans %}{% endblock extra_title %}
 
 {% block extra_css %}
-    <link href="{% static 'css/mailchimp.css' %}" rel="stylesheet">
+    <!-- No need to load extra css when the enquiry form is not going to be present -->
+    {% if user.is_authenticated %}
+    {% else %}
+        <link href="{% static 'css/mailchimp.css' %}" rel="stylesheet">
+    {% endif %}
     <link href="{% static 'css/renterprise-carousel.css' %}" rel="stylesheet">
 {% endblock extra_css %}
 
@@ -17,54 +21,42 @@
         <hr>
     </div>
     <section class="row proposition-section text-center text-md-start">
+        <!-- Informational section for prospective software users -->
         <h2 class="renterprise-dark-green-text order-2 order-md-1"><strong>Out Of The Box System</strong></h2>
-        
         <p class="order-3 order-md-2">A comprehensive customer management system from lead generation to customer satisfaction reporting.</p>
         <p class="order-4 order-md-3">Implement it straight away into your rental business, regardless of nature, and you can start turning your unused assets into a valuable commodity.</p>
-
-        {% comment %} <div id="carouselExampleIndicators" class="d-flex justify-content-center carousel slide mx-0 px-0 mb-3 order-1 order-md-4">
-            <div class="carousel-inner mx-0 order-2"> {% endcomment %}
+        <!-- Carousel of features one for lower resolution screens and the other for desktop (small has 1 card per slide)-->
                 {% include "menu/includes/carousel-large.html" %}
                 {% include "menu/includes/carousel-small.html" %}
-            {% comment %} <button class="carousel-control-prev order-1" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev" onclick="this.blur()">
-                <span class="carousel-control-prev-icon rounded" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next order-3" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next" onclick="this.blur()">
-                <span class="carousel-control-next-icon rounded" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button> {% endcomment %}
-        {% comment %} </div> {% endcomment %}
     </section>
     <section class="row enquiry-form-section justify-content-center">
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
                 <!-- ENQUIRY FORM FOR PEOPLE WHO CANNOT LOG IN -->
                 <!-- THOSE WHO ARE LOGGED IN ARE SIGNED UP *TBC*-->
+                <!-- [NICE] for already signed up users, this window would be tasks/reports -->
+                {% if user.is_authenticated %}
+                {% else %}
                 <div id="mc_embed_shell">
                     <div id="mc_embed_signup">
                         <form action="https://codeinstitute.us3.list-manage.com/subscribe/post?u=a69a075aeefc678e43946e18f&amp;id=18ead7cd4f&amp;f_id=009a0de1f0" 
                             method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate m-0 mt-0 me-1" target="_blank">
                             <div id="mc_embed_signup_scroll" class="d-flex flex-column align-items-end">
                                 <h2>Want to know more about <span class="renterprise-green-text">RENTERPRISE</span>?</h2>
-                                {% comment %} <div class="form-floating w-100 mb-3">
-                                    <input type="email" name="EMAIL" class="form-control" id="mce-EMAIL" placeholder="name@example.com" required="" value="" aria-required="true">
-                                    <div for="mce-EMAIL" class="mce_inline_error">This field is required.</div>
-                                </div> {% endcomment %}
                                 <div class="mc-field-group w-100">
                                     <label for="mce-EMAIL" class="d-flex justify-content-end align-items-end">Email Address<span class="asterisk">*</span></label>
                                     <input type="email" name="EMAIL" class="required email mb-3" id="mce-EMAIL" required="" value="" placeholder="Enter email for more information!">
                                 </div>
                                 <div class="row w-100 mx-0 gx-0">
-                                    {% comment %} <div id="id-signup-validation" for="mce-EMAIL" class="col-6 mb-0">This field is required.</div> {% endcomment %}
                                     <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="default-button" value="Subscribe">
                                 </div>
-
+                                <!-- Sign up response fields from mail chimp-->
                                 <div id="mce-responses" class="d-flex flex-column clear foot w-100">
                                     <div class="d-flex justify-content-end align-items-end response" id="mce-error-response" style="display: none;"></div>
                                     <div class="d-flex justify-content-end align-items-end response" id="mce-success-response" style="display: none;"></div>
                                 </div>
                                 <div aria-hidden="true" style="position: absolute; left: -5000px;">
+                                    <!-- I know this is wrong, but it's text is provided from mailchip and I do not know if it actually is used in the external .js file in some way-->
                                     /* real people should not fill this in and expect good things - do not remove this or risk form bot signups */
                                     <input type="text" name="b_a69a075aeefc678e43946e18f_18ead7cd4f" tabindex="-1" value="">
                                 </div>
@@ -72,6 +64,7 @@
                         </form>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -80,6 +73,9 @@
 {% endblock content %}
 {% block postloadjs %}
     {{ block.super }}
+    <!-- No need to load extra script when the enquiry form is not going to be present -->
+    {% if user.is_authenticated %}
     <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
     <script src="{% static 'js/mailchimp.js' %}"></script>
+    {% else %}{% endif %}
 {% endblock postloadjs %}

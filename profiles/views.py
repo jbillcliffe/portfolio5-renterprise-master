@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 from django.http.response import HttpResponse
 from django.core.paginator import Paginator
-
+from django.db.models import Q
 from .models import Profile
 from .forms import UserForm, ProfileForm
 
@@ -24,7 +24,7 @@ class ProfileList(ListView):
     model = Profile
     template_name = "profiles/profile_list.html"
 
-    queryset = Profile.objects.all()
+    queryset = Profile.objects.all().order_by('user__last_name')
 
     def get_context_data(self, **kwargs):
         context = super(ProfileList, self).get_context_data(**kwargs)
@@ -33,24 +33,42 @@ class ProfileList(ListView):
 
 @login_required
 def customer_list(request):
-    # Build query, users with account type 0 are customers
-    queryset = Profile.objects.filter(account_type=0).all()
-    queryset_two = Order.objects.values_list("profile", flat=True)
-    queryset_three = Profile.objects.values_list("id", flat=True)
-    # queryset_full = quert
+    # Build query, users with account type 0 are customers.
 
-    print(f"---1----{queryset}")
-    print(f"---2----{queryset_two}")
-    print(f"---3----{queryset_three}")
-    # print(f"---UNI--- {query_union}")
+    # Also want to include any profiles on an order otherwise. Staff members can be a customer
+    # too if they make an order. So they would not have an "account_type" of 0
+    # So best method is to get an iterable of "profile ids" from the Orders model. To then
+    # get profile objects
+    # https://docs.djangoproject.com/en/5.1/ref/models/querysets/#in
+
+    # Found list of foreign key object query :
+    # https://stackoverflow.com/questions/45062238/django-getting-a-list-of-foreign-key-objects
+    # Immediately takes the query result (list of profiles from Order) and searches them using an IN
+    # query to get out Profile objects.
+
+    # Complex query, was initially a Union query. But that was not merging together eg.
+    # Would want 1,3,5 and 2,4,6 to become 1,2,3,4,5,6. Instead the generated queryset would be
+    # 1,3,5,2,4,6. So this uses an OR statement, which makes sense given that it is querying the
+    # same model but in differnet ways.
+    # FIrst - It looks at where the iterated Profile in the query, appears in the Order model as
+    # a foreign key.
+    # Then it simply gets accounts which have an account_type of 0.
+    # Using distinct on the end ensures that each Profile is only returned once.
+    customer_queryset = Profile.objects.filter(
+        Q(order_profile__in=Order.objects.distinct("profile_id")) |
+        Q(account_type=0)
+    ).distinct()
+
     # 7 results per page
-    customers = Paginator(queryset, 7)
+
+    customers = Paginator(customer_queryset, 7)
 
     # Determine number of pages in query
     page_number = request.GET.get("page")
     page_obj = customers.get_page(page_number)
 
     return render(request, "customers/customer_list.html", {"page_obj": page_obj})
+
 
 
 @login_required

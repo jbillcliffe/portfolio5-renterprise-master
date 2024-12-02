@@ -9,8 +9,8 @@
 
 .renterprise-table-row {
     display: flex;
-    flex-direction: row !important;
-    align-items: center;
+    flex-direction: row;
+    align-items: baseline;
     padding: 0.5rem;
     margin: 0;
     background-color: #FFFFFF;
@@ -23,11 +23,11 @@
     border-bottom: 1px solid #528265;
 }
 
-.multi-element-column {
+/* .multi-element-column {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
+} */
 
 .bottom-row {
     border-bottom: 1px solid #919191;

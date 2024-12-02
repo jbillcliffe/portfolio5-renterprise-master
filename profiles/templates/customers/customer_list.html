@@ -13,7 +13,7 @@
         <h1>Customer Listing</h1>
     <hr>
     <div class="row">
-        <div class="col-12 col-xxl-10">
+        <div class="col-12 col-xxl-10 px-0">
             <!-- If user is logged in -->
             {% if user.is_authenticated %}
                 <!-- Create "account_type" variable -->
@@ -23,38 +23,26 @@
                         <!-- Create Table Div-->
                         <div class="renterprise-table">
                             <!-- Create Table Header -->
-                            <!--
-                            display: flex
-;
-    flex-direction: row !important;
-    height: 3vh;
-    align-items: center;
-    /* padding: 1rem; */
-    margin: 0;
-    background-color: #FFFFFF;
-    color: #000000;
-    padding: 0.5rem 0.5rem 0 0.5rem;
-    justify-content: flex-start;
-                            
-                            
-                            -->
+                             <!-- No header in this list display-->
                             <!-- For each profile/user object -->
                             {% for customer in page_obj %}
                                 <!-- Create a row for first name, surname and username -->
-                                <div class="renterprise-table-row justify-content-start">
-                                    <strong>Name: </strong>{{ customer.get_full_name }}
+                                <div class="renterprise-table-row flex-column flex-sm-row pt-2 px-2">
+                                    <strong>Name: </strong><p class="my-1 ps-1">{{ customer.get_full_name }}</p>
                                 </div>
-                                <div class="renterprise-table-row justify-content-start">
-                                    <strong>Address: </strong>{{ customer.address_display }}
+                                <div class="renterprise-table-row flex-column flex-sm-row py-0 px-2">
+                                    <strong>Address: </strong><p class="my-1 ps-1">{{ customer.address_display }}</p>
                                 </div>
                                 <!-- Create a row for email and button to navigate to profile  -->
-                                <div class="renterprise-table-row bottom-row justify-content-start">
-                                    <div class="col-12 multi-element-column">
-                                        <span><strong>Email: </strong>{{ customer.user.email }}</span>
+                                <div class="renterprise-table-row bottom-row py-0 px-2">
+                                    <div class="col">
+                                        <strong>Email: </strong>
+                                        <p class="mt-0 mb-1 ps-1 flex-fill">{{ customer.user.email }}</p>
                                         <!-- Staff can be customers too! -->
-                                        <a 
-                                        href="{% if customer.user.id == request.user.id %}{% url 'profile_view' %}{% else %}#{% endif %}"> 
-                                        {% comment %} {% url 'customer_view' customer.user.id %} {% endcomment %}
+                                    </div>
+                                    <div class="col d-flex flex-column align-items-end">
+                                        <a href="{% if customer.user.id == request.user.id %}{% url 'profile_view' %}{% else %}#{% endif %}">
+                                            {% comment %} {% else %}{% url 'customer_view' customer.user.id %}{% endif %}">  {% endcomment %}
                                             <i class="bi bi-arrow-right-circle-fill icon-button"></i>
                                         </a>
                                     </div>

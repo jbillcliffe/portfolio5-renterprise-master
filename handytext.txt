@@ -123,3 +123,6 @@ https://www.w3schools.com/css/css_pseudo_classes.asp
 
 --SMOOTH A STUTTERING DROPDOWN ANIMATION ---
 https://stackoverflow.com/questions/27221332/bootstrap-collapse-animation-not-smooth
+
+data to dump :
+account, admin, auth, contenttypes, items, orders, profiles, sessions, socialaccount

@@ -31,7 +31,12 @@ class Order(models.Model):
     )
 
     class Meta:
-        ordering = ["id"]
+        # Removed ordering as this was causing an issue with the customer_list
+        # requiring order_by and distinct() to be the same.
+        # Manual declaration of order_by now exists in profile appearances where
+        # necessary.
+        # ordering = ["id"]
+        pass
 
     def __str__(self):
         return f"Order ID : {self.id}"

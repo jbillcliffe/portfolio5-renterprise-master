@@ -377,6 +377,10 @@ allow the drop down menu to move */
     .main-header {
         height: 135px;
     }
+
+    .social-networks {
+        width: 100%;
+    }
     
     .program-holder {
         flex-direction: column;
