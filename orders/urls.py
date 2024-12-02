@@ -7,6 +7,10 @@ Path navigation for Order/OrderNote/Invoice
 """
 urlpatterns = [
     path(
+        '',
+        views.OrderList.as_view(),
+        name='order_list'),
+    path(
         'create/',
         views.order_create,
         name='order_create'),

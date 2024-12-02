@@ -23,7 +23,6 @@
             </form>
         </div>
     </div>
-    {% comment %} https://docs.djangoproject.com/en/5.1/ref/templates/builtins/#json-script {% endcomment %}
     {{ json_item_list|json_script:"json-item-list" }}
     {{ json_order_list|json_script:"json-order-list" }}
     {{ json_item_type_list|json_script:"json-item-type-list" }}
@@ -32,7 +31,5 @@
 
 {% block postloadjs %}
     {{ block.super }}
-    {% comment %} {{ stripe_public_key|json_script:"id_stripe_public_key" }}
-    {{ client_secret|json_script:"id_client_secret" }} {% endcomment %}
     <script src="{% static 'orders/js/orderCreate.js' %}"></script>
 {% endblock postloadjs %}

@@ -16,12 +16,29 @@ from django.contrib.sessions.backends.db import SessionStore
 from django_countries.data import COUNTRIES
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
 
 import stripe
 
 
-def order_create(request):
+@method_decorator(login_required, name='dispatch')
+class OrderList(ListView):
+    """
+    Class ListView to display the orders into a table.
+    """
+    paginate_by = 7
+    model = Order
+    template_name = 'orders/order_list.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(OrderList, self).get_context_data(**kwargs)
+        return context
+
+
+@login_required
+def order_create(request):
     # Initiate the Create Order form.
     account_type = request.user.profile.get_account_type()
 
@@ -67,6 +84,7 @@ def order_create(request):
         return render(request, template, context)
 
 
+@login_required
 def order_create_checkout(request):
 
     # Using a hosted payment page. Greater security provided
@@ -187,6 +205,7 @@ def order_create_checkout(request):
 
 
 @csrf_exempt
+@login_required
 def order_create_success(request):
     # Set your secret key.
     # See your keys here: https://dashboard.stripe.com/apikeys
@@ -261,6 +280,7 @@ def order_create_success(request):
 
 
 @csrf_exempt
+@login_required
 def order_create_cancel(request):
     # Set your secret key.
     # See your keys here: https://dashboard.stripe.com/apikeys
@@ -296,6 +316,7 @@ def order_create_cancel(request):
     return render(request, template, context)
 
 
+@login_required
 def get_order_form_data(request):
 
     session_store_data = SessionStore()

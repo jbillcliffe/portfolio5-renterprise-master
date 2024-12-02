@@ -17,14 +17,15 @@ from orders.models import Order
 @method_decorator(login_required, name='dispatch')
 class ProfileList(ListView):
     """
-    Class ListView to display the items into a table.
+    Class ListView to display the staff profiles into a table.
     """
 
     paginate_by = 7
     model = Profile
     template_name = "profiles/profile_list.html"
 
-    queryset = Profile.objects.all().order_by('user__last_name')
+    queryset = Profile.objects.filter(
+        account_type__gt=0).order_by('user__last_name')
 
     def get_context_data(self, **kwargs):
         context = super(ProfileList, self).get_context_data(**kwargs)

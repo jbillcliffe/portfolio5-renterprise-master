@@ -180,7 +180,7 @@ function typeChanged(typeId = null){
 
                 // update the form action to have a type_id deliberately non-existant to force
                 // a new creation of an ItemType. Item.id is obtained from within the form.
-                document.getElementById("item-inline-type-form-id").action = `/items/${itemId}/type/${foundTypeId}/edit`;
+                document.getElementById("item-inline-type-form-id").action = (`/items/${itemId}/type/${foundTypeId}/edit/`);
 
             } else {
                 document.getElementById(relationalId).className = "dropdown-item type-name-list-item";
@@ -190,7 +190,7 @@ function typeChanged(typeId = null){
         if (!foundType) {
             // update the form action to have a type_id deliberately non-existant to force
             // a new creation of an ItemType, itemId was obtained at the top of this function.
-            document.getElementById("item-inline-type-form-id").action = `/items/${itemId}/type/-1/edit`;
+            document.getElementById("item-inline-type-form-id").action = `/items/${itemId}/type/-1/edit/`;
 
             // Will use a secret field to determine if this has previously been reset or not,
             // Only wants resetting once.
@@ -217,7 +217,7 @@ function typeChanged(typeId = null){
 
         // update the form action to have the found/selected type id.
         // a new creation of an ItemType, itemId was obtained at the top of this function.
-        document.getElementById("item-inline-type-form-id").action = `/items/${itemId}/type/${typeId}/edit`;
+        document.getElementById("item-inline-type-form-id").action = `/items/${itemId}/type/${typeId}/edit/`;
 
         let typeListElements = document.getElementsByClassName('dropdown-item type-name-list-item');
 

@@ -51,11 +51,11 @@ def item_view(request, item_id):
         # Only need to search for the one prefix, because someone without
         # "edit" should not be able to change the details and they are
         # display only
-        selected_type = get_object_or_404(
-            ItemType,
-            pk=request.POST['edit-item-item_type'])
-        item_new.type = selected_type
-        item_new.item_type = selected_type
+        # selected_type = get_object_or_404(
+        #     ItemType,
+        #     pk=request.POST['edit-item-item_type'])
+        # item_new.type = selected_type
+        # item_new.item_type = selected_type
         item_new.item_serial = request.POST['edit-item-item_serial']
 
         try:
@@ -221,7 +221,7 @@ def item_type_update_inline(request, item_id, type_id):
                     # If no image uploaded /static/images/default.webp
                     image_name = settings.DEFAULT_NO_IMAGE
 
-            if item_type_check.exists():
+            if item_type_check:
                 # If entry found, then this is an update of a previous object
                 # Use the found item for data update and save
                 new_or_old_type = "old"
