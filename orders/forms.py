@@ -1,8 +1,9 @@
 from django import forms
+from django.db import models
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, HTML, Reset, Submit, Field
-from crispy_forms.bootstrap import AccordionGroup, StrictButton
+from crispy_forms.bootstrap import AccordionGroup, StrictButton  # , TabHolder, Tab
 from crispy_bootstrap5.bootstrap5 import BS5Accordion, FloatingField
 
 from django_countries.fields import CountryField
@@ -11,7 +12,78 @@ from localflavor.gb.gb_regions import GB_REGION_CHOICES
 from .models import Order
 # from profiles.models import Profile, User
 # from profiles.forms import ProfileForm, UserForm
-from items.models import ItemType
+from items.models import ItemType, Item
+
+
+# class OrderViewForm(forms.ModelForm):
+#     class Meta:
+#         model = Order
+#         fields = ['start_date', 'end_date']
+
+#         # Order(*, profile, item, cost_initial, cost_week, start_date, end_date, created_on, created_by)
+#         # Invoice(*, created_on, created_by, order, note, due_on, amount_paid, status, stripe_pid)
+#         
+#         # ItemType(*, name, sku, category, cost_initial, cost_week, meta_tags, product_stripe_id)
+#         # Profile(*, user, account_type, address_line_1, address_line_2, address_line_3, town, county, postcode, phone_number, stripe_id)
+
+#     def __init__(self, *args, **kwargs):
+#         """
+#         Add placeholders and classes, remove auto-generated
+#         labels and set autofocus on first field
+#         """
+#         super().__init__(*args, **kwargs)
+
+
+class OrderDatesForm(forms.ModelForm):
+    # Order(*, start_date, end_date)
+    class Meta:
+        model = Order
+        fields = ['start_date', 'end_date']
+        widgets = {
+            'start_date': forms.TextInput(
+                attrs={
+                    'type': 'date',
+                    'onchange': 'validateDates();'
+                }
+            ),
+            'end_date': forms.TextInput(
+                attrs={
+                    'type': 'date',
+                    'onchange': 'validateDates();'
+                }
+            )
+        }
+
+    def __init__(self, *args, **kwargs):
+        """
+        Add placeholders and classes, remove auto-generated
+        labels and set autofocus on first field
+        """
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.attrs['autocomplete'] = 'off'
+
+
+class OrderItemForm(forms.ModelForm):
+    # Item(*, item_type, item_serial, repair_date, status)
+    class Meta:
+        model = Item
+        fields = ['id', 'item_type', 'item_serial', 'repair_date', 'status']
+        labels = {
+            "item_type": "Type",
+            "item_serial": "Serial No.",
+            "repair_date": "Logged Repair Date",
+            "item_status": "Item Status",
+        }
+
+    def __init__(self, *args, **kwargs):
+        """
+        Add placeholders and classes, remove auto-generated
+        labels and set autofocus on first field
+        """
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.attrs['autocomplete'] = 'off'
 
 
 class OrderForm(forms.Form):

@@ -26,20 +26,20 @@
     </div>
     <div class="row">
         <div class="col-12 col-lg-6">
-            <span><strong>Customer : </strong>{{ order_form_data.full_name }}</span><br>
+            <span><strong>Customer : </strong>{{ order_create_form_data.full_name }}</span><br>
             <hr>
             <strong>Address :</strong><br>
             <span>
-                {{ order_form_data.address_line_1 }}<br>
-                {% if order_form_data.address_line_2 == "" %}{% else %}{{ order_form_data.address_line_2 }}<br>{% endif %}
-                {% if order_form_data.address_line_3 == "" %}{% else %}{{ order_form_data.address_line_3 }}<br>{% endif %}
-                {{ order_form_data.town }}<br>
-                {{ order_form_data.county }}<br>
-                {{ order_form_data.postcode }}<br>
-                {{ order_form_data.country_name }}<br>
+                {{ order_create_form_data.address_line_1 }}<br>
+                {% if order_create_form_data.address_line_2 == "" %}{% else %}{{ order_create_form_data.address_line_2 }}<br>{% endif %}
+                {% if order_create_form_data.address_line_3 == "" %}{% else %}{{ order_create_form_data.address_line_3 }}<br>{% endif %}
+                {{ order_create_form_data.town }}<br>
+                {{ order_create_form_data.county }}<br>
+                {{ order_create_form_data.postcode }}<br>
+                {{ order_create_form_data.country_name }}<br>
             </span>
-            <span><strong>Phone : </strong>{{ order_form_data.phone_number }}</span><br>
-            <span><strong>Email : </strong>{{ order_form_data.email }}</span>
+            <span><strong>Phone : </strong>{{ order_create_form_data.phone_number }}</span><br>
+            <span><strong>Email : </strong>{{ order_create_form_data.email }}</span>
         </div>
         <div class="col-12 d-block d-lg-none"><hr></div>
         <div class="col-12 col-lg-6">
@@ -51,12 +51,12 @@
             <span><strong>Start Date : </strong>{{ new_start_date | date:'jS F Y' }}</span><br>
             <span><strong>End Date : </strong>{{ new_end_date | date:'jS F Y' }}</span><br>
             <br>
-            <span><strong>Initial Payment : </strong>£{{ order_form_data.cost_initial }}</span><br>
+            <span><strong>Initial Payment : </strong>£{{ order_create_form_data.cost_initial }}</span><br>
             <span><strong>Next Payment : </strong>
                 {% if next_payment is None %}
                     None Scheduled
                 {% else %}
-                    £{{ order_form_data.cost_week }}<br>
+                    £{{ order_create_form_data.cost_week }}<br>
                     <span><strong>Due On : </strong>{{ next_payment| date:'jS F Y' }}</span>
                 {% endif %}
             </span><br>

@@ -13,7 +13,7 @@
         <h1>Customer Listing</h1>
     <hr>
     <div class="row">
-        <div class="col-12 col-xxl-10 px-0">
+        <div class="col-12 col-xxl-10">
             <!-- If user is logged in -->
             {% if user.is_authenticated %}
                 <!-- Create "account_type" variable -->
@@ -28,16 +28,16 @@
                             {% for customer in page_obj %}
                                 <!-- Create a row for first name, surname and username -->
                                 <div class="renterprise-table-row flex-column flex-sm-row pt-2 px-2">
-                                    <strong>Name: </strong><p class="my-1 ps-1">{{ customer.get_full_name }}</p>
+                                    <strong>Name: </strong><p class="my-1 ps-0 ps-sm-1">{{ customer.get_full_name }}</p>
                                 </div>
                                 <div class="renterprise-table-row flex-column flex-sm-row py-0 px-2">
-                                    <strong>Address: </strong><p class="my-1 ps-1">{{ customer.address_display }}</p>
+                                    <strong>Address: </strong><p class="my-1 ps-0 ps-sm-1">{{ customer.address_display }}</p>
                                 </div>
                                 <!-- Create a row for email and button to navigate to profile  -->
                                 <div class="renterprise-table-row bottom-row py-0 px-2">
                                     <div class="col">
                                         <strong>Email: </strong>
-                                        <p class="mt-0 mb-1 ps-1 flex-fill">{{ customer.user.email }}</p>
+                                        <p class="mt-0 mb-1 ps-0 flex-fill">{{ customer.user.email }}</p>
                                         <!-- Staff can be customers too! -->
                                     </div>
                                     <div class="col d-flex flex-column align-items-end">

@@ -6,10 +6,10 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.serializers import serialize
 from django.core.serializers.json import DjangoJSONEncoder
-from django.shortcuts import render, redirect  # get_object_or_404,HttpResponse
+from django.shortcuts import render, redirect, reverse  # get_object_or_404,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .forms import OrderForm
-from .models import Order, Invoice
+from .forms import OrderForm, OrderDatesForm, OrderItemForm
+from .models import Order, Invoice, OrderNote
 from profiles.models import Profile
 from items.models import Item, ItemType
 from django.contrib.sessions.backends.db import SessionStore
@@ -19,6 +19,9 @@ from django.core.mail import send_mail
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
+from django.db import models
+from datetime import date
+from urllib.parse import urlencode
 
 import stripe
 
@@ -35,6 +38,99 @@ class OrderList(ListView):
     def get_context_data(self, **kwargs):
         context = super(OrderList, self).get_context_data(**kwargs)
         return context
+
+
+def order_view(request, profile_id, order_id):
+
+    order = Order.objects.get(
+        pk=order_id,
+        profile=profile_id
+    )
+    item_id = order.item.id
+    item = Item.objects.get(id=item_id)
+
+    invoices = Invoice.objects.filter(order__id=order_id)
+    dates_form = OrderDatesForm(instance=order)
+    item_form = OrderItemForm(instance=item)
+
+    if request.user.profile.get_account_type == 'Customer':
+        json_item_list = ""
+        json_item_type_list = ""
+        json_order_list = ""
+    else:
+        json_item_list = serialize(
+            'json', Item.objects.all(),
+            fields=[
+                "item_type", "delivery_date", "collect_date",
+                "repair_date", "income", "status"],
+            cls=DjangoJSONEncoder)
+
+        json_item_type_list = serialize(
+            'json', ItemType.objects.all(),
+            fields=[
+                "cost_initial", "cost_week",
+                "image"],
+            cls=DjangoJSONEncoder)
+
+        json_order_list = serialize(
+            'json', Order.objects.all(), fields=[
+                'item', 'start_date', 'end_date'],
+            cls=DjangoJSONEncoder)
+    
+        if request.POST.get('tab'):
+            tab_return = request.POST.get('tab')
+        else:
+            tab_return = None
+
+    # order_view_form = OrderViewForm(instance=order)
+    # print(order_view_form)
+    template = 'orders/order_view.html'
+    context = {
+        # 'order_view_form': order_view_form,
+        'order': order,
+        'tab_return': tab_return,
+        'order_dates_form': dates_form,
+        'order_item_form': item_form,
+        # 'item_type'
+        # 'profile'
+        'invoice': invoices,
+        'json_item_list': json_item_list,
+        'json_order_list': json_order_list,
+        'json_item_type_list': json_item_type_list,
+    }
+
+    return render(request, template, context)
+
+
+def order_edit(request, profile_id, order_id, note):
+
+    if request.method == "POST":
+        tab_return = request.POST.get('tab')
+
+        if tab_return == "despatches":
+            get_order = Order.objects.get(order__id=order_id)
+            get_order.start_date = request.POST['start_date']
+            get_order.end_date = request.POST['end_date']
+
+            order_note = OrderNote.objects.create(
+                order=get_order,
+                note=note,
+                created_on=datetime.now(),
+                created_by=request.user
+            )
+            order_note.save()
+
+            messages.success(
+                request,
+                "Order Edited : Date(s) have been changed for this order")
+
+            url = reverse(
+                'order_view', profile_id=profile_id, order_id=order_id)
+            query = urlencode({'tab_return': tab_return})
+            final_url = '{}?{}'.format(url, query)
+            return redirect(final_url)
+        else:
+            pass
 
 
 @login_required
@@ -427,7 +523,7 @@ def get_order_form_data(request):
         print(new_profile)
 
     session_store_data["new_profile_id"] = new_profile.id
-    
+
     # Create a model object from some of the form data and save()
     new_item = Item.objects.get(pk=form_data['item'])
     new_order = Order.objects.create(

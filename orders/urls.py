@@ -26,4 +26,6 @@ urlpatterns = [
         'create/cancel/',
         views.order_create_cancel,
         name="order_create_cancel"),
+    # Order View is reached through a customer.
+    # It appears in the profiles
 ]

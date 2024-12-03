@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+    <link href="{% static "orders/css/order-forms.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'orders/css/stripe.css' %}">
+{% endblock extra_css %}
+
+{% block extra_title %}{% blocktrans %}View Order{% endblocktrans %}{% endblock extra_title %}
+
+<!-- Creating the form for creating an item -->
+<!-- div app container holds this -->
+{% block content %}
+    <hr>
+        <h1>{% trans "View Order" %}</h1>
+    <hr>
+    <div class="row">
+        <div class="col-12 col-lg-9 col-xxl-8">
+        
+            <ul class="nav nav-tabs flex-row" id="id-order-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="item-tab" data-bs-toggle="tab" data-bs-target="#item-tab-pane" type="button" role="tab" aria-controls="item-tab-pane" aria-selected="true">Item</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="despatches-tab" data-bs-toggle="tab" data-bs-target="#despatches-tab-pane" type="button" role="tab" aria-controls="despatches-tab-pane" aria-selected="false">Despatches</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="payments-tab" data-bs-toggle="tab" data-bs-target="#payments-tab-pane" type="button" role="tab" aria-controls="payments-tab-pane" aria-selected="false">Payments</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-tab-pane" type="button" role="tab" aria-controls="notes-tab-pane" aria-selected="false">Notes</button>
+                </li>
+              </ul>
+
+              <div class="tab-content" id="order-view-tab-content"
+              data-item-id="{{ order.item.id }}" data-order-id="{{ order.id }}" data-profile-id="{{ order.profile.id }}">
+                <div class="tab-pane fade show active" id="item-tab-pane" role="tabpanel" aria-labelledby="item-tab" tabindex="0">
+                    <!-- Item (Type) Form-->
+                     {{ order_item_form|crispy }}
+                </div>
+                <div class="tab-pane fade" id="despatches-tab-pane" role="tabpanel" aria-labelledby="despatches-tab" tabindex="0"
+                data-original-start-date="{{ order.start_date }}" data-original-end-date="{{ order.end_date }}">
+                    <!-- Date Form -->
+                    <form id="date-change-form" action="" method="POST">
+                        {{ order_dates_form|crispy }}
+                        <input id="id-date-change-submit" type="submit" class="default-button" value="Confirm Changes" hidden disabled/>
+                    </form>
+                    
+                    {% comment %} 
+                        <input type="submit" value="Submit">
+                    </form> {% endcomment %}
+
+                    <span id="id-order-date-messages" class="text-danger"></span>
+                </div>
+                <div class="tab-pane fade" id="payments-tab-pane" role="tabpanel" aria-labelledby="payments-tab" tabindex="0">
+                    <!-- Invoice Form-->
+                </div>
+                <div class="tab-pane fade" id="notes-tab-pane" role="tabpanel" aria-labelledby="notes-tab" tabindex="0">
+                    <!-- Notes form-->
+                </div>
+              </div>
+
+        </div>
+    </div>
+{% endblock content %}
+
+{% block postloadjs %}
+    {{ block.super }}
+    {{ json_item_list|json_script:"json-item-list" }}
+    {{ json_order_list|json_script:"json-order-list" }}
+    {{ json_item_type_list|json_script:"json-item-type-list" }}
+    <script src="{% static 'orders/js/orderView.js' %}"></script>
+
+{% endblock postloadjs %}
+

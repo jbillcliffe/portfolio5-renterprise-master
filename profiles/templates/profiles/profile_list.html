@@ -13,7 +13,7 @@
         <h1>Profile Listing</h1>
     <hr>
     <div class="row">
-        <div class="col-12 col-xxl-10 px-0">
+        <div class="col-12 col-xxl-10">
             <!-- If user is logged in -->
             {% if user.is_authenticated %}
                 <!-- Create "account_type" variable -->
@@ -23,7 +23,7 @@
                         <!-- Create Table Div-->
                         <div class="renterprise-table">
                             <!-- Create Table Header -->
-                            <div class="renterprise-table-row table-head">
+                            <div class="renterprise-table-row table-head d-none d-sm-flex">
                                 <div class="col-6">
                                     <strong>Name</strong>
                                 </div>
@@ -34,12 +34,12 @@
                             <!-- For each profile/user object -->
                             {% for profile in profile_list %}
                                 <!-- Create a row for first name, surname and username -->
-                                <div class="renterprise-table-row">
-                                    <div class="col-6">
-                                        {{ profile.get_full_name }}
+                                <div class="renterprise-table-row flex-column flex-sm-row">
+                                    <div class="col-12 col-sm-6 d-flex flex-row">
+                                        <strong class="d-block d-sm-none pe-1">Name: </strong>{{ profile.get_full_name }}
                                     </div>
-                                    <div class="col-6">
-                                        {{ profile }}
+                                    <div class="col-12 col-sm-6 d-flex flex-row">
+                                        <strong class="d-block d-sm-none pe-1">Username: </strong>{{ profile }}
                                     </div>
                                 </div>
                                 <!-- Create a row for email and button to navigate to profile  -->

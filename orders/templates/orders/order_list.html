@@ -13,7 +13,7 @@
         <h1>Order Listing</h1>
     <hr>
     <div class="row">
-        <div class="col-12 col-xxl-10 px-0">
+        <div class="col-12 col-xxl-10">
             <!-- If user is logged in -->
             {% if user.is_authenticated %}
                 <!-- Create "account_type" variable -->
@@ -25,26 +25,30 @@
                             <!-- Create Table Header -->
                              <!-- No header in this list display-->
                             {% for order in page_obj %}
-                                <div class="renterprise-table-row flex-column flex-sm-row pt-2 px-2">
+                                <div class="renterprise-table-row pt-2 pb-0 px-2">
                                     <strong>Order ID: </strong><p class="my-1 ps-1">{{ order.id }}</p>
                                 </div>
-                                <div class="renterprise-table-row flex-column flex-sm-row pt-2 px-2">
+                                <div class="renterprise-table-row flex-column flex-sm-row py-0 px-2">
                                     <strong>Name: </strong><p class="my-1 ps-1">{{ order.profile.get_full_name }}</p>
                                 </div>
-                                <div class="renterprise-table-row flex-column flex-sm-row py-0 px-2">
-                                    <strong>Item: </strong><p class="my-1 ps-1">{{ order.item.item_type }}</p>
-                                </div>
-                                <!-- Create a row for dates and button to navigate to order  -->
-                                <div class="renterprise-table-row bottom-row py-0 px-2">
-                                    <div class="col">
-                                        <strong>Start Date: </strong><p class="my-1 ps-1">{{ order.start_date }}</p>
-                                        <strong>End Date: </strong><p class="my-1 ps-1">{{ order.end_date }}</p>
+                                <div class="renterprise-table-row py-0 ps-2 pe-3">
+                                    <div class="col d-flex flex-row flex-fill align-items-baseline">
+                                        <strong>Item: </strong>
+                                        <p class="my-1 ps-1">{{ order.item.item_type }}</p>
                                     </div>
-                                    <div class="col d-flex flex-column align-items-end">
-                                        <a href="#">
-                                            {% comment %} {% else %}{% url 'customer_view' customer.user.id %}{% endif %}">  {% endcomment %}
+                                    <div class="col d-flex justify-content-end">
+                                        <a href="{% url 'order_view' order.profile.id order.id %}">
                                             <i class="bi bi-arrow-right-circle-fill icon-button"></i>
                                         </a>
+                                    </div>
+                                </div>
+                                <!-- Create a row for dates and button to navigate to order  -->
+                                <div class="renterprise-table-row bottom-row flex-column flex-sm-row p-0 ps-2 pb-2">
+                                    <div class="col d-flex flex-row align-items-baseline">
+                                        <strong>Starts On: </strong><p class="my-1 ps-1">{{ order.start_date }}</p>
+                                    </div>
+                                    <div class="col d-flex flex-row align-items-baseline">
+                                        <strong>Ends On: </strong><p class="my-1 ps-1">{{ order.end_date }}</p>
                                     </div>
                                 </div>
                             {% endfor %}
