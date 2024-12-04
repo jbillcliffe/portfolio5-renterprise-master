@@ -18,46 +18,52 @@
     <hr>
     <div class="row">
         <div class="col-12 col-lg-9 col-xxl-8">
-        
             <ul class="nav nav-tabs flex-row" id="id-order-tabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="item-tab" data-bs-toggle="tab" data-bs-target="#item-tab-pane" type="button" role="tab" aria-controls="item-tab-pane" aria-selected="true">Item</button>
+                <li class="nav-item order-tab" role="presentation">
+                  <button class="nav-link {% if request.GET.tab == "item" %}active{% else %}{% endif %}"
+                  id="item-tab" data-bs-toggle="tab" data-bs-target="#item-tab-pane" type="button" role="tab" aria-controls="item-tab-pane" aria-selected="true">Item</button>
                 </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="despatches-tab" data-bs-toggle="tab" data-bs-target="#despatches-tab-pane" type="button" role="tab" aria-controls="despatches-tab-pane" aria-selected="false">Despatches</button>
+                <li class="nav-item order-tab" role="presentation">
+                  <button class="nav-link {% if request.GET.tab == "despatches" %}active{% else %}{% endif %}"
+                  id="despatches-tab" data-bs-toggle="tab" data-bs-target="#despatches-tab-pane" type="button" role="tab" aria-controls="despatches-tab-pane" aria-selected="false">Despatches</button>
                 </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="payments-tab" data-bs-toggle="tab" data-bs-target="#payments-tab-pane" type="button" role="tab" aria-controls="payments-tab-pane" aria-selected="false">Payments</button>
+                <li class="nav-item order-tab" role="presentation">
+                  <button class="nav-link {% if request.GET.tab == "payments" %}active{% else %}{% endif %}"
+                  id="payments-tab" data-bs-toggle="tab" data-bs-target="#payments-tab-pane" type="button" role="tab" aria-controls="payments-tab-pane" aria-selected="false">Payments</button>
                 </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-tab-pane" type="button" role="tab" aria-controls="notes-tab-pane" aria-selected="false">Notes</button>
+                <li class="nav-item order-tab" role="presentation">
+                  <button class="nav-link {% if request.GET.tab == "notes" %}active{% else %}{% endif %}"
+                  id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-tab-pane" type="button" role="tab" aria-controls="notes-tab-pane" aria-selected="false">Notes</button>
                 </li>
               </ul>
 
               <div class="tab-content" id="order-view-tab-content"
               data-item-id="{{ order.item.id }}" data-order-id="{{ order.id }}" data-profile-id="{{ order.profile.id }}">
-                <div class="tab-pane fade show active" id="item-tab-pane" role="tabpanel" aria-labelledby="item-tab" tabindex="0">
+
+                <div class="tab-pane fade {% if request.GET.tab == "item" %}show active{% else %}{% endif %}"  
+                id="item-tab-pane" role="tabpanel" aria-labelledby="item-tab" tabindex="0">
                     <!-- Item (Type) Form-->
                      {{ order_item_form|crispy }}
                 </div>
-                <div class="tab-pane fade" id="despatches-tab-pane" role="tabpanel" aria-labelledby="despatches-tab" tabindex="0"
+
+                <div class="tab-pane fade {% if request.GET.tab == "despatches" %}show active{% else %}{% endif %}" 
+                id="despatches-tab-pane" role="tabpanel" aria-labelledby="despatches-tab" tabindex="0"
                 data-original-start-date="{{ order.start_date }}" data-original-end-date="{{ order.end_date }}">
                     <!-- Date Form -->
                     <form id="date-change-form" action="" method="POST">
+                        {% csrf_token %}
                         {{ order_dates_form|crispy }}
                         <input id="id-date-change-submit" type="submit" class="default-button" value="Confirm Changes" hidden disabled/>
                     </form>
-                    
-                    {% comment %} 
-                        <input type="submit" value="Submit">
-                    </form> {% endcomment %}
-
                     <span id="id-order-date-messages" class="text-danger"></span>
                 </div>
-                <div class="tab-pane fade" id="payments-tab-pane" role="tabpanel" aria-labelledby="payments-tab" tabindex="0">
+
+                <div class="tab-pane fade {% if request.GET.tab == "payments" %}show active{% else %}{% endif %}" 
+                id="payments-tab-pane" role="tabpanel" aria-labelledby="payments-tab" tabindex="0">
                     <!-- Invoice Form-->
                 </div>
-                <div class="tab-pane fade" id="notes-tab-pane" role="tabpanel" aria-labelledby="notes-tab" tabindex="0">
+                <div class="tab-pane fade {% if request.GET.tab == "notes" %}show active{% else %}{% endif %}"  
+                id="notes-tab-pane" role="tabpanel" aria-labelledby="notes-tab" tabindex="0">
                     <!-- Notes form-->
                 </div>
               </div>

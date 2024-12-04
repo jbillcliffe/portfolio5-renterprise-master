@@ -41,7 +41,7 @@
                                         <!-- Staff can be customers too! -->
                                     </div>
                                     <div class="col d-flex flex-column align-items-end">
-                                        <a href="{% if customer.user.id == request.user.id %}{% url 'profile_view' %}{% else %}#{% endif %}">
+                                        <a href="{% url 'customer_view' profile_id=customer.id %}">
                                             {% comment %} {% else %}{% url 'customer_view' customer.user.id %}{% endif %}">  {% endcomment %}
                                             <i class="bi bi-arrow-right-circle-fill icon-button"></i>
                                         </a>

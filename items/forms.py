@@ -29,7 +29,6 @@ class ItemForm(forms.ModelForm):
 
         self.account_type = kwargs.pop('account_type', None)
         super().__init__(*args, **kwargs)
-
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = False
@@ -69,6 +68,7 @@ class ItemForm(forms.ModelForm):
                 "item_serial",
                 wrapper_class="col-12 order-3 p-0"),
         )
+    
 
 
 class ItemCreateForm(forms.ModelForm):

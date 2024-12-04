@@ -208,6 +208,9 @@ COMPANY_ADDRESS = {
     'country': 'United Kingdom'
 }
 NULL_VALUES = [None, 'None', 'none', 'null', 'Null']
+SIDE_NAV_DISPLAY_URLS = [
+    'profile_view', 'profile_manage', 'item_view',
+    'customer_view', 'order_view']
 
 
 

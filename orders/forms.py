@@ -15,25 +15,6 @@ from .models import Order
 from items.models import ItemType, Item
 
 
-# class OrderViewForm(forms.ModelForm):
-#     class Meta:
-#         model = Order
-#         fields = ['start_date', 'end_date']
-
-#         # Order(*, profile, item, cost_initial, cost_week, start_date, end_date, created_on, created_by)
-#         # Invoice(*, created_on, created_by, order, note, due_on, amount_paid, status, stripe_pid)
-#         
-#         # ItemType(*, name, sku, category, cost_initial, cost_week, meta_tags, product_stripe_id)
-#         # Profile(*, user, account_type, address_line_1, address_line_2, address_line_3, town, county, postcode, phone_number, stripe_id)
-
-#     def __init__(self, *args, **kwargs):
-#         """
-#         Add placeholders and classes, remove auto-generated
-#         labels and set autofocus on first field
-#         """
-#         super().__init__(*args, **kwargs)
-
-
 class OrderDatesForm(forms.ModelForm):
     # Order(*, start_date, end_date)
     class Meta:

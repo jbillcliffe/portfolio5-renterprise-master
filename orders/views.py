@@ -102,35 +102,51 @@ def order_view(request, profile_id, order_id):
     return render(request, template, context)
 
 
-def order_edit(request, profile_id, order_id, note):
-
+def order_edit(request, profile_id, order_id, order_note):
+    print(order_note)
+    print(request.POST)
+    print(request.GET)
+    print("GOT THESE")
     if request.method == "POST":
-        tab_return = request.POST.get('tab')
+
+        print(request.GET['tab'])
+        tab_return = request.GET['tab']
 
         if tab_return == "despatches":
+            print("GOT TAB")
             get_order = Order.objects.get(order__id=order_id)
-            get_order.start_date = request.POST['start_date']
-            get_order.end_date = request.POST['end_date']
+            # get_order.start_date = request.POST['start_date']
+            # get_order.end_date = request.POST['end_date']
+            # get_order.start_date = 
+
+            form = OrderDatesForm(request.POST, instance=get_order)
+            form.save()
 
             order_note = OrderNote.objects.create(
                 order=get_order,
-                note=note,
+                note=order_note,
                 created_on=datetime.now(),
                 created_by=request.user
             )
             order_note.save()
-
+            print("saved stuff")
             messages.success(
                 request,
                 "Order Edited : Date(s) have been changed for this order")
 
-            url = reverse(
-                'order_view', profile_id=profile_id, order_id=order_id)
-            query = urlencode({'tab_return': tab_return})
+            print("URL BUILD")
+            url = reverse('order_view', args=[profile_id, order_id])
+            query = urlencode({'tab': tab_return})
             final_url = '{}?{}'.format(url, query)
+            print(final_url)
             return redirect(final_url)
         else:
-            pass
+            messages.success(
+                request,
+                (
+                    "Order Edit Failed : There was a problem "
+                    "saving the new date(s). Please try again"))
+            return redirect(reverse('order_view', args=[profile_id, order_id]))
 
 
 @login_required

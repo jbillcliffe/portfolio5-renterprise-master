@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
-from django.http.response import HttpResponse
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.db import IntegrityError
 from .models import Profile
 from .forms import UserForm, ProfileForm
 
@@ -68,8 +68,8 @@ def customer_list(request):
     page_number = request.GET.get("page")
     page_obj = customers.get_page(page_number)
 
-    return render(request, "customers/customer_list.html", {"page_obj": page_obj})
-
+    return render(
+        request, "customers/customer_list.html", {"page_obj": page_obj})
 
 
 @login_required
@@ -160,6 +160,89 @@ def profile_view(request):
     template = 'profiles/profile.html'
     context = {
         'self_or_manage': "self",
+        'user_form': user_form,
+        'profile_form': profile_form,
+    }
+
+    # Render the view
+    return render(request, template, context)
+
+@login_required
+def customer_view(request, profile_id):
+    """
+    Display Profile
+
+    If no profile yet, create a new blank one to pair with a user.
+
+    If one is found by its "user" (unique). Then it will load that
+    data into the ProfileForm
+    """
+
+    # When form is submitted
+    # if request.method == "POST":
+
+    # user_form = UserForm(request.POST)
+    # profile_form = ProfileForm(request.POST)
+
+        # If both the user form and profile form are valid.
+    #     if user_form.is_valid() and profile_form.is_valid():
+    #         update_user = request.user
+    #         #     This was the only definitive way of taking a model object
+    #         # and updating it where the model was an inline relation to the
+    #         # user AND allowed the user to update user fields themselves
+    #         # (first_name, last_name, email) in conjunction to additional
+    #         # profile details.
+    #         # Individually referring to each object and updating it.
+
+    #         # NB. Email should be readonly in the profile. If it is changed,
+    #         # the email is no longer validated and can cause issues
+
+    #         update_user.first_name = profile_form.data['first_name']
+    #         update_user.last_name = profile_form.data['last_name']
+    #         # Email is entered from the request.user, not the form post.
+    #         update_user.email = request.user.email
+    #         profile.address_line_1 = profile_form.data['address_line_1']
+    #         profile.address_line_2 = profile_form.data['address_line_2']
+    #         profile.address_line_3 = profile_form.data['address_line_3']
+    #         profile.town = profile_form.data['town']
+    #         profile.county = profile_form.data['county']
+    #         profile.country = profile_form.data['country']
+    #         profile.postcode = profile_form.data['postcode']
+    #         profile.phone_number = profile_form.data['phone_number']
+
+    #         # Save the profile
+    #         profile.save()
+    #         # Save the user
+    #         update_user.save()
+
+    #         # Display a message to the user to show it has worked
+    #         messages.success(
+    #             request,
+    #             'Profile successfully updated'
+    #         )
+
+    #         return redirect(reverse('profile_view'))
+
+    #     else:
+    #         messages.error(
+    #             request, (
+    #                 'Profile data is not valid.'
+    #                 'Please check the validation prompts.'
+    #             )
+    #         )
+
+    # else:
+    # The query is a GET. Get the data to load into fields
+    get_profile = get_object_or_404(Profile, pk=profile_id)
+    get_user = get_profile.user
+
+    user_form = UserForm(instance=get_user)
+    profile_form = ProfileForm(instance=get_profile)
+
+    # Set template and context
+    template = 'customers/customer.html'
+    context = {
+        'customer': get_profile,
         'user_form': user_form,
         'profile_form': profile_form,
     }
@@ -272,3 +355,143 @@ def profile_manage(request, user_id):
 
         # Render the view
         return render(request, template, context)
+
+
+@login_required
+def user_profile_create(request, is_customer):
+
+    print("IS CUSTOMER?")
+    print(is_customer)
+    account_type = request.user.profile.get_account_type()
+
+    if is_customer is True:
+        template = 'customers/customer_create.html'
+        user_defaults_object = {
+            "is_superuser": False,
+            "is_staff": False,
+        }
+    else:
+        template = 'profiles/profile_create.html'
+        user_defaults_object = {
+            "is_superuser": False,
+            "is_staff": True,
+        }
+
+    if account_type == 'Customer':
+        messages.error(
+            request, (
+                'Permission Denied : '
+                'A customer cannot add another user/profile.')
+        )
+        return redirect('menu')
+    else:
+        if request.method == "POST":
+            if is_customer is True:
+                user_form = UserForm(request.POST)
+                profile_form = ProfileForm(request.POST, is_customer=True)
+                account_level = 0
+            else:
+                user_form = UserForm(request.POST)
+                profile_form = ProfileForm(request.POST, is_customer=False)
+                account_level = request.POST['account_type']
+
+            print(account_level)
+            # If both the user form and profile form are valid.
+            if user_form.is_valid() and profile_form.is_valid():
+                #     This was the only definitive way of taking a model object
+                # and updating it where the model was an inline relation to the
+                # user AND allowed the user to update user fields themselves
+                # (first_name, last_name, email) in conjunction to additional
+                # profile details.
+                # Individually referring to each object and updating it.
+
+                # NB. Email should be readonly in the profile. If it is changed,
+                # the email is no longer validated and can cause issues
+
+                # get_user = User.objects.get(order__id=order_id)
+                # user_form = UserForm(request.POST)
+                try:
+                    new_user = User.objects.create(
+                        first_name=request.POST['first_name'],
+                        last_name=request.POST['last_name'],
+                        email=request.POST['email'],
+                        defaults=user_defaults_object
+                    )
+                except IntegrityError as e:
+                    if 'unique constraint' in e.message:
+                        messages.error(
+                            request, (
+                                'Email Error:'
+                                'This email is already in use.'
+                            )
+                        )
+
+                        context = {
+                            'user_form': user_form,
+                            'profile_form': profile_form,
+                        }
+
+                        # Render the view
+                        # (template defined at the top of function)
+                        return render(request, template, context)
+                    else:
+                        new_user.save()
+
+                        new_profile = Profile.objects.create(
+                            user=new_user,
+                            defaults={
+                                "account_type": account_level,
+                                "address_line_1": request.POST['address_line_1'],
+                                "address_line_2": request.POST['address_line_2'],
+                                "address_line_3": request.POST['address_line_3'],
+                                "town": request.POST['town'],
+                                "county": request.POST['county'],
+                                "country": request.POST['country'],
+                                "postcode": request.POST['postcode'],
+                                "phone_number": request.POST['phone_number'],
+                            }
+                        )
+                        new_profile.save()
+                        # Display a message to the user to show it has worked
+                        if is_customer is True:
+                            messages.success(
+                                request,
+                                'Customer successfully created'
+                            )
+                            return redirect(
+                                reverse('customer_view', args=[new_profile.id]))
+                        else:
+                            messages.success(
+                                request,
+                                'Staff Profile successfully created'
+                            )
+                            return redirect(
+                                reverse('profile_manage', args=[new_profile.id]))
+
+            else:
+                messages.error(
+                    request, (
+                        'Data Error: Profile data is not valid.'
+                        'Please check the validation prompts.'
+                    )
+                )
+
+        else:
+            # The query is a GET. Get the data to load into fields
+            # user_form = UserForm()
+            # profile_form = ProfileForm()
+            # Set template and context
+            user_form = UserForm()
+            if is_customer is True:
+                profile_form = ProfileForm(is_customer=True)
+            else:
+                profile_form = ProfileForm(is_customer=False)
+
+
+            context = {
+                'user_form': user_form,
+                'profile_form': profile_form,
+            }
+
+            # Render the view
+            return render(request, template, context)

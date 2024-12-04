@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_title %}{% if request.profile.account_type == 0 %}{% trans "Customer Profile" %}{% else %}{% trans "Manage Customer Profile" %}{% endif %}{% endblock extra_title %}
+
+<!-- Creating the form for Profiles allowing a user to update their details -->
+<!-- div app container holds this -->
+{% block content %}
+    <hr>
+        <h1>{% if request.profile.account_type == 0 %}My Customer Profile - {% else %}Customer Profile - {% endif %}ID: {{ customer.id }}</h1>
+    <hr>
+    <div class="row">
+        <div class="col-12 col-lg-9 col-xxl-8">
+            {% comment %} <form action="{% if request.profile.account_type == 0 %}{% else %}{% url 'customer_view' %}{% endif %}"  {% endcomment %}
+                <form action="#"
+                    class="floating-labels-form" method="post" id="customer_view">
+                {% crispy user_form user_form.helper %}
+                {% crispy profile_form profile_form.helper %}
+                {% if request.profile.account_type == 0 %}
+                {% else %}
+                <a class="not-submit no-decoration" 
+                    href="{% url 'customer_list' %}">
+                    {% trans "Return To Customers" %}
+                </a>
+                <button type="submit" class="white-text">{% trans "Update Customer" %}</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+{% endblock content %}

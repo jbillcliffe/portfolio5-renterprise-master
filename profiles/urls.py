@@ -20,15 +20,31 @@ urlpatterns = [
         views.profile_manage,
         name="profile_manage"),
     path(
+        'create/',
+        views.user_profile_create,
+        {"is_customer": False},
+        name="profile_create"),
+    path(
         'customers/',
         views.customer_list,
         name='customer_list'),
     path(
+        'customers/<int:profile_id>/',
+        views.customer_view,
+        name="customer_view"),
+    path(
+        'customers/create/',
+        views.user_profile_create,
+        {"is_customer": True},
+        name="customer_create"),
+    path(
         'customers/<int:profile_id>/order/<int:order_id>/',
         order_view,
         name='order_view'),
-    path('customers/orders/<int:profile_id>/'
-         'order/<int:order_id>/edit/<str:note>/',
-         order_edit,
-         name='order_edit'),
+    path(
+        (
+            'customers/<int:profile_id>/'
+            'order/<int:order_id>/edit/<str:order_note>/'),
+        order_edit,
+        name='order_edit'),
 ]

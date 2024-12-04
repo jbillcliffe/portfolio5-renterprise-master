@@ -79,10 +79,6 @@
                 </div>
             </div>
         </div>
-        {% comment %} {% include "includes/support-modal.html" %} {% endcomment %}
-        <!-- Facebook Modal is only included when on the main menu as the social media footer
-         is not present within the program itself -->
-        {% comment %} {% if request.path == "" or request.path == "/" %}{% include "includes/facebook-modal.html" %}{% endif %} {% endcomment %}
         
         <div class="program-holder">
             <!-- If there are any messages sent, and are in the MESSAGE_STORAGE-->

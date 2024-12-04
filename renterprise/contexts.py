@@ -15,5 +15,6 @@ def settings_variables(request):
         'COMPANY_PHONE': settings.COMPANY_PHONE,
         'COMPANY_HELP_PHONE': settings.COMPANY_HELP_PHONE,
         'COMPANY_ADDRESS': settings.COMPANY_ADDRESS,
+        'SIDE_NAV_DISPLAY_URLS': settings.SIDE_NAV_DISPLAY_URLS,
         # 'XML_LOCATION': settings.XML_LOCATION,
     }

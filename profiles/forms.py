@@ -29,7 +29,9 @@ class UserForm(forms.ModelForm):
         Add placeholders and classes, remove auto-generated
         labels and set autofocus on first field
         """
+        self.is_customer = kwargs.pop("is_customer", None)
         super().__init__(*args, **kwargs)
+
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = False
@@ -39,7 +41,10 @@ class UserForm(forms.ModelForm):
         # To prevent editing email visually.
         # views.py handles any other attempts by not using any
         # email value from the post.
-        self.fields['email'].widget.attrs['readonly'] = True
+        if self.is_customer is True:
+            self.fields['email'].widget.attrs['readonly'] = True
+        else:
+            self.fields['email'].widget.attrs['readonly'] = False
 
         self.helper.layout = Layout(
             FloatingField("first_name"),
@@ -60,19 +65,35 @@ class ProfileForm(forms.ModelForm):
         Add placeholders and classes, remove auto-generated
         labels and set autofocus on first field
         """
+        self.is_customer = kwargs.pop("is_customer", None)
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
         self.helper.form_tag = False
-        self.helper.layout = Layout(
-            FloatingField("phone_number"),
-            FloatingField("account_type"),
-            FloatingField("address_line_1"),
-            FloatingField("address_line_2"),
-            FloatingField("address_line_3"),
-            FloatingField("town"),
-            FloatingField("county"),
-            FloatingField("country"),
-            FloatingField("postcode")
-        )
+
+        if self.is_customer is True:
+            print("Create a customer")
+            self.helper.layout = Layout(
+                FloatingField("phone_number"),
+                FloatingField("address_line_1"),
+                FloatingField("address_line_2"),
+                FloatingField("address_line_3"),
+                FloatingField("town"),
+                FloatingField("county"),
+                FloatingField("country"),
+                FloatingField("postcode")
+            )
+        else:
+            print("Create Staff")
+            self.helper.layout = Layout(
+                FloatingField("phone_number"),
+                FloatingField("account_type"),
+                FloatingField("address_line_1"),
+                FloatingField("address_line_2"),
+                FloatingField("address_line_3"),
+                FloatingField("town"),
+                FloatingField("county"),
+                FloatingField("country"),
+                FloatingField("postcode")
+            )

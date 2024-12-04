@@ -5,84 +5,98 @@ const fullOrderList = JSON.parse(JSON.parse(document.getElementById('json-order-
 const dateErrors = document.getElementById('id-order-date-messages');
 let currentItemType = document.getElementById('id_item_type').value;
 
+let orderId = document.getElementById('despatches-tab-pane').dataset.originalStartDate;
+let originalStartDate = document.getElementById('despatches-tab-pane').dataset.originalStartDate;
+let originalEndDate = document.getElementById('despatches-tab-pane').dataset.originalEndDate;
+
+let submitAllowed = false;
+
 // This will stop any submissions without validation from the time the script is triggered
 document.getElementById("id-date-change-submit").addEventListener(
     "click", function(event){
     event.preventDefault()
+    
+    if (submitAllowed == true) {
+        document.getElementById("date-change-form").submit();
+        //submitDateChanges()
+    } else {
+        // Do nothing.
+    }
 });
 
 // Define the category and type selectors.
 
 function validateDates(){
 
+    let oldStartDate = new Date(Date.parse(originalStartDate));
+    let oldEndDate = new Date(Date.parse(originalEndDate));
     let startDate = new Date(document.getElementById("id_start_date").value);
     let endDate = new Date(document.getElementById("id_end_date").value);
     let today = new Date();
     startDate.setHours(0);
     endDate.setHours(0);
     today.setHours(0);
+
+    console.log("OLD START MS :"+oldStartDate.getTime());
+    console.log("NEW START MS :"+startDate.getTime());
+    console.log("OLD END MS :"+oldEndDate.getTime());
+    console.log("NEW END MS :"+endDate.getTime());
     
     //id_item_type.value
 
     if (startDate == "Invalid Date" || endDate == "Invalid Date") {
-        console.log("only one date set")
         
         if (startDate < today) {
-            console.log("Less than today");
-        } else if (endDate < today) {
-            console.log("Less than today");
-        }
-    } else if (startDate && endDate) {
-        if (startDate < today || endDate < today) {
-            errorSet('danger', `Changed dates cannot be before today.`);
-            // if (dateErrors.classList.contains('text-danger')){
-            // } else {
-            //     //stockCollapseInner.classList.add("card-warning")
-            //     if (dateErrors.classList.contains('text-success')){
-
-            //     dateErrors.classList.remove('text-success').add("text-danger");
-            // }
+            errorSet('danger', `Start date cannot be before than today.`);
             
-            // dateErrors.innerHTML = `Changed dates cannot be before today.`;
+        } else if (endDate < today) {
+            errorSet('danger', `End date cannot be before than today.`);
+        }
 
+        submitAllowed = false;
+    
+    } else if (startDate && endDate) {
+        console.log("START - Old: "+oldStartDate+", New: "+startDate);
+        console.log("END - Old: "+oldEndDate+", New: "+endDate);
+
+        if (startDate < today && startDate.getTime() != oldStartDate.getTime()) {
+            errorSet('danger', `Changed change start date to be before today. It can be left the same.`);
+            submitAllowed = false;
+
+        } else if (endDate < today && endDate.getTime() != oldEndDate.getTime()) {
+            errorSet('danger', `Changed change end date to be before today. It can be left the same.`);
+            submitAllowed = false;
+        
         } else if (endDate < startDate) {
-            // if (dateErrors.classList.contains('text-danger')){
-            // } else {
-            //     dateErrors.classList.remove('text-success').add("text-danger");
-            // }
-            // dateErrors.innerHTML = `Order end must be after start`;
             errorSet('danger', `Order end must be after start`);
+            submitAllowed = false;
 
         } else if (startDate == endDate){
-            // if (dateErrors.classList.contains('text-danger')){
-            // } else {
-            //     dateErrors.classList.remove('text-success').add("text-danger");
-            // }
-            // dateErrors.innerHTML = `Cannot start and end the order on the same day`;
             errorSet('danger', `Cannot start and end the order on the same day`);
-        } else {
+            submitAllowed = false;
 
+        } else {
+            // Although this is a positive step through the functions.
+            // It could still fail after this point, so submit is still not available.
+            submitAllowed = false;
             let assetsOwned = [];
             for (let x = 0; x < fullItemList.length; x++) {
                 if (fullItemList[x].fields.item_type == currentItemType) {
                     assetsOwned.push(fullItemList[x]);
                 }
             } 
-
+            console.log("OWNED: "+assetsOwned);
             if (assetsOwned.length == 0) {
-                // if (dateErrors.classList.contains('text-danger')) {
-                // } else {
-                //     dateErrors.classList.remove('text-success').add("text-danger");
-                // }
-                // dateErrors.innerHTML = `None of these are owned.`;
                 errorSet('danger', `None of these are owned.`);
-            } else {
 
+            } else {
                 getAvailableStockAfterOrders(JSON.stringify(assetsOwned), startDate, endDate);
             }
         }
     } else {
         // should not be an error. Either there are two dates, or not
+        // Disable submit as there is an
+        submitAllowed = false;
     }
 }
 
@@ -105,145 +119,181 @@ function getAvailableStockAfterOrders(assetList, newStart, newEnd) {
     let currentOrderId = document.getElementById('order-view-tab-content').dataset.orderId;
     
     assetList = JSON.parse(`${assetList}`);
-    
+    console.log("AL: "+assetList);
+
     //start by loading each item.
     for (let x = 0; x < assetList.length; x++) {
         let newItemObject = assetList[x];
         let newItem = newItemObject.pk;
+        console.log("newIObject : "+newItemObject);
+        console.log("newIPK : "+newItem);
 
         //first check it is available and double check against a repair date on the item
         if (assetList[x].fields.status == 0 && !assetList[x].fields.repair_date) {
+
             //if they both resolve correctly, it needs to be checked against the orders.    
             //begin searching the order history
             for (let y = 0; y < fullOrderList.length; y++) {
+
                 //get the start date and end date of this order
                 let oldStart = new Date(fullOrderList[y].fields.start_date);
                 let oldEnd = new Date(fullOrderList[y].fields.end_date);
                 let oldItem = fullOrderList[y].fields.item;
-
                 
                 //Is the item x, in the order of y.
                 if (newItem == oldItem) {
+
                     //Although there is another booking, do the dates clash?
                     //Or, bypass this item if the order and item in question are this order and item.
                     //Therefore it is an amend process and a date change on itself is permitted.
                     if (areDatesClear(newStart, newEnd, oldStart, oldEnd) == true ||
                         ((fullOrderList[y].pk == currentOrderId) &&
                          (fullOrderList[y].fields.item == currentItemId))) {
+
                         //resolving as true, means the dates are clear.
                         if (y == fullOrderList.length - 1) {
-                            // If this is the final order to check in the order list.
 
-                            availableChoices.push(newItemObject)
+                            // If this is the final order to check in the order list
+                            availableChoices.push(JSON.stringify(newItemObject))
                             break;
                         } else {
+
                             // Still more orders to check. Cannot push yet
                             continue;
                         }
 
                     } else {
+
                         //this item has a reservation in those dates and therefore this item is unavailable.
                         break;
                     }
 
                 } else {
+
                     // This item has not been booked in this order
                     if (y == fullOrderList.length - 1) {
+
                         // If this is the final order to check in the order list.
-                        availableChoices.push(newItemObject)
+                        availableChoices.push(JSON.stringify(newItemObject))
                         break;
+
                     } else {
+
                         // Still more orders to check. Cannot push yet.
                         continue;
                     }
                 }
             }
-
         } else {
+
             //it is not available, or it has a repair date on it.
             //Continue to the next item
             continue;
         }
     }
+    // TEST ITEMS
+    // let testChoices = [];
+    // for (let z = 0; z < 2; z++)
+    // {   
+    //     testChoices.push(JSON.parse(`{"model":"items.item","pk":${z},"fields":{"item_type":5,"delivery_date":null,"collect_date":null,"repair_date":null,"income":"0.00","status":0}}`))
+    // }
+    // availableChoices = testChoices
+    // console.log(testChoices)
+    
+    console.log("CHOICES : "+availableChoices);
 
     if (availableChoices.length > 0) {
 
-        //Good, remove warning if there.
-        //if (dateErrors.classList.contains('text-danger')){
-        //    dateErrors.classList.remove('text-danger').add('text-success');
-        errorSet('', ``);
+        // All good, remove warning if there.
+        errorSet('', '');
+
+        // Check if the old item is in the available list
         for (let z = 0; z < availableChoices.length; z++)
-        {
-            if (availableChoices[z].pk == currentItemId) {
-                //make this the only choice for "autoSelectStock"
-                autoSelectStock(JSON.stringify(availableChoices[z]));
-                //dateErrors.innerHTML = `Assigning the original item to it's new dates.`;
+        {   
+            parsedChoiceObject = JSON.parse(availableChoices[z]);
+            console.log("availableChoices Z PARSE: "+JSON.parse(availableChoices[z]).pk)
+
+            if (parsedChoiceObject.pk == currentItemId) {
+
+                // Force it to pick the item already ordered. Much simpler and if it is close
+                // to despatch date, then the likelihood is that item will lose money.
+                console.log("found current item @ ("+z+"): "+parsedChoiceObject.pk)
+                console.log("found current item @ ("+z+"): "+parsedChoiceObject.fields)
+                autoSelectStock(JSON.stringify(parsedChoiceObject));
                 break;
+
             } else {
                 if (z == availableChoices.length - 1) {
+
                     //last item in the list to check for and it still has not
                     //found the current item available. So a selection needs to be
                     //made from the full array.
+                    console.log("LASTCHANCE: "+JSON.stringify(availableChoices));
                     autoSelectStock(JSON.stringify(availableChoices));
+                    getAvailableStockAfterOrders(JSON.stringify(assetsOwned), startDate, endDate);
                 }
             }
         }
-        //} 
+
     } else {
+        submitAllowed = false;
         errorSet('danger', `There are none in stock for these dates. Another Item would be required.`);
-        // if (dateErrors.classList.contains("text-danger")){
-        // } else {
-        //     dateErrors.classList.remove('text-success').add("text-danger");
-        // }
-        // dateErrors.innerHTML = `There are none in stock for these dates. Another Item would be required.`;
     }
 }
 
-
 function autoSelectStock(availableItems) {
-    //console.log("AVAILABLE : "+availableItems);
-    //availableItems = JSON.parse(`${availableItems}`);
     
-    availableItems = "["+availableItems+"]";
+    availableItems = JSON.parse(`[${availableItems}]`)
+    console.log("START AVAILABLE : "+availableItems);
+    console.log([availableItems[0]])
+    console.log("AVAILABLE LEN : "+availableItems.length);
+    console.log("TYPE: "+(typeof availableItems))
     console.log("AVAILABLE : "+availableItems);
-    availableItems = JSON.parse(availableItems);
-    console.log(availableItems);
-    console.log(availableItems[0].fields);
+
     let itemSelect;
     for (let x = 0; x < availableItems.length; x++) {
-        let newItemObject = availableItems[x];
-        console.log("OBJECT "+x+": "+newItemObject)
-        // Iterate through the available items and see which has made the least money.
-        // Automatically assign that one to the order.
+
+        newItemObject = availableItems[x];
+        console.log(newItemObject);
+
         if (x ==  0)  {
-            itemSelect = JSON.stringify(availableItems[x]);
+            itemSelect = availableItems[x];
         } else {
             // if they match (most likely at 0.00) then don't change.
+            console.log("NIO Income : "+newItemObject.fields.income);
+            console.log("IS Income : "+itemSelect.fields.income);
             if (newItemObject.fields.income < itemSelect.fields.income) {
-                itemSelect = JSON.stringify(newItemObect);
+                itemSelect = newItemObject;
             } else {
             }
         }
     }
-    console.log("ITEM SELECT : "+itemSelect)
-    let submitButton = document.getElementById('id-date-change-submit');
-    submitButton.hidden = false;
-    submitButton.disabled = false
 
-    let orderItem = document.getElementById('order-view-tab-content').dataset.itemId;
-    let orderProfile = document.getElementById('order-view-tab-content').dataset.profileId;
-    let orderId = document.getElementById('order-view-tab-content').dataset.orderId;
-    let originalStart = document.getElementById('order-view-tab-content').dataset.originalStartDate;
-    let originalEnd = document.getElementById('order-view-tab-content').dataset.originalStartEnd;
-    let orderNote;
-    // itemSelect = JSON.parse(itemSelect);
-    console.log("final select : "+itemSelect.pk)
-    if (itemSelect.pk == orderItem) {
-        orderNote = `Item ${itemSelect.fields.item_serial} rebooked. Previous Start Date : ${originalStart}, Previous End Date : ${originalEnd}`
+    if (!itemSelect) {
+        submitAllowed = false;
+        errorSet('danger', 'No Item Selected');
+    } else {
+
+        let submitButton = document.getElementById('id-date-change-submit');
+        let orderProfile = document.getElementById('order-view-tab-content').dataset.profileId;
+        let orderId = document.getElementById('order-view-tab-content').dataset.orderId;
+        let orderNote = buildOrderNote();
+        console.log(orderNote);
+        
+        if (orderNote == "empty"){
+            submitAllowed = false;
+            submitButton.hidden = true;
+            submitButton.disabled = true;
+            errorSet('danger', 'No change required, dates are the same as before.');
+            
+        } else {
+            submitAllowed = true;
+            submitButton.hidden = false;
+            submitButton.disabled = false;
+            let orderItemEditURL = `/profiles/customers/${orderProfile}/order/${orderId}/edit/${orderNote}/?tab=despatches`
+            document.getElementById("date-change-form").action = `${orderItemEditURL}`;
+        }
     }
-    let orderItemEditURL = `/profiles/customers/${orderProfile}/order/${orderId}/edit/${orderNote}/?tab=despatches`
-    document.getElementById("date-change-form").action = `${orderItemEditURL}`;
-    //document.getElementById("date-change-form").submit();
 }
 function areDatesClear(newStartDate, newEndDate, previousStartDate, previousEndDate) {
     /*  Situations -     
@@ -285,16 +335,67 @@ function areDatesClear(newStartDate, newEndDate, previousStartDate, previousEndD
 }
 
 function errorSet(textClass, textMessage) {
-    if (textClass == '') {
-        
-    } else {
-        if (dateErrors.classList.contains('text-danger')) {
-            dateErrors.classList.remove('text-danger');
+
+    let errorClasses = dateErrors.classList;
+    
+    errorClasses.forEach(
+        function(className, x) {
+            errorClasses.remove(className);
         }
-        if (dateErrors.classList.contains('text-success')) {
-            dateErrors.classList.remove('text-success');
-        }
-        dateErrors.classList.add(textClass);
+    )
+    dateErrors.classList.add(`text-${textClass}`);
+    dateErrors.textContent = textMessage;
+    // for (let x = 0; x < classNumber;)
+    // dateErrors.classList.remove();
+    // dateErrors.classList.add(`text-${textClass}`);
+}
+
+function buildOrderNote() {
+    
+    // Get dates from form, set them to midnight to stop same days having different times.
+    let newStartDate = new Date(document.getElementById("id_start_date").value);
+    let newEndDate = new Date(document.getElementById("id_end_date").value);
+    newStartDate.setHours(0);
+    newEndDate.setHours(0);
+
+    // Change the format of the Date from the dataset providing the values
+    // and declare Booleans to detect if there is changes in the start and end dates.
+    let oldStartDate = new Date(Date.parse(originalStartDate));
+    let oldEndDate = new Date(Date.parse(originalEndDate));
+    let startChange = false;
+    let endChange = false;
+
+    // Convert the dates into milliseconds relative to midnight of 01/01/1970.
+    if (newStartDate.getTime() != oldStartDate.getTime())
+    {
+        startChange = true;
     }
-    dateErrors.innerHTML = textMessage;
+    if (newEndDate.getTime() != oldEndDate.getTime())
+    {
+        endChange = true;
+    }
+
+    //Build the string for an OrderNote.
+    let noteText = "";
+    
+    if (startChange == true && endChange == true)
+    {
+        noteText += "The start and end dates have been changed. ";
+        noteText += `The previous start date was ${originalStartDate}`;
+        noteText += `The previous end date was ${originalEndDate}`;
+
+    } else if (startChange == false && endChange == true) {
+        noteText += "The end date has been changed. ";
+        noteText += `The previous end date was ${originalEndDate}`;
+    } else if (startChange == true && endChange == false) {
+        noteText += "The start date has been changed. ";
+        noteText += `The previous start date was ${originalStartDate}`;
+    } else {
+        noteText = "empty"
+    }
+    
+    // Return the result (built string or empty). If empty, then there will be
+    // no opportunity to make a POST from the form.
+    return noteText;
+
 }
