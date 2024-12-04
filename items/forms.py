@@ -70,7 +70,6 @@ class ItemForm(forms.ModelForm):
         )
     
 
-
 class ItemCreateForm(forms.ModelForm):
     """
     Defining the ItemForm, assigning correctly formatted
@@ -306,6 +305,33 @@ class ItemTypeForm(forms.ModelForm):
             FloatingField(
                 "cost_week",
                 wrapper_class="col-12 order-5 p-0"),
+        )
+
+
+class ItemTypeFullForm(forms.ModelForm):
+
+    class Meta:
+        model = ItemType
+        exclude = ['meta_tags']
+
+    def __init__(self, *args, **kwargs):
+        """
+        Add placeholders and classes, remove auto-generated
+        labels and set autofocus on first field
+        """
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+        self.helper.attrs['autocomplete'] = 'off'
+        self.helper.form_tag = False
+
+        self.helper.layout = Layout(
+            FloatingField("name"),
+            FloatingField("sku"),
+            FloatingField("category"),
+            FloatingField("cost_initial"),
+            FloatingField("cost_week"),
+            FloatingField("product_stripe_id")
         )
 
 

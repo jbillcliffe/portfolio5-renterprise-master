@@ -126,3 +126,11 @@ https://stackoverflow.com/questions/27221332/bootstrap-collapse-animation-not-sm
 
 data to dump :
 account, admin, auth, contenttypes, items, orders, profiles, sessions, socialaccount
+
+admin styling
+
+https://books.agiliq.com/projects/django-admin-cookbook/en/latest/logo.html - Brand
+https://books.agiliq.com/projects/django-admin-cookbook/en/latest/change_text.html - Titles
+
+custom list filters 
+https://docs.djangoproject.com/en/5.1/ref/contrib/admin/filters/#using-a-simplelistfilter

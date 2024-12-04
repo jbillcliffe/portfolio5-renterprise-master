@@ -15,7 +15,7 @@ from PIL import Image
 from .models import Item, ItemType
 from .forms import (
     ItemTypeForm, ItemTypeEditForm, ItemForm,
-    ItemCreateForm, ItemStatusForm)
+    ItemCreateForm, ItemStatusForm, ItemTypeFullForm)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -29,6 +29,21 @@ class ItemList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ItemList, self).get_context_data(**kwargs)
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class ItemTypeList(ListView):
+    """
+    Class ListView to display the item types into a table.
+    """
+    paginate_by = 10
+    model = ItemType
+    template_name = 'items/item_type_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemTypeList, self).get_context_data(**kwargs)
+        print(context)
         return context
 
 
@@ -125,6 +140,82 @@ def item_view(request, item_id):
         'item_form': item_form,
         'item_type_edit_form': item_type_edit_form,
         'item_status_form': item_status_form,
+    }
+
+    return render(request, template, context)
+
+
+@login_required
+def item_type_view(request, type_id):
+    """
+    View to display the properties of an individual item type
+    """
+    print(type_id)
+    print(request)
+    item_type = get_object_or_404(ItemType, pk=type_id)
+    
+    print(item_type)
+    # account_type = request.user.profile.get_account_type()
+
+    # When form is submitted, note to ignore the ItemType form, they are
+    # disabled in the form and they are display only, carrying the values
+    # from it's own model for display.
+    if request.method == "POST":
+
+        # Work with a duplicate of the original instance, just in case
+        item_type_new = item_type
+        item_type_form = ItemTypeFullForm(request.POST)
+        # Only need to search for the one prefix, because someone without
+        # "edit" should not be able to change the details and they are
+        # display only
+        # selected_type = get_object_or_404(
+        #     ItemType,
+        #     pk=request.POST['edit-item-item_type'])
+        # item_new.type = selected_type
+        # item_new.item_type = selected_type
+
+        # try:
+        #     item_new.full_clean()
+        # except ValidationError as e:
+        #     messages.error(
+        #         request, (
+        #             e,
+        #             'Item data is not valid.'
+        #             'Please check the validation prompts.'
+        #         )
+        #     )
+        #     pass
+
+        # item_new.save()
+
+        # Display a message to the user to show it has worked
+        messages.success(
+            request,
+            'Item successfully updated'
+        )
+
+        return redirect('item_type_view', type_id=item_type_new.id)
+
+    else:
+
+        item_type_form = ItemTypeFullForm(instance=item_type)
+        # return redirect('item_type_view', type_id=item_type.id)
+        # The query is a GET. So data/context/template needs to
+        # sent to the form to load.
+
+        # queryset = ItemType.objects.all()
+        # item_type_list = list(queryset)
+
+        # item_type_form = ItemTypeFullForm(instance=item_type)
+
+    # Set template and context
+    # print("Hello")
+
+    template = 'items/item_type.html'
+    context = {
+        'item_type_name': item_type.name,
+        'item_type_form': item_type_form,
+        'item_type_image': item_type.image
     }
 
     return render(request, template, context)

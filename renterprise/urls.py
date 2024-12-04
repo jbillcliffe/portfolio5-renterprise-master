@@ -33,3 +33,7 @@ urlpatterns = [
     document_root=settings.MEDIA_ROOT)
 
 handler404 = 'renterprise.views.handler404'
+
+admin.site.site_header = "Renterprise Administration"
+admin.site.site_title = "Renterprise Portal"
+admin.site.index_title = "Welcome to Renterprise Administration Portal"

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block extra_css %}
+    <link href="{% static "css/renterprise-tables.css" %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block extra_title %}{% blocktrans %}Item Type Listing{% endblocktrans %}{% endblock extra_title %}
+<!-- div app container holds this -->
+{% block content %}
+    <hr>
+        <h1>Item Type List</h1>
+    <hr>
+    <div class="row">
+        <div class="col-12 col-lg-10 col-xxl-9">
+            <!-- If user is logged in -->
+            {% if user.is_authenticated %}
+                <!-- Create "account_type" variable -->
+                {% with account_type=user.profile.account_type %}
+                    <!-- 2 & 3 = HR & Administrator privileges -->
+                    {% if account_type != 0 %}
+                        <!-- Create Table Div-->
+                        <div class="renterprise-table">
+                            <!-- Create Table Header -->
+                            <!-- Not required on this table -->
+                            <!-- For each item object -->
+                            {% for item_type in itemtype_list %}
+                                <!-- If the category is different from the previous one -->
+                                {% ifchanged item_type.category %}
+                                    <!-- Add a category header -->
+                                    <div class="renterprise-table-row bottom-row bg-info-subtle">
+                                        <div class="col-12">
+                                            <strong>{{ item_type.category|upper }}</strong>
+                                        </div>
+                                    </div>
+                                {% endifchanged %}
+                                <!-- Create a row for type name, type category and serial number -->
+                                <!-- Spans are visible from 767px and less -->
+                                <!-- Each column essentially becomes full width (a row) at 767px and less -->
+                                <div class="renterprise-table-row bottom-row">
+                                    <div class="col-12 multi-element-column">
+                                        <span>{{ item_type.name }}</span>
+                                        <a 
+                                        href="{% url 'item_type_view' item_type.id %}">
+                                            <i class="bi bi-arrow-right-circle-fill icon-button text-success"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% include "includes/paginate.html" %}
+                        </div>                        
+                    {% else %}
+                        {% blocktrans %}<h3 class="text-danger">Not Authorised</h3>{% endblocktrans %}
+                        {% blocktrans %}<p>Customers do not have access to this area.</p>{% endblocktrans %}
+                        <a class="url-nav-button" href="{% url 'menu' %}">{% trans "Return To Menu" %}</a>
+                    {% endif %}
+                {% endwith %}
+            {% else %}
+                {% blocktrans %}<h3 class="text-danger">Not Authorised</h3>{% endblocktrans %}
+                {% blocktrans %}
+                    <p>You need to be logged in to access the program.</p>
+                    <p>Log in to continue using this application.</p>
+                {% endblocktrans %}
+                <a class="button white-text" href="{% url 'account_login' %}">{% trans "Log In" %}</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
