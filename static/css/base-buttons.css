@@ -100,7 +100,7 @@ input[class*="danger-button"]:hover
     border-color: #000000;
 }
 
-#view-only-type-edit:hover {
+#view-only-type:hover {
     /* These colours are the same, so there is no change in appearance.
     As this is a "display only" button */
     color: #FFFFFF;

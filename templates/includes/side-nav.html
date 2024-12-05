@@ -122,7 +122,7 @@
                 <!-- Show Item List, if on the list page itself then show it as active, by
                 highlighting it with the active class and disabling it by not applying
                 its href and target value -->
-                {% if url_name == "menu" or "/items" in request.path %}
+                {% if url_name == "menu" or "/items" in request.path and "/type" not in request.path %}
                     <!-- 0 will always be Customer, so they cannot see this -->
                     {% if account_level > 0 %}
                         <li class="nav-item sidebar">
@@ -133,7 +133,7 @@
                         </li>
                     {% endif %}
                 {% endif %}
-                <!-- When on the "Item List", "Item Type List" or "New Item", show this.
+                <!-- When on the "Item List","Item Type List" or "Item Create" show this.
                 Highlighting it with the active class and disabling it by not applying
                 its href and target value when it is on the "New Item" page itself-->
                 {% if url_name == "item_list" or url_name == "item_create" %}
@@ -147,16 +147,31 @@
                         </li>
                     {% endif %}
                 {% endif %}
-                <!-- When on the "Item List", "Item Type List" or "New Item Type" page, show this.
-                Highlighting it with the active class and disabling it by not applying
-                its href and target value when it is on the "New Item" page itself-->
-                {% if url_name == "item_list" or url_name == "item_create" %}
+                <!-- Show Type List, if on the list page itself then show it as active, by
+                highlighting it with the active class and disabling it by not applying
+                its href and target value -->
+                {% if url_name == "menu" or "/items" in request.path and "/type" in request.path %}
                     <!-- 0 will always be Customer, so they cannot see this -->
                     {% if account_level > 0 %}
                         <li class="nav-item sidebar">
-                            <a {% if url_name == "item_create" %}{% else %}href="{% url 'item_create' %}" target="_self"{% endif %}
-                            class="side-bar nav-link {% if url_name == 'item_create' %}active{% endif %}">
-                                <i class="nav-icon bi bi-database-add"></i><strong>{% trans "New Item" %}</strong>
+                            <a {% if url_name == "item_type_list" %}{% else %}href="{% url 'item_type_list' %}" target="_self"{% endif %}
+                            class="side-bar nav-link {% if url_name == 'item_type_list' %}active{% endif %}">
+                                <i class="nav-icon bi bi-database-fill"></i><strong>{% trans "Item Types" %}</strong>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+                
+                <!-- When on the "Item List","Item Type List" or "Item Create" show this.
+                Highlighting it with the active class and disabling it by not applying
+                its href and target value when it is on the "New Item" page itself-->
+                {% if url_name == "item_type_list" or url_name == "item_type_create" %}
+                    <!-- 0 will always be Customer, so they cannot see this -->
+                    {% if account_level > 0 %}
+                        <li class="nav-item sidebar">
+                            <a {% if url_name == "item_type_create" %}{% else %}href="{% url 'item_type_create' %}" target="_self"{% endif %}
+                            class="side-bar nav-link {% if url_name == 'item_type_create' %}active{% endif %}">
+                                <i class="nav-icon bi bi-database-fill-add"></i><strong>{% trans "New Item Type" %}</strong>
                             </a>
                         </li>
                     {% endif %}
