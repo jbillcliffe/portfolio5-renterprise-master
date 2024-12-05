@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import slugify
+from django.templatetags.static import static
 from django.utils.decorators import method_decorator
 from django.utils.safestring import mark_safe
 from django.views.generic import ListView
@@ -14,8 +15,8 @@ from PIL import Image
 
 from .models import Item, ItemType
 from .forms import (
-    ItemTypeForm, ItemTypeEditForm, ItemForm,
-    ItemCreateForm, ItemStatusForm, ItemTypeFullForm)
+    ItemTypeForm, ItemTypeEditForm, ItemTypeCreateForm, ItemTypeFullForm,
+    ItemForm, ItemCreateForm, ItemStatusForm, )
 
 
 @method_decorator(login_required, name='dispatch')
@@ -153,7 +154,7 @@ def item_type_view(request, type_id):
     print(type_id)
     print(request)
     item_type = get_object_or_404(ItemType, pk=type_id)
-    
+
     print(item_type)
     # account_type = request.user.profile.get_account_type()
 
@@ -222,6 +223,119 @@ def item_type_view(request, type_id):
 
 
 @login_required
+def item_type_create(request):
+
+    account_type = request.user.profile.get_account_type()
+    all_categories = (
+        ItemType.objects.values('category').distinct('category'))
+    # item_type_list = list(item_type_queryset)
+    # 'all_types': item_type_list,
+    # print(previous_categories)
+    # This will determine if they have navigated by the url directly.
+    # If they are a customer, it will bump that to the main menu, all
+    # other accounts (Staff,HR,Administrator) are permitted to do this.
+    if account_type == 'Customer':
+        messages.error(
+            request, 'Permission Denied : A customer cannot add items.')
+        return redirect('menu')
+    else:
+        if request.method == "POST":
+
+            form = ItemTypeCreateForm(request.POST)
+            # This allows the use of a text field in the category section.
+            # Giving the ability now to select a previously used category or
+            # to create a new one.print("FORM")
+            form.clean_category()
+
+            if form.is_valid():
+                print("HERE1")
+                image_name = form.data['image-input-name']
+                # Check the file does not already exist
+                if Path(f"{settings.MEDIA_ROOT}/{image_name}").exists():
+                    pass
+                    # Check that the user has not submitted a "No Image"
+                elif form.data['image-input-name'] == ("No Image"):
+                    # Although no image exists, another is not required
+                    image_name = "/static/images/default.webp"
+                else:
+                    # If the file does not exist, then create one
+                    # take the file from the "image-button"
+                    if 'image-button' in request.FILES:
+                        image_name = slugify(form.data['name']) + ".webp"
+                        try:
+                            print("In the files")
+                            with (
+                                Image.open(
+                                    request.FILES['image-button']) as img):
+                                img.convert('RGB')
+                                # Create the image name to use
+                                img.name = image_name
+                                img_path = f"{settings.MEDIA_ROOT}/{image_name}"
+                                img.save(img_path, 'webp')
+
+                        except IOError:
+                            print("HERE4")
+                            image_name = "/static/images/default.webp"
+
+                            messages.error(
+                                request, (
+                                    'An error occurred while trying'
+                                    ' to open the image.'
+                                    ' Default image will be used'
+                                )
+                            )
+                        print("HERE4")
+                        pass
+                    else:
+                        # If no image uploaded /static/images/default.webp
+                        print("HERE5")
+                        image_name = "settings.DEFAULT_NO_IMAGE"
+                        new_item_type = form
+
+                try:
+                    print("HERE6")
+                    form.full_clean()
+                    print(form.full_clean())
+
+                except ValidationError as e:
+                    print("HERE7")
+                    messages.error(
+                        request, (
+                            e,
+                            'Item type data is not valid.'
+                            'Please check the validation prompts.'
+                        )
+                    )
+                print("HERE8")
+                new_item_type = form.save(commit=False)
+                new_item_type.image = image_name
+                new_item_type.save()
+                new_type_id = new_item_type.id
+                messages.success(
+                    request, 'This type has been newly created')
+                return redirect('item_type_view', new_type_id)
+            else:
+                print("HERE9")
+                messages.error(
+                    request,
+                    (
+                        'Could not add the item type.'
+                        'Check the form for validation.'
+                    )
+                )
+        else:
+            form = ItemTypeCreateForm()
+
+        template = 'items/item_type_create.html'
+        context = {
+            'all_categories': all_categories,
+            'item_type_create_form': form,
+            'item_type_image': static('images/default.webp')
+        }
+    return render(request, template, context)
+
+
+@login_required
 def item_type_update_inline(request, item_id, type_id):
     """
     View to display the properties of an individual item type within an item.
@@ -268,9 +382,8 @@ def item_type_update_inline(request, item_id, type_id):
                 Q(name__iexact=submit_type_name) &
                 Q(category__iexact=submit_type_category))
 
-            image_name = submit_type_form.data['image-input-name']
             previous_image_exists = False
-
+            image_name = submit_type_form.data['image-input-name']
             # Check the file does not already exist
             if Path(f"{settings.MEDIA_ROOT}/{image_name}").exists():
                 # If it exists, another one should not be created
@@ -283,14 +396,14 @@ def item_type_update_inline(request, item_id, type_id):
             else:
                 # If the file does not exist, then create one
                 previous_image_exists = False
-                # If there is a file with edit-image-button as a key
-                if 'edit-image-button' in request.FILES:
+                # If there is a file with image-button as a key
+                if 'image-button' in request.FILES:
                     image_name = slugify(submit_type_name) + ".webp"
                     try:
                         print("In the files")
                         with (
                             Image.open(
-                                request.FILES['edit-image-button']) as img):
+                                request.FILES['image-button']) as img):
                             img.convert('RGB')
                             # Create the image name to use
                             img.name = image_name
@@ -406,12 +519,12 @@ def item_type_update_inline(request, item_id, type_id):
         if new_or_old_type == "new":
             messages.success(
                 request,
-                'Item Type created. Reloaded Item page'
+                'Item Type created'
             )
         else:
             messages.success(
                 request,
-                'Item Type updated. Reloaded Item page'
+                'Item Type updated'
             )
 
         return redirect('item_view', item_id=item_id)

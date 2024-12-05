@@ -167,6 +167,7 @@ def profile_view(request):
     # Render the view
     return render(request, template, context)
 
+
 @login_required
 def customer_view(request, profile_id):
     """
@@ -184,7 +185,7 @@ def customer_view(request, profile_id):
     # user_form = UserForm(request.POST)
     # profile_form = ProfileForm(request.POST)
 
-        # If both the user form and profile form are valid.
+    # If both the user form and profile form are valid.
     #     if user_form.is_valid() and profile_form.is_valid():
     #         update_user = request.user
     #         #     This was the only definitive way of taking a model object
@@ -486,7 +487,6 @@ def user_profile_create(request, is_customer):
                 profile_form = ProfileForm(is_customer=True)
             else:
                 profile_form = ProfileForm(is_customer=False)
-
 
             context = {
                 'user_form': user_form,

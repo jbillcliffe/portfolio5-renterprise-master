@@ -34,6 +34,7 @@ urlpatterns = [
 
 handler404 = 'renterprise.views.handler404'
 
+# https://books.agiliq.com/projects/django-admin-cookbook/en/latest/change_text.html
 admin.site.site_header = "Renterprise Administration"
 admin.site.site_title = "Renterprise Portal"
 admin.site.index_title = "Welcome to Renterprise Administration Portal"

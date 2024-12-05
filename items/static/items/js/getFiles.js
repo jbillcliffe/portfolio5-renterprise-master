@@ -1,4 +1,4 @@
-document.getElementById('edit-type-image-select').addEventListener('change', function(e) {
+document.getElementById('type-image-select').addEventListener('change', function(e) {
     // Update the image field for display
     // https://stackoverflow.com/questions/17138244/how-to-display-selected-image-without-sending-data-to-server
 
@@ -6,7 +6,13 @@ document.getElementById('edit-type-image-select').addEventListener('change', fun
     let fileReader = new FileReader();
     
     // Identify the <img> to be updated by it's id
-    let imageBox = document.getElementById('edit-type-image');
+    let imageBox;
+    if (document.getElementById('type-image') != null) {
+        imageBox = document.getElementById('type-image');
+    } else {
+        imageBox = document.getElementById('item-image-id');
+    }
+
 	// Identify the <input> which shows the filename/location
 	let imageURLField = document.getElementById('image-input-id');
 
@@ -18,6 +24,10 @@ document.getElementById('edit-type-image-select').addEventListener('change', fun
       imageURLToShow = (e.target.files[0].name).replace('/media\//g', "")
 	  imageURLField.value = `${imageURLToShow}	** Not Uploaded! **`;
     }
+
+    console.log(fileReader);
+    console.log(imageBox);
+    console.log(fileReader);
 
     // This tells the file reader how to read the file loaded. readAsDataURL turns the file
     // into a base64 encoded string which is the required way for an image (Blob data)

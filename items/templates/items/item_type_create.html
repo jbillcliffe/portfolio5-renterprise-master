@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_title %}{% blocktrans %}Create An Item Type{% endblocktrans %}{% endblock extra_title %}
+
+<!-- Creating the form for creating an item -->
+<!-- div app container holds this -->
+{% block content %}
+    <hr>
+        <h1>{% trans "Create An Item Type" %}</h1>
+    <hr>
+    <div class="row">
+
+        <!--
+        '<img class="item-image img-fluid border-black'
+                    ' d-flex justify-content-center mb-3 p-0" '
+                    'id="type-image" '
+                    'src="{% if not item_type_image %}'
+                    '{{ STATIC_URL }}"images/default.webp"'
+                    '{% else %}'
+                    '{{ item_type_image.url }}'
+                    '{% endif %}" '
+                    'alt="{% if not item_type_image %}'
+                    'default no image'
+                    '{% else %}'
+                    '{{ item_type_name }}{% endif %}">'
+                    -->
+        <div class="col-12 col-lg-9 col-xxl-8">
+            <form action="{% url "item_type_create" %}" class="floating-labels-form" method="post"
+                    id="item-type-create" enctype="multipart/form-data">
+                    <img class="item-image img-fluid border-black d-flex justify-content-center p-0" 
+                    id="item-image-id" src="{% static 'images/default.webp' %}" alt="default no image">
+                {% crispy item_type_create_form item_type_create_form.helper %}
+                {% include "items/includes/custom_file_input.html" %}
+                <a class="not-submit no-decoration" href="{% url "item_type_list" %}">{% trans "Return To Item Types" %}</a>
+                <button type="submit" class="white-text">{% trans "Add Item Type" %}</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block postloadjs %}
+    {{ block.super }}
+    <script type="text/javascript">
+        function changeCategoryText(id){
+            let catInput = document.getElementById("id_category");
+            let listSelect = document.getElementById(id);
+            catInput.value = listSelect.innerHTML.trim();
+
+            suggestSKU()
+        }
+
+        function suggestSKU(){
+            let catInput = document.getElementById("id_category");
+            let nameInput = document.getElementById("id_name");
+            let skuInput = document.getElementById("id_sku");
+            
+            if (catInput.value &&  nameInput.value) {
+                let catVal = (catInput.value).substr(0, 4).toUpperCase();
+                let nameArray = nameInput.value.split(" ");
+                let nameSKU;
+
+                // Will only look into maximum of first 3 words
+                if (nameArray.length >= 3) {
+                    nameSKU = (
+                        nameArray[0].substr(0, 2)+
+                        nameArray[1].substr(0, 2)+
+                        nameArray[2].substr(0, 2)
+                    ).toUpperCase();
+                } else if (nameArray.length == 2) {
+                    nameSKU = (
+                        nameArray[0].substr(0, 3)+
+                        nameArray[1].substr(0, 3)
+                    ).toUpperCase();
+                } else {
+                    // Has to be at least one in the array even at 1 character
+                    // as this function requires a value to run
+                    nameSKU = nameArray[0].substr(0, 6).toUpperCase();
+                }
+
+                let nameVal = (nameInput.value).substr(0, 6);
+                //random number between 0 and 99 (inclusive)
+                let randomNum = Math.floor(Math.random() * 99);
+                skuInput.value = catVal+"-"+nameSKU+"-"+randomNum;
+            }
+        }
+    </script>
+    <script src="{% static 'items/js/getFiles.js' %}"></script>
+{% endblock postloadjs %}

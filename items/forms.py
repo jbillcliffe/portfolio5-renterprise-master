@@ -326,12 +326,110 @@ class ItemTypeFullForm(forms.ModelForm):
         self.helper.form_tag = False
 
         self.helper.layout = Layout(
-            FloatingField("name"),
+            FloatingField(
+                "name",
+                wrapper_class="col-12 p-0"),
+            FloatingField(
+                "sku",
+                wrapper_class="col-12 p-0"),
+            FloatingField(
+                "category",
+                wrapper_class="col-12 p-0"),
+            FloatingField(
+                "cost_initial",
+                wrapper_class="col-12 p-0"),
+            FloatingField(
+                "cost_week",
+                wrapper_class="col-12 p-0"),
+            FloatingField(
+                "product_stripe_id",
+                wrapper_class="col-12 p-0"),
+        )
+
+
+class ItemTypeCreateForm(forms.ModelForm):
+    class Meta:
+        model = ItemType
+        exclude = ['meta_tags', 'stripe_pid']
+
+    categories = forms.ModelChoiceField(queryset=None)
+
+    # https://stackoverflow.com/questions/55893566/how-to-replace-choices-field-in-django-modelform-with-textinput
+    # https://stackoverflow.com/questions/4843173/how-to-check-if-type-of-a-variable-is-string
+    def clean_category(self):
+
+        category = self.cleaned_data['category']
+        try:
+            print("CATEGORY")
+            print(isinstance(category, str))
+            isinstance(category, str)
+        except ValueError:
+            raise forms.ValidationError("Category is not a string")
+        return category
+
+    def __init__(self, *args, **kwargs):
+        """
+        Add placeholders and classes, remove auto-generated
+        labels and set autofocus on first field
+        """
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+        self.helper.attrs['autocomplete'] = 'off'
+        self.helper.form_tag = False
+
+        self.fields['categories'].queryset = (
+            ItemType.objects.values('category').distinct('category')
+        )
+        self.fields['categories'].required = False
+
+        self.helper.layout = Layout(
+            FloatingField(
+                "name",
+                onfocusout="suggestSKU()"
+            ),
+            # An input group, for selecting or creating a category
+            Div(
+                StrictButton(
+                    'Categories',
+                    css_class=(
+                        "col-4 btn default-button"
+                        " dropdown-toggle mb-3 d-flex "
+                        " justify-content-center align-items-center"
+                        " mb-3 p-0"
+                    ),
+                    data_bs_toggle="dropdown",
+                ),
+                HTML(
+                    '<ul class="dropdown-menu">'
+                    '{% for category in all_categories %}'
+                    '<li>'
+                    '<a class="dropdown-item type-category-list-item" '
+                    'id={{ category.category|slugify }} '
+                    'onclick="changeCategoryText(this.id)">'
+                    '{{ category.category }}'
+                    '</a>'
+                    '</li>'
+                    '{% endfor %}'
+                    '</ul>'
+                ),
+                # Category text input+ associated function for
+                # change in text
+                # Creating the dropdown list of categories for selection
+                FloatingField(
+                    'category',
+                    css_class="rounded-end",
+                    wrapper_class="p-0"),
+                
+                css_class="row input-group order-1 m-0 p-0"
+            ),
             FloatingField("sku"),
-            FloatingField("category"),
-            FloatingField("cost_initial"),
-            FloatingField("cost_week"),
-            FloatingField("product_stripe_id")
+            FloatingField(
+                "cost_initial",
+                onfocusout="setTwoDecimalPlaces(this.id, this.value)"),
+            FloatingField(
+                "cost_week",
+                onfocusout="setTwoDecimalPlaces(this.id, this.value)")
         )
 
 
@@ -405,7 +503,7 @@ class ItemTypeEditForm(forms.ModelForm):
                 HTML(
                     '<img class="item-image img-fluid border-black'
                     ' d-flex justify-content-center mb-3 p-0" '
-                    'id="edit-type-image" '
+                    'id="type-image" '
                     'src="{% if not item_type_image %}'
                     '{{ STATIC_URL }}"images/default.webp"'
                     '{% else %}'

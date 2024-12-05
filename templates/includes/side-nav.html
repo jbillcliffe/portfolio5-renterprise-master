@@ -55,6 +55,7 @@
                             {% endif %}
                         </a>
                     </li>
+                    <hr>
                 {% endif %}
                 
                 <!--- CUSTOMERS -->
@@ -132,7 +133,7 @@
                         </li>
                     {% endif %}
                 {% endif %}
-                <!-- When on the "Item List" page or "New Item" page, show this.
+                <!-- When on the "Item List", "Item Type List" or "New Item", show this.
                 Highlighting it with the active class and disabling it by not applying
                 its href and target value when it is on the "New Item" page itself-->
                 {% if url_name == "item_list" or url_name == "item_create" %}
@@ -146,6 +147,21 @@
                         </li>
                     {% endif %}
                 {% endif %}
+                <!-- When on the "Item List", "Item Type List" or "New Item Type" page, show this.
+                Highlighting it with the active class and disabling it by not applying
+                its href and target value when it is on the "New Item" page itself-->
+                {% if url_name == "item_list" or url_name == "item_create" %}
+                    <!-- 0 will always be Customer, so they cannot see this -->
+                    {% if account_level > 0 %}
+                        <li class="nav-item sidebar">
+                            <a {% if url_name == "item_create" %}{% else %}href="{% url 'item_create' %}" target="_self"{% endif %}
+                            class="side-bar nav-link {% if url_name == 'item_create' %}active{% endif %}">
+                                <i class="nav-icon bi bi-database-add"></i><strong>{% trans "New Item" %}</strong>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+
                 
                 <!-- STAFF -->
                 <!-- Show Profile List, if on the list page itself then show it as active, by

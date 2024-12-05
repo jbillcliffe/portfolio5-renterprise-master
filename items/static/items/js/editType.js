@@ -7,7 +7,7 @@ function typeCategoryChanged(categoryString, from_where){
 
     let dropdownButton = document.getElementById('id-types-dropdown-btn');
 
-    let imageElement = document.getElementById('edit-type-image');
+    let imageElement = document.getElementById('type-image');
     let imageTextElement = document.getElementById('image-input-id');
 
     let categoryElement = document.getElementById('id_edit-type-category');
@@ -128,7 +128,7 @@ function typeChanged(typeId = null){
     // The same item name in a different category is a different type and would have
     // to be created.
    
-    let imageElement = document.getElementById('edit-type-image');
+    let imageElement = document.getElementById('type-image');
     let imageTextElement = document.getElementById('image-input-id');
     let typeNameElement = document.getElementById('id_edit-type-name');
     let skuElement = document.getElementById('id_edit-type-sku');
@@ -251,7 +251,7 @@ function typeChanged(typeId = null){
 function resetForm(){
     /* Set the image to be the same as the one from the item view */
     let dropdownButton = document.getElementById('id-types-dropdown-btn');
-    let typeImage = document.getElementById('edit-type-image');
+    let typeImage = document.getElementById('type-image');
 
     dropdownButton.disabled = false;
     typeImage.src = document.getElementById('item-image-id').src;

@@ -76,6 +76,7 @@ input[class*="danger-button"] {
 .default-button-view-only,
 .danger-button-view-only {
     cursor: default !important;
+    color:#000000 !important;
 }
 
 /* Program wide buttons + Submit Button styles for hover over */
