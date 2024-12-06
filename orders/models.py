@@ -107,7 +107,7 @@ class Invoice(models.Model):
     amount_paid = models.DecimalField(max_digits=6, decimal_places=2)
     note = models.TextField()
     status = models.BooleanField(default=False, verbose_name="Paid")
-    stripe_pid = models.CharField(max_length=254, default='')
+    stripe_pid = models.CharField(max_length=254, default=None)
 
     # order by item_type name 0-9 then A-Z
     class Meta:

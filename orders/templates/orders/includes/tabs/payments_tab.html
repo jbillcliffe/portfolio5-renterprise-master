@@ -7,25 +7,22 @@
      <!-- No header in this list display-->
     <!-- For each profile/user object -->
     {% for invoice in page_obj %}
-    created_on, created_by, order, note, due_on, amount_paid, status, stripe_pid
-        <!-- Create a row for first name, surname and username -->
-        <div class="renterprise-table-row flex-column flex-sm-row pt-2 px-2">
-            <strong>ID: </strong><p class="my-1 ps-0 ps-sm-1">{{ invoice.id }}</p>
-        </div>
-        <div class="renterprise-table-row flex-column flex-sm-row py-0 px-2">
-            <strong>Due: </strong><p class="my-1 ps-0 ps-sm-1">{{ invoice.due_on }}</p>
-        </div>
-        <!-- Create a row for email and button to navigate to profile  -->
         <div class="renterprise-table-row bottom-row py-0 px-2">
-            <div class="col">
-                <strong>Email: </strong>
-                <p class="mt-0 mb-1 ps-0 flex-fill">{{ customer.user.email }}</p>
-                <!-- Staff can be customers too! -->
+            <!-- Create a row for first name, surname and username -->
+            <div class="renterprise-table-row flex-column flex-sm-row pt-2 px-2">
+                <strong>ID: </strong><p class="my-1 ps-0 ps-sm-1">{{ invoice.id }}</p>
             </div>
+            <div class="renterprise-table-row flex-column flex-sm-row py-0 px-2">
+                <strong>Due: </strong><p class="my-1 ps-0 ps-sm-1">{{ invoice.due_on }}</p>
+            </div>
+            <div class="renterprise-table-row flex-column flex-sm-row py-0 px-2">
+                <strong>Amount : </strong><p class="my-1 ps-0 ps-sm-1">£{{ invoice.amount_paid }}</p>
+            </div>
+            <!-- Create a row for email and button to navigate to profile  -->
             <div class="col d-flex flex-column align-items-end">
+                {% if stripe_pid is None %}
                 <a href="{% url 'customer_view' profile_id=customer.id %}">
                     <i class="bi bi-stripe"></i>
-                    <!--<i class="bi bi-zoom-in"></i>-->
                 </a>
             </div>
         </div>
