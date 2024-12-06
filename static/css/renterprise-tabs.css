@@ -1,0 +1,50 @@
+
+#id-order-tabs {
+    border-bottom: 1px solid #528265;
+    opacity: 1;
+}
+
+button.nav-link {
+    color:#000000;
+    background-color: #FFFFFF;
+    padding-bottom: 7px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* unvisited link */
+button.nav-link:link {
+    color: #000000;
+  }
+  
+  /* visited link */
+button.nav-link:visited {
+    color: #000000;
+}
+  
+  /* mouse over link */
+button.nav-link:hover {
+    color: #000000;
+    background-color: #C9F0FF;
+    /* border-radius: 0;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px; */
+    
+}
+
+.nav-tabs .nav-link {
+    border: 0;
+    margin-bottom: 0;
+}
+  
+  /* selected link */
+button.nav-link:active {
+    color: #000000;
+}
+
+.tab-pane {
+    background-color: white;
+    padding: 1rem;
+    border: 1px solid #528265;
+    border-top: 0;
+}

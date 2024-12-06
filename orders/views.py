@@ -22,6 +22,7 @@ from django.views.generic import ListView
 from django.db import models
 from datetime import date
 from urllib.parse import urlencode
+from django.core.paginator import Paginator
 
 import stripe
 
@@ -53,6 +54,12 @@ def order_view(request, profile_id, order_id):
     dates_form = OrderDatesForm(instance=order)
     item_form = OrderItemForm(instance=item)
 
+    invoice_list = Paginator(invoices, 5)
+
+    # Determine number of pages in query
+    page_number = request.GET.get("page")
+    page_obj = invoice_list.get_page(page_number)
+
     if request.user.profile.get_account_type == 'Customer':
         json_item_list = ""
         json_item_type_list = ""
@@ -61,8 +68,8 @@ def order_view(request, profile_id, order_id):
         json_item_list = serialize(
             'json', Item.objects.all(),
             fields=[
-                "item_type", "delivery_date", "collect_date",
-                "repair_date", "income", "status"],
+                "item_type", "repair_date",
+                "income", "status"],
             cls=DjangoJSONEncoder)
 
         json_item_type_list = serialize(
@@ -76,14 +83,13 @@ def order_view(request, profile_id, order_id):
             'json', Order.objects.all(), fields=[
                 'item', 'start_date', 'end_date'],
             cls=DjangoJSONEncoder)
-    
+
         if request.POST.get('tab'):
             tab_return = request.POST.get('tab')
         else:
             tab_return = None
 
-    # order_view_form = OrderViewForm(instance=order)
-    # print(order_view_form)
+
     template = 'orders/order_view.html'
     context = {
         # 'order_view_form': order_view_form,
@@ -93,10 +99,11 @@ def order_view(request, profile_id, order_id):
         'order_item_form': item_form,
         # 'item_type'
         # 'profile'
-        'invoice': invoices,
+        # 'invoice': invoices,
         'json_item_list': json_item_list,
         'json_order_list': json_order_list,
         'json_item_type_list': json_item_type_list,
+        "page_obj": page_obj,
     }
 
     return render(request, template, context)
@@ -164,8 +171,8 @@ def order_create(request):
         json_item_list = serialize(
             'json', Item.objects.all(),
             fields=[
-                "item_type", "delivery_date", "collect_date",
-                "repair_date", "income", "status"],
+                "item_type", "repair_date",
+                "income", "status"],
             cls=DjangoJSONEncoder)
 
         json_item_type_list = serialize(

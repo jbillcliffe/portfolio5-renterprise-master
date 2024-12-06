@@ -134,3 +134,6 @@ https://books.agiliq.com/projects/django-admin-cookbook/en/latest/change_text.ht
 
 custom list filters 
 https://docs.djangoproject.com/en/5.1/ref/contrib/admin/filters/#using-a-simplelistfilter
+
+Stripe Colour for icon : (#5533FF)
+http://www.brandgradients.com/stripe-colors/

@@ -278,8 +278,8 @@ class ItemTypeForm(forms.ModelForm):
         # feature to look to be able to edit or add more.
         labels = {
             "category": "Category",
-            "cost_initial": "Initial (£)",
-            "cost_week": "Weekly (£)",
+            "cost_initial": "Initial Cost (£)",
+            "cost_week": "Cost Per Week (£)",
         }
 
     def __init__(self, *args, **kwargs):
@@ -312,7 +312,12 @@ class ItemTypeFullForm(forms.ModelForm):
 
     class Meta:
         model = ItemType
-        exclude = ['meta_tags']
+        exclude = ['meta_tags', 'product_stripe_id']
+        labels = {
+            "sku": "SKU",
+            "cost_initial": "Initial Cost (£)",
+            "cost_week": "Cost Per Week (£)",
+        }
 
     def __init__(self, *args, **kwargs):
         """
@@ -351,6 +356,11 @@ class ItemTypeCreateForm(forms.ModelForm):
     class Meta:
         model = ItemType
         exclude = ['meta_tags', 'stripe_pid']
+        labels = {
+            'sku': "SKU",
+            'cost_initial': "Initial Cost (£)",
+            'cost_week': "Cost Per Week (£)",
+        }
 
     categories = forms.ModelChoiceField(queryset=None)
 
@@ -369,8 +379,6 @@ class ItemTypeCreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         """
-        Add placeholders and classes, remove auto-generated
-        labels and set autofocus on first field
         """
         super().__init__(*args, **kwargs)
 
@@ -420,7 +428,6 @@ class ItemTypeCreateForm(forms.ModelForm):
                     'category',
                     css_class="rounded-end",
                     wrapper_class="p-0"),
-                
                 css_class="row input-group order-1 m-0 p-0"
             ),
             FloatingField("sku"),
@@ -455,8 +462,8 @@ class ItemTypeEditForm(forms.ModelForm):
             "name": "Name",
             "sku": "SKU",
             "category": "Category",
-            "cost_initial": "Initial (£)",
-            "cost_week": "Weekly (£)",
+            "cost_initial": "Initial Cost (£)",
+            "cost_week": "Cost Per Week (£)",
         }
 
     def __init__(self, *args, **kwargs):

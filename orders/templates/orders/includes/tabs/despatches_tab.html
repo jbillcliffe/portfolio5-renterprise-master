@@ -1,0 +1,10 @@
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+<form id="date-change-form" action="" method="POST">
+    {% csrf_token %}
+    {{ order_dates_form|crispy }}
+    <input id="id-date-change-submit" type="submit" class="default-button" value="Confirm Changes" hidden disabled/>
+</form>
+<span id="id-order-date-messages" class="text-danger"></span>

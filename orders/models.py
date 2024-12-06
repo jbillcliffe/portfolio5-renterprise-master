@@ -111,7 +111,7 @@ class Invoice(models.Model):
 
     # order by item_type name 0-9 then A-Z
     class Meta:
-        ordering = ["created_on"]
+        ordering = ["due_on"]
 
     def __str__(self):
         return f"Invoice ID : {self.id}"
