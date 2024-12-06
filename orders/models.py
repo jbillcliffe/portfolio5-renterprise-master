@@ -123,3 +123,14 @@ class Invoice(models.Model):
             return (
                 f"{self.order.profile.user.first_name}"
                 f" {self.order.profile.user.last_name}")
+
+    # https://stackoverflow.com/questions/3798812/how-to-compare-dates-in-django-templates
+    @property
+    def is_late(self):
+        if self.status == 0:
+            if date.today() > self.due_on:
+                return True
+            else:
+                return False
+        else:
+            return False

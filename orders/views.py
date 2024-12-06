@@ -394,7 +394,9 @@ def order_create_success(request):
         format_start_date,
         format_end_date,
         next_payment)
-
+    # Remove this order/stripe session after payment and email for the user
+    # It has pulled out all the data it requires.
+    retrieve_session.delete(get_session)
     return render(request, template, context)
 
 

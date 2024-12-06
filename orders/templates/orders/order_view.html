@@ -7,6 +7,7 @@
     <link href="{% static "orders/css/order-forms.css" %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'orders/css/stripe.css' %}">
     <link rel="stylesheet" href="{% static 'css/renterprise-tabs.css' %}">
+    <link rel="stylesheet" href="{% static "css/renterprise-tables.css" %}">
     
 {% endblock extra_css %}
 
@@ -45,23 +46,25 @@
                 <div class="tab-pane fade {% if request.GET.tab == "item" %}show active{% else %}{% endif %}"  
                     id="item-tab-pane" role="tabpanel" aria-labelledby="item-tab" tabindex="0">
                     <!-- Item (Type) Form-->
-                    {% includes "orders/includes/tabs/item-tab.html" %}
+                    {% include "orders/includes/tabs/item_tab.html" %}
                 </div>
 
                 <div class="tab-pane fade {% if request.GET.tab == "despatches" %}show active{% else %}{% endif %}" 
                     id="despatches-tab-pane" role="tabpanel" aria-labelledby="despatches-tab" tabindex="0"
                     data-original-start-date="{{ order.start_date }}" data-original-end-date="{{ order.end_date }}">
                     <!-- Date Form -->
-                    {% includes "orders/includes/tabs/despatches-tab.html" %}
+                    {% include "orders/includes/tabs/despatches_tab.html" %}
                 </div>
 
                 <div class="tab-pane fade {% if request.GET.tab == "payments" %}show active{% else %}{% endif %}" 
-                    id="payments-tab-pane" role="tabpanel" aria-labelledby="payments-tab" tabindex="0">
+                    id="payments-tab-pane" role="tabpanel" aria-labelledby="payments_tab" tabindex="0">
                     <!-- Invoice Form-->
+                    {% include "orders/includes/tabs/payments_tab.html" %}
                 </div>
                 <div class="tab-pane fade {% if request.GET.tab == "notes" %}show active{% else %}{% endif %}"  
-                    id="notes-tab-pane" role="tabpanel" aria-labelledby="notes-tab" tabindex="0">
+                    id="notes-tab-pane" role="tabpanel" aria-labelledby="notes_tab" tabindex="0">
                     <!-- Notes form-->
+                    {% include "orders/includes/tabs/notes_tab.html" %}
                 </div>
               </div>
 
