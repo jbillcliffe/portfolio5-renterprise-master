@@ -2,9 +2,12 @@
 #id-order-tabs {
     border-bottom: 1px solid #528265;
     opacity: 1;
+    
 }
 
-
+.order-tab {
+    background-color:#FFFFFF;
+}
 
 button.nav-link {
     color:#000000;
@@ -45,7 +48,6 @@ button.nav-link:hover {
 i.bi.bi-stripe{
     /* Set the colour to Stripe's brand "blurple" */
     color: #5533FF;
-
 }
 
 .tab-pane {
@@ -61,6 +63,12 @@ i.bi.bi-stripe{
         background-color:#FFFFFF;
     }
     .nav-tabs .nav-link {
+        width:100%;
+    }
+}
+
+@media (max-width: 377px) {
+    .order-tab {
         width:100%;
     }
 }

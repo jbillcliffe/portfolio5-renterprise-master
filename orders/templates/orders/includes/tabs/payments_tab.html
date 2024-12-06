@@ -18,37 +18,7 @@
         </div>
     </div>
     {% for invoice in page_obj %}
-        {% comment %} <div class="renterprise-table-row bottom-row py-0 px-2">
-            <!-- Create a row for first name, surname and username -->
-            <div class="renterprise-table-row flex-column flex-sm-row pt-2 px-2">
-                <strong>ID: </strong><p class="my-1 ps-0 ps-sm-1">{{ invoice.id }}</p>
-            </div>
-            <div class="renterprise-table-row flex-column flex-sm-row py-0 px-2">
-                <strong>Due: </strong><p class="my-1 ps-0 ps-sm-1">{{ invoice.due_on }}</p>
-            </div>
-            <div class="renterprise-table-row flex-column flex-sm-row py-0 px-2">
-                <strong>Amount : </strong><p class="my-1 ps-0 ps-sm-1">£{{ invoice.amount_paid }}</p>
-            </div>
-            <!-- Create a row for email and button to navigate to profile  -->
-            <div class="col d-flex flex-column align-items-end">
-                <!-- No payment on record -->
-                {% if stripe_pid is None %}
-                <!-- "{% url 'order_payment' invoice_id=invoice.id %}" -->
-                    <a href="#">
-                        <i class="bi bi-stripe"></i>
-                    </a>
-                {% else %}
-                    <a href="#">
-                        <i class="bi bi-zoom-in"></i>
-                    </a>
-                {% endif %}
-            </div>
-        </div> {% endcomment %}
-            <!-- If the category is different from the previous one -->
-        <!-- Create a row for type name, type category and serial number -->
-        <!-- Spans are visible from 767px and less -->
-        <!-- Each column essentially becomes full width (a row) at 767px and less -->
-        <div class="renterprise-table-row item-list {% if invoice.stripe_pid is None or invoice.stripe_pid == "" %}bg-danger-subtle{% else %}{% endif %}">
+        <div class="renterprise-table-row item-list {% if invoice.is_late is True %}bg-danger-subtle{% else %}{% endif %}">
             <div class="col-12 col-md-2">
                 <span class="d-block d-md-none"><strong>ID: </strong></span>{{ invoice.id }}
             </div>
@@ -62,14 +32,16 @@
         <!-- Create a row for email and button to navigate to profile  -->
         <div class="renterprise-table-row bottom-row {% if invoice.is_late is True %}bg-danger-subtle{% else %}{% endif %}">
             <div class="col-12 multi-element-column">
-                <span>{% if invoice.is_late is True %}<strong>Payment Overdue - </strong>{% else %}{% endif %}{{ invoice.note }}</span>
+                <span>
+                    {% if invoice.is_late is True %}<strong>Payment Overdue - </strong>{% else %}{% endif %}
+                    {{ invoice.note }}</span>
                 {% if invoice.is_late is True %}
                 {% comment %} <!-- "{% url 'order_payment' invoice_id=invoice.id %}" --> {% endcomment %}
-                    <a href="#">
+                    <a href="{% url 'payment_create' invoice.id %}" class="ms-2">
                         <i class="bi bi-stripe"></i>
                     </a>
                 {% else %}
-                    <a href="#">
+                    <a href="#" class="ms-2">
                         <i class="bi bi-zoom-in"></i>
                     </a>
                 {% endif %}

@@ -61,6 +61,9 @@
                 {% endif %}
             </span><br>
         </div>
+        <a class="default-button"
+                    href="{% url 'order_view' {{ order_profile_id }} {{ order_order_id }} %}">{% trans "View Order" %}
+        </a>
     </div>
 
 {% endblock content %}

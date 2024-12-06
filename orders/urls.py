@@ -26,6 +26,18 @@ urlpatterns = [
         'create/cancel/',
         views.order_create_cancel,
         name="order_create_cancel"),
+    path(
+        'payment/checkout/<int:invoice_id>/',
+        views.payment_create,
+        name='payment_create'),
+    path(
+        'payment/success/',
+        views.payment_success,
+        name="payment_success"),
+    path(
+        'payment/cancel/',
+        views.payment_cancel,
+        name="payment_cancel"),
     # Order View is reached through a customer.
     # It appears in the profiles
 ]

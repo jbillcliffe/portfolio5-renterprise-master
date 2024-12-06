@@ -1,0 +1,9 @@
+Dear {{ email_data.name }},
+
+This is a confirmation of your payment of £{{ amount_paid }}eg.
+This is for Invoice: {{ invoice }} against Order : {{ order_id }}
+
+If you need assistance please contact us at : {{ contact_email }}
+
+Many Thanks,
+{{ company_name }}

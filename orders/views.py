@@ -124,7 +124,6 @@ def order_edit(request, profile_id, order_id, order_note):
             get_order = Order.objects.get(order__id=order_id)
             # get_order.start_date = request.POST['start_date']
             # get_order.end_date = request.POST['end_date']
-            # get_order.start_date = 
 
             form = OrderDatesForm(request.POST, instance=get_order)
             form.save()
@@ -204,6 +203,192 @@ def order_create(request):
 
 
 @login_required
+def payment_create(request, invoice_id):
+
+    session_store_data = SessionStore()
+    session_store_data.create()
+    store_key = session_store_data.session_key
+    get_invoice = Invoice.objects.get(pk=invoice_id)
+    stripe_invoice_id = get_invoice.id
+    stripe_order_id = get_invoice.order
+    stripe_profile = get_invoice.order.profile
+    stripe_line_item = get_invoice.order.item.item_type
+    stripe_price = int(Decimal(get_invoice.amount_paid))*100
+    stripe_ref = (
+        f"{stripe_profile.user.last_name}_{stripe_order_id}"
+    )
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+
+    if stripe_profile.stripe_id:
+        stripe_customer = stripe.Customer.retrieve(
+            stripe_profile.stripe_id)
+        print("--- Stripe previous customer --- ")
+        print(stripe_customer)
+    else:
+        stripe_customer = stripe.Customer.create(
+            name=stripe_profile.get_full_name,
+            email=stripe_profile.user.email,
+            address={
+                "line1": stripe_profile.address_line_1,
+                "line2": stripe_profile.address_line_2,
+                "city": stripe_profile.town,
+                "state": stripe_profile.county,
+                "postal_code": stripe_profile.postcode,
+                "country": "GB"
+            },
+            shipping={
+                "name": stripe_profile.get_full_name,
+                "phone": stripe_profile.phone_number,
+                "address": {
+                    "line1": stripe_profile.address_line_1,
+                    "line2": stripe_profile.address_line_2,
+                    "city": stripe_profile.town,
+                    "state": stripe_profile.county,
+                    "postal_code": stripe_profile.postcode,
+                    "country": "GB"
+                }
+            },
+            phone=stripe_profile.phone_number
+        )
+
+        stripe_profile.stripe_id = stripe_customer.id
+
+        stripe_profile.save()
+        print("--- Stripe new customer --- ")
+        print(stripe_customer)
+
+    stripe_success_url = (
+        f"https://{request.META['HTTP_HOST']}"
+        f"/orders/payment/success/?session={store_key}")
+    stripe_cancel_url = (
+        f"https://{request.META['HTTP_HOST']}"
+        f"/orders/payment/cancel/?session={store_key}")
+    stripe_image_url = (
+        f"https://{request.META['HTTP_HOST']}"
+        f"/media/{stripe_line_item.image}"
+    )
+
+    if stripe_line_item.product_stripe_id:
+        created_line_items_array = [{
+            "price": f"{stripe_line_item.product_stripe_id}",
+            "quantity": 1
+        }]
+    else:
+        created_line_items_array = [{
+            "price_data": {
+                "currency": f"{settings.STRIPE_CURRENCY}",
+                "product_data": {
+                    "name": f"{stripe_line_item.name}",
+                    "images": [stripe_image_url],
+                    "tax_code": "txcd_20030000"
+                },
+                "tax_behavior": "exclusive",
+                "unit_amount": stripe_price
+            },
+            "quantity": 1
+        }]
+    checkout_session = stripe.checkout.Session.create(
+        customer=stripe_customer.id,
+        client_reference_id=stripe_ref,
+        line_items=created_line_items_array,
+        mode="payment",
+        success_url=stripe_success_url,
+        cancel_url=stripe_cancel_url,
+        payment_intent_data={"setup_future_usage": "off_session"}
+    )
+
+    session_store_data["checkout_session"] = checkout_session.id
+    session_store_data["invoice_id"] = stripe_invoice_id
+    session_store_data["order_id"] = stripe_order_id.id
+    session_store_data["customer_id"] = stripe_profile.id
+    session_store_data["amount_paid"] = str(get_invoice.amount_paid)
+    session_store_data.save()
+
+    # As "request" is not the method used. It uses a GET with the return of the 
+    # hosted payment page. This creates a session storage and posts the key to get in.
+    # https://docs.djangoproject.com/en/5.1/topics/http/sessions/#using-sessions-out-of-views
+
+    return redirect(checkout_session.url, code=303)
+
+
+@csrf_exempt
+@login_required
+def payment_success(request):
+    # Set your secret key.
+    # See your keys here: https://dashboard.stripe.com/apikeys
+    get_session = request.GET.get('session', '')
+    # Two parts need to happen at this point to reflect the successful payment
+    #
+    # - The invoice needs to be set to paid
+    # - The item needs to have the income added to it.
+    #
+    # It can only do this with the session data. But it also cannot do it
+    # before this function, because the payment could still be unsuccessful.
+    if get_session == '':
+        messages.error(
+            request,
+            "Could not get session data")
+        return redirect('menu')
+    else:
+        retrieve_session = SessionStore(session_key=get_session)
+        template = 'orders/payments/payment_success.html'
+        order_get = Order.objects.get(pk=retrieve_session["order_id"])
+
+        invoice = Invoice.objects.get(pk=retrieve_session["invoice_id"])
+        invoice.status = True
+        invoice.save()
+
+        ordernote = OrderNote.objects.create(
+            order=order_get,
+            created_by=request.user,
+            note=f"Payment for Invoice {invoice.id} complete."
+        )
+        ordernote.save()
+
+        context = {
+            'invoice': invoice,
+            'order': order_get,
+        }
+    send_payment_email(
+        retrieve_session["invoice_id"],
+        retrieve_session["order_id"],
+        retrieve_session["customer_id"]
+    )
+    # Remove this order/stripe session after payment and email for the user
+    # It has pulled out all the data it requires.
+    retrieve_session.delete(get_session)
+    return render(request, template, context)
+
+
+@csrf_exempt
+@login_required
+def payment_cancel(request):
+    # Set your secret key.
+    # See your keys here: https://dashboard.stripe.com/apikeys
+    get_session = request.GET.get('session', '')
+
+    if get_session == '':
+        messages.error(
+            request,
+            "Could not get session data")
+        return redirect('menu')
+    else:
+        retrieve_session = SessionStore(session_key=get_session)
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe_session = stripe.checkout.Session.retrieve(
+            retrieve_session["checkout_session"])
+        stripe_customer = stripe.Customer.retrieve(
+            stripe_session.customer)
+        template = 'orders/payments/payment_cancel.html'
+        context = {
+            'stripe_session': stripe_session,
+            'stripe_customer': stripe_customer,
+        }
+
+    return render(request, template, context)
+
+
+@login_required
 def order_create_checkout(request):
 
     # Using a hosted payment page. Greater security provided
@@ -218,7 +403,6 @@ def order_create_checkout(request):
         Item.objects.get(pk=stripe_order_item_id)
     )
     update_profile_stripe = Profile.objects.get(pk=stripe_order_profile_id)
-    print((int(Decimal(stripe_order["cost_initial"])))*100)
 
     stripe_price = int(Decimal(stripe_order["cost_initial"]))*100
     stripe_ref = (
@@ -282,8 +466,6 @@ def order_create_checkout(request):
         f"https://{request.META['HTTP_HOST']}"
         f"/media/{stripe_line_item.item_type.image}"
     )
-
-    # print(f"SUCCESS URL : {stripe_success_url}")
 
     # price_data -> product_date is used to generate at runtime,
     # price would require the object to exist on Stripe
@@ -682,4 +864,40 @@ def send_confirmation_email(
         body,
         settings.INFO_EMAIL,
         [email_data["email"]]
+    )
+
+
+def send_payment_email(
+        invoice_id, order_id, customer_id):
+    """
+    Will accept different lengths with email_data.
+    As long as it contains the fields it needs
+    """
+
+    get_customer = Profile.objects.get(pk=customer_id)
+    get_invoice = Invoice.objects.get(pk=invoice_id)
+
+    email_data_format = {
+        'order_id': order_id,
+        'name': get_customer.get_full_name,
+        'amount_paid': get_invoice.amount_paid,
+        'invoice': get_invoice.id
+    }
+
+    subject = render_to_string(
+        'emails/payment_emails/payment_email_subject.txt', {
+            'email_data': email_data_format,
+            'company_name': settings.COMPANY_NAME})
+    body = render_to_string(
+        'emails/payment_emails/payment_email_body.txt', {
+            'email_data': email_data_format,
+            'company_name': settings.COMPANY_NAME,
+            'contact_email': settings.INFO_EMAIL
+        })
+
+    send_mail(
+        subject,
+        body,
+        settings.INFO_EMAIL,
+        [get_customer.user.email]
     )
