@@ -13,6 +13,7 @@ from .models import Order
 # from profiles.models import Profile, User
 # from profiles.forms import ProfileForm, UserForm
 from items.models import ItemType, Item
+from profiles.models import Profile
 
 
 class OrderDatesForm(forms.ModelForm):
@@ -62,6 +63,7 @@ class OrderItemForm(forms.ModelForm):
         Add placeholders and classes, remove auto-generated
         labels and set autofocus on first field
         """
+
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
@@ -91,8 +93,11 @@ class OrderForm(forms.Form):
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
+        self.profile_id = kwargs.pop('profile_id', None)
 
         super(OrderForm, self).__init__(*args, **kwargs)
+        print(type(self.profile_id))
+
         self.fields['profile'] = forms.IntegerField()
         self.fields['first_name'] = forms.CharField(
             max_length=30, required=True, initial="",
@@ -137,6 +142,21 @@ class OrderForm(forms.Form):
         self.fields['phone_number'] = forms.CharField(
                 max_length=40, required=True, initial="",
                 label="Phone Number")
+
+        if self.profile_id:
+            profile_data = Profile.objects.get(pk=self.profile_id)
+            self.fields['profile'].initial = self.profile_id
+            self.fields['first_name'].initial = profile_data.user.first_name
+            self.fields['last_name'].initial = profile_data.user.last_name
+            self.fields['email'].initial = profile_data.user.email
+            self.fields['address_line_1'].initial = profile_data.address_line_1
+            self.fields['address_line_2'].initial = profile_data.address_line_2
+            self.fields['address_line_3'].initial = profile_data.address_line_3
+            self.fields['town'].initial = profile_data.town
+            self.fields['county'].initial = profile_data.county
+            self.fields['country'].initial = "GB"
+            self.fields['postcode'].initial = profile_data.postcode
+            self.fields['phone_number'].initial = profile_data.phone_number
 
         self.fields['start_date'] = (
             forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))

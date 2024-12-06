@@ -111,3 +111,33 @@ class Profile(models.Model):
 
     def address_display(self):
         return f"{self.address_line_1}, {self.county}, {self.postcode}"
+
+
+class CustomerNote(models.Model):
+
+    null_values = [None, 'None', 'none', 'null', 'Null']
+
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="profile"
+    )
+    note = models.TextField(null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        User, on_delete=models.PROTECT, related_name="customer_note_created_by"
+    )
+
+    class Meta:
+        ordering = ["created_by"]
+        verbose_name = "Customer Note"
+        verbose_name_plural = "Customer Notes"
+
+    def __str__(self):
+        return f"Note for Customer : {self.profile.id}"
+
+    def customer_note_full_name(self):
+        if self.profile.user.first_name in self.null_values:
+            return f"{self.profile.user.last_name}"
+        else:
+            return (
+                f"{self.profile.user.first_name}"
+                f" {self.profile.user.last_name}")

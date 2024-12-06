@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col-12 col-lg-9 col-xxl-8">
             {% comment %} <form action="{% if request.profile.account_type == 0 %}{% else %}{% url 'customer_view' %}{% endif %}"  {% endcomment %}
-                <form action="#"
+                <form action="{% if request.profile.account_type == 0 %}{% else %}{% url 'customer_view' %}{% endif %}"
                     class="floating-labels-form" method="post" id="customer_view">
                 {% crispy user_form user_form.helper %}
                 {% crispy profile_form profile_form.helper %}

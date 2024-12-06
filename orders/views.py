@@ -156,7 +156,7 @@ def order_edit(request, profile_id, order_id, order_note):
 
 
 @login_required
-def order_create(request):
+def order_create(request, profile_id=None):
     # Initiate the Create Order form.
     account_type = request.user.profile.get_account_type()
 
@@ -166,6 +166,10 @@ def order_create(request):
             "Permission Denied : A customer cannot create an order")
         return redirect('menu')
     else:
+        if profile_id:
+            order_form = OrderForm(profile_id=profile_id)
+        else:
+            order_form = OrderForm(profile_id=None)
 
         json_item_list = serialize(
             'json', Item.objects.all(),
@@ -189,7 +193,6 @@ def order_create(request):
         print("WHY AM I NOT A POST")
         # It is a get request from form so return an empty
         # form
-        order_form = OrderForm()
 
         template = 'orders/order_create.html'
         context = {
@@ -197,6 +200,7 @@ def order_create(request):
             'json_item_list': json_item_list,
             'json_order_list': json_order_list,
             'json_item_type_list': json_item_type_list,
+            'profile_id': profile_id,
         }
 
         return render(request, template, context)

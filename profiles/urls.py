@@ -1,6 +1,6 @@
 from . import views
 from django.urls import path
-from orders.views import order_view, order_edit
+from orders.views import order_view, order_edit, order_create
 
 
 """
@@ -29,14 +29,20 @@ urlpatterns = [
         views.customer_list,
         name='customer_list'),
     path(
-        'customers/<int:profile_id>/',
-        views.customer_view,
-        name="customer_view"),
-    path(
         'customers/create/',
         views.user_profile_create,
         {"is_customer": True},
         name="customer_create"),
+    path(
+        'customers/<int:profile_id>/',
+        views.customer_view,
+        {"is_customer": True},
+        name="customer_view"),
+    path(
+        'customers/<int:profile_id>/order/create/',
+        order_create,
+        name='customer_order_create',
+    ),
     path(
         'customers/<int:profile_id>/order/<int:order_id>/',
         order_view,

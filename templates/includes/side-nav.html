@@ -51,6 +51,8 @@
                                 <i class="nav-icon bi bi-cart-check"></i><strong>{% trans "Order View" %}</strong>
                             {% elif url_name == "item_view" %}
                                 <i class="nav-icon bi bi-database-up"></i><strong>{% trans "Item View" %}</strong>
+                                {% elif url_name == "item_type_view" %}
+                                <i class="nav-icon bi bi-database-fill-up"></i><strong>{% trans "Item View" %}</strong>
                             {% else %}
                             {% endif %}
                         </a>
@@ -68,7 +70,7 @@
                         <li class="nav-item sidebar">
                             <a {% if url_name == "customer_list" %}{% else %}href="{% url 'customer_list' %}" target="_self"{% endif %}
                             class="side-bar nav-link {% if url_name == 'customer_list' %}active{% endif %}">
-                                <i class="nav-icon bi bi-people"></i><strong>{% trans "Customers" %}</strong>
+                                <i class="nav-icon bi bi-people"></i><strong>{% trans "Customer List" %}</strong>
                             </a>
                         </li>
                     {% endif %}
@@ -87,7 +89,33 @@
                         </li>
                     {% endif %}
                 {% endif %}
-
+                <!-- When on the "Customer View" page, show this.
+                Highlighting it with the active class and disabling it by not applying
+                its href and target value when it is on the "Create Customer" page itself-->
+                {% if url_name == "customer_view" %}
+                    <!-- 0 will always be Customer, so they cannot see this -->
+                    {% if account_level > 0 %}
+                        <li class="nav-item sidebar">
+                            <a {% if url_name == "customer_order_create" %}{% else %}href="{% url 'customer_order_create' profile_id %}" target="_self"{% endif %}
+                            class="side-bar nav-link {% if url_name == 'customer_order_create' %}active{% endif %}">
+                                <i class="nav-icon bi bi-cart-plus"></i><strong>{% trans "Create Order" %}</strong>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+                <!-- When on "Order Create", but the customer version 
+                There should be an option to cancel creating the order and returning to the customer view -->
+                
+                {% if url_name == "customer_order_create" %}
+                    {% if account_level > 0 %}
+                        <li class="nav-item sidebar">
+                            <a {% if url_name == "customer_order_create"  %}href="{% url 'customer_view' profile_id %}" target="_self"{% else %}{% endif %}
+                            class="side-bar nav-link close-cancel"> <!-- No active for this, it is purely a functional button. -->
+                                <i class="nav-icon bi bi-cart-x"></i><strong>{% trans "Cancel Order" %}</strong>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
                 <!--- ORDERS -->
                 <!-- Show Order List, if on the list page itself then show it as active, by
                 highlighting it with the active class and disabling it by not applying
@@ -98,7 +126,7 @@
                         <li class="nav-item sidebar">
                             <a {% if url_name == "order_list" %}{% else %}href="{% url 'order_list' %}" target="_self"{% endif %}
                             class="side-bar nav-link {% if url_name == 'order_list' %}active{% endif %}">
-                                <i class="nav-icon bi bi-cart"></i><strong>{% trans "Orders" %}</strong>
+                                <i class="nav-icon bi bi-cart"></i><strong>{% trans "Order List" %}</strong>
                             </a>
                         </li>
                     {% endif %}
@@ -122,13 +150,13 @@
                 <!-- Show Item List, if on the list page itself then show it as active, by
                 highlighting it with the active class and disabling it by not applying
                 its href and target value -->
-                {% if url_name == "menu" or "/items" in request.path and "/type" not in request.path %}
+                {% if url_name == "menu" or url_name == "item_list" or url_name == "item_view" or url_name == "item_create" or url_name == "item_type_list" %}
                     <!-- 0 will always be Customer, so they cannot see this -->
                     {% if account_level > 0 %}
                         <li class="nav-item sidebar">
                             <a {% if url_name == "item_list" %}{% else %}href="{% url 'item_list' %}" target="_self"{% endif %}
                             class="side-bar nav-link {% if url_name == 'item_list' %}active{% endif %}">
-                                <i class="nav-icon bi bi-database"></i><strong>{% trans "Items" %}</strong>
+                                <i class="nav-icon bi bi-database"></i><strong>{% trans "Item List" %}</strong>
                             </a>
                         </li>
                     {% endif %}
@@ -150,13 +178,14 @@
                 <!-- Show Type List, if on the list page itself then show it as active, by
                 highlighting it with the active class and disabling it by not applying
                 its href and target value -->
-                {% if url_name == "menu" or "/items" in request.path and "/type" in request.path %}
+                {% comment %} {% if url_name == "menu" or "/items" in request.path and "/type" in request.path %} {% endcomment %}
+                {% if url_name == "menu" or url_name == "item_list" or url_name == "item_type_list" or url_name == "item_type_view" or url_name == "item_type_create"  %}
                     <!-- 0 will always be Customer, so they cannot see this -->
                     {% if account_level > 0 %}
                         <li class="nav-item sidebar">
                             <a {% if url_name == "item_type_list" %}{% else %}href="{% url 'item_type_list' %}" target="_self"{% endif %}
                             class="side-bar nav-link {% if url_name == 'item_type_list' %}active{% endif %}">
-                                <i class="nav-icon bi bi-database-fill"></i><strong>{% trans "Item Types" %}</strong>
+                                <i class="nav-icon bi bi-database-fill"></i><strong>{% trans "Item Type List" %}</strong>
                             </a>
                         </li>
                     {% endif %}
@@ -176,8 +205,6 @@
                         </li>
                     {% endif %}
                 {% endif %}
-
-                
                 <!-- STAFF -->
                 <!-- Show Profile List, if on the list page itself then show it as active, by
                 highlighting it with the active class and disabling it by not applying
@@ -187,7 +214,7 @@
                         <li class="nav-item sidebar">
                             <a {% if url_name == "profile_list" %}{% else %}href="{% url 'profile_list' %}" target="_self"{% endif %}
                             class="side-bar nav-link {% if url_name == 'profile_list' %}active{% endif %}">
-                                <i class="nav-icon bi bi-building"></i><strong>{% trans "Staff" %}</strong>
+                                <i class="nav-icon bi bi-building"></i><strong>{% trans "Staff List" %}</strong>
                             </a>
                         </li>
                     {% endif %}
