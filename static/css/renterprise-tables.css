@@ -33,6 +33,12 @@
     border-bottom: 1px solid #919191;
 }
 
+.payment-row {
+    flex-direction: column !important;
+    align-items:stretch;
+    border-bottom: 1px solid #919191;
+}
+
 /* Pagination CSS */
 /* Uses the grid system to ensure that the container and columns remain the same size
    The container can then be aligned via flex in parent containers

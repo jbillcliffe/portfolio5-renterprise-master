@@ -31,6 +31,8 @@ class UserForm(forms.ModelForm):
         """
         self.is_customer = kwargs.pop("is_customer", None)
         super().__init__(*args, **kwargs)
+        print("IS CUST?: ")
+        print(self.is_customer)
 
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
@@ -38,6 +40,7 @@ class UserForm(forms.ModelForm):
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
         self.fields['email'].required = True
+        
         # To prevent editing email visually.
         # views.py handles any other attempts by not using any
         # email value from the post.
@@ -58,7 +61,7 @@ class ProfileForm(forms.ModelForm):
     # Exclude the user value, this will be handled in views.py
     class Meta:
         model = Profile
-        exclude = ('user', )
+        exclude = ('user', 'account_type')
 
     def __init__(self, *args, **kwargs):
         """
@@ -82,9 +85,10 @@ class ProfileForm(forms.ModelForm):
                 FloatingField("town"),
                 FloatingField("county"),
                 FloatingField("country"),
-                FloatingField("postcode")
+                FloatingField("postcode"),
             )
         else:
+            self.Meta.exclude = ('user')
             print("Create Staff")
             self.helper.layout = Layout(
                 FloatingField("phone_number"),

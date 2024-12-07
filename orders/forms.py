@@ -1,9 +1,7 @@
 from django import forms
-from django.db import models
-
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, HTML, Reset, Submit, Field
-from crispy_forms.bootstrap import AccordionGroup, StrictButton  # , TabHolder, Tab
+from crispy_forms.layout import Layout, Div, HTML, Submit, Field
+from crispy_forms.bootstrap import AccordionGroup
 from crispy_bootstrap5.bootstrap5 import BS5Accordion, FloatingField
 
 from django_countries.fields import CountryField

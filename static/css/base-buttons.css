@@ -6,6 +6,7 @@ button,
 button[class*="default-button"],
 input[class*="default-button"],
 label[class*="default-button"],
+a.default-button,
 a.url-nav-button {
 	display: inline-block;
     font-weight: 400;
@@ -23,6 +24,7 @@ a.url-nav-button {
     line-height: 1.5;
     border-radius: 5px;
     cursor: pointer;
+    text-decoration: none;
 
     /* standard bootstrap button transitions */
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
@@ -50,6 +52,7 @@ button.inline-form-button {
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+a.danger-button,
 button[class*="danger-button"],
 input[class*="danger-button"] {
     display: inline-block;
@@ -68,6 +71,7 @@ input[class*="danger-button"] {
     line-height: 1.5;
     border-radius: 5px;
     cursor: pointer;
+    text-decoration: none;
 
     /* standard bootstrap button transitions */
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;

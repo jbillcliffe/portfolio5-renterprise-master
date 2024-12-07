@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block extra_css %}
+    <link href="{% static "css/renterprise-tables.css" %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block extra_title %}{% blocktrans %}Order Listing {% endblocktrans %}{% endblock extra_title %}
+<!-- div app container holds this -->
+{% block content %}
+    <hr>
+        <h1>Order Listing</h1>
+    <hr>
+    <div class="row">
+        <div class="col-12 col-xxl-10">
+            <!-- If user is logged in -->
+            {% if user.is_authenticated %}
+                <!-- Create "account_type" variable -->
+                {% with account_type=user.profile.account_type %}
+                    <!-- 2 & 3 = HR & Administrator privileges -->
+                    {% if account_type != 0 %}
+                        <!-- Create Table Div-->
+                        <div class="renterprise-table">
+                            <!-- Create Table Header -->
+                             <!-- No header in this list display-->
+                            {% for order in page_obj %}
+                                <div class="renterprise-table-row pt-2 pb-0 px-2">
+                                    <strong>Order ID: </strong><p class="my-1 ps-1">{{ order.id }}</p>
+                                </div>
+                                <div class="renterprise-table-row py-0 ps-2 pe-3">
+                                    <div class="col d-flex flex-row flex-fill align-items-baseline">
+                                        <strong>Item: </strong>
+                                        <p class="my-1 ps-1">{{ order.item.item_type }}</p>
+                                    </div>
+                                    <div class="col d-flex justify-content-end">
+                                        <a href="{% url 'order_view' order.profile.id order.id %}">
+                                            <i class="bi bi-arrow-right-circle-fill icon-button"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Create a row for dates and button to navigate to order  -->
+                                <div class="renterprise-table-row bottom-row flex-column flex-sm-row p-0 ps-2 pb-2">
+                                    <div class="col d-flex flex-row align-items-baseline">
+                                        <strong>Starts On: </strong><p class="my-1 ps-1">{{ order.start_date }}</p>
+                                    </div>
+                                    <div class="col d-flex flex-row align-items-baseline">
+                                        <strong>Ends On: </strong><p class="my-1 ps-1">{{ order.end_date }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% include "includes/paginate.html" %}
+                        </div>                        
+                        
+                    {% else %}
+                    <!-- This is for customers trying to get in via direct url navigation -->
+                    {% blocktrans %}<h3 class="text-danger">Not Authorised</h3>{% endblocktrans %}
+                        {% blocktrans %}
+                            <p>You need to be logged in to access the program.</p>
+                            <p>Log in to continue using this application.</p>
+                        {% endblocktrans %}
+                        <a class="button white-text" href="{% url 'account_login' %}">{% trans "Log In" %}</a>
+                    {% endif %}
+                {% endwith %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -7,10 +8,12 @@ from django.views.generic import ListView
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.db import IntegrityError
-from .models import Profile
+from .models import Profile, CustomerNote
 from .forms import UserForm, ProfileForm
 
 from orders.models import Order
+
+import json
 
 
 # Create your views here.
@@ -180,155 +183,39 @@ def customer_view(request, profile_id, **kwargs):
     """
     #############################################
     get_profile = Profile.objects.get(pk=profile_id)
-    get_user = profile.user
-
-    # # When form is submitted
-    # if request.method == "POST":
-    #     # If both the user form and profile form are valid.
-    #     if user_form.is_valid() and profile_form.is_valid():
-    #         update_user = get_user
-    #         update_profile = get_profile
-
-    #         user_form = UserForm(request.POST, instance=get_user)
-    #         profile_form = ProfileForm(request.POST, instance=get_profile)
-    #         # Just to ensure email does not change, which would cause
-    #         # address validation issues. Set the email to be the original
-    #         # value before form submission.
-    #         user_form["email"] = get_user.email
-    #         user_form.save()
-    #         profile_form.save()
-
-    #         order_note = OrderNote.objects.create(
-    #             order=get_order,
-    #             note=order_note,
-    #             created_on=datetime.now(),
-    #             created_by=request.user
-    #         )
-    #         order_note.save()
-    #         print("saved stuff")
-    #         messages.success(
-    #             request,
-    #             "Order Edited : Date(s) have been changed for this order")
-
-    #         print("URL BUILD")
-    #         url = reverse('order_view', args=[profile_id, order_id])
-    #         query = urlencode({'tab': tab_return})
-    #         final_url = '{}?{}'.format(url, query)
-    #         print(final_url)
-    #         return redirect(final_url)
-#############################################
-            #     This was the only definitive way of taking a model object
-            # and updating it where the model was an inline relation to the
-            # user AND allowed the user to update user fields themselves
-            # (first_name, last_name, email) in conjunction to additional
-            # profile details.
-            # Individually referring to each object and updating it.
-
-            # Email should be readonly in the profile. If it is changed,
-            # the email is no longer validated and can cause issues
-            # update_user.first_name = profile_form.data['first_name']
-            # update_user.last_name = profile_form.data['last_name']
-            # # Email is entered from the get_user, not the form post.
-            # update_user.email = get_user.email
-            # profile.address_line_1 = profile_form.data['address_line_1']
-            # profile.address_line_2 = profile_form.data['address_line_2']
-            # profile.address_line_3 = profile_form.data['address_line_3']
-            # profile.town = profile_form.data['town']
-            # profile.county = profile_form.data['county']
-            # profile.country = profile_form.data['country']
-            # profile.postcode = profile_form.data['postcode']
-            # profile.phone_number = profile_form.data['phone_number']
-
-            # Save the profile
-    #         profile.save()
-    #         # Save the user
-    #         update_user.save()
-
-    #         # Display a message to the user to show it has worked
-    #         messages.success(
-    #             request,
-    #             'Profile successfully updated'
-    #         )
-
-    #         return redirect('customer_view', profile_id=)
-
-    #     else:
-    #         messages.error(
-    #             request, (
-    #                 'Profile data is not valid.'
-    #                 'Please check the validation prompts.'
-    #             )
-    #         )
-
-    # else:
-    #     # The query is a GET. Get the data to load into fields
-    user_form = UserForm(instance=get_user)
-    profile_form = ProfileForm(instance=profile)
-
-    # Set template and context
-    template = 'profiles/profile.html'
-    context = {
-        'user_id': get_user.id,
-        'self_or_manage': "manage",
-        'user_form': user_form,
-        'profile_form': profile_form,
-    }
-
-    # Render the view
-    return render(request, template, context)
-        # update_user = request.user
-
-        # This was the only definitive way of taking a model object
-        # and updating it where the model was an inline relation to the
-        # user AND allowed the user to update user fields themselves
-        # (first_name, last_name, email) in conjunction to additional
-        # profile details.
-        # Individually referring to each object and updating it.
-
-        # NB. Email should be readonly in the profile. If it is changed,
-        # the email is no longer validated and can cause issues
-
-    #         update_user.first_name = profile_form.data['first_name']
-    #         update_user.last_name = profile_form.data['last_name']
-    #         # Email is entered from the request.user, not the form post.
-    #         update_user.email = request.user.email
-    #         profile.address_line_1 = profile_form.data['address_line_1']
-    #         profile.address_line_2 = profile_form.data['address_line_2']
-    #         profile.address_line_3 = profile_form.data['address_line_3']
-    #         profile.town = profile_form.data['town']
-    #         profile.county = profile_form.data['county']
-    #         profile.country = profile_form.data['country']
-    #         profile.postcode = profile_form.data['postcode']
-    #         profile.phone_number = profile_form.data['phone_number']
-
-    #         # Save the profile
-    #         profile.save()
-    #         # Save the user
-    #         update_user.save()
-
-    #         # Display a message to the user to show it has worked
-    #         messages.success(
-    #             request,
-    #             'Profile successfully updated'
-    #         )
-
-    #         return redirect(reverse('profile_view'))
-
-    #     else:
-    #         messages.error(
-    #             request, (
-    #                 'Profile data is not valid.'
-    #                 'Please check the validation prompts.'
-    #             )
-    #         )
-
-    # else:
-    # The query is a GET. Get the data to load into fields
-    get_profile = get_object_or_404(Profile, pk=profile_id)
     get_user = get_profile.user
 
-    user_form = UserForm(instance=get_user)
-    profile_form = ProfileForm(instance=get_profile)
+    # When form is submitted
+    if request.method == "POST":
+        user_form = UserForm(
+            request.POST, instance=get_user, is_customer=True)
+        profile_form = ProfileForm(
+            request.POST, instance=get_profile, is_customer=True)
+        # If both the user form and profile form are valid.
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+
+            messages.success(
+                request,
+                "Customer details have been updated.")
+
+            return redirect(
+                'customer_view',
+                profile_id=profile_id)
+
+        else:
+            messages.error(
+                request, (
+                    'Data is not valid.'
+                    'Please check the validation prompts.'
+                )
+            )
+
+    else:
+        # The query is a GET. Get the data to load into fields
+        user_form = UserForm(instance=get_user, is_customer=True)
+        profile_form = ProfileForm(instance=get_profile, is_customer=True)
 
     # Set template and context
     template = 'customers/customer.html'
@@ -341,7 +228,6 @@ def customer_view(request, profile_id, **kwargs):
 
     # Render the view
     return render(request, template, context)
-
 
 @login_required
 def profile_manage(request, user_id):

@@ -1,29 +1,27 @@
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 from decimal import Decimal
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.sessions.backends.db import SessionStore
+from django.core.mail import send_mail
+from django.core.paginator import Paginator
 from django.core.serializers import serialize
 from django.core.serializers.json import DjangoJSONEncoder
-from django.shortcuts import render, redirect, reverse  # get_object_or_404,HttpResponse
+from django.shortcuts import render, redirect, reverse
+from django.template.loader import render_to_string
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView
+
 from .forms import OrderForm, OrderDatesForm, OrderItemForm
 from .models import Order, Invoice, OrderNote
-from profiles.models import Profile
 from items.models import Item, ItemType
-from django.contrib.sessions.backends.db import SessionStore
-from django_countries.data import COUNTRIES
-from django.template.loader import render_to_string
-from django.core.mail import send_mail
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
-from django.db import models
-from datetime import date
-from urllib.parse import urlencode
-from django.core.paginator import Paginator
+from profiles.models import Profile
 
+from django_countries.data import COUNTRIES
+from urllib.parse import urlencode
 import stripe
 
 
@@ -39,6 +37,44 @@ class OrderList(ListView):
     def get_context_data(self, **kwargs):
         context = super(OrderList, self).get_context_data(**kwargs)
         return context
+
+
+@login_required
+def customer_order_list(request, profile_id):
+    # Build query, users with account type 0 are customers.
+
+    # Also want to include any profiles on an order otherwise. Staff members
+    # can be a customer too if they make an order. So they would not have an
+    # "account_type" of 0 So best method is to get an iterable of
+    # "profile ids" from the Orders model. To then get profile objects
+    # https://docs.djangoproject.com/en/5.1/ref/models/querysets/#in
+
+    # Found list of foreign key object query :
+    # https://stackoverflow.com/questions/45062238/django-getting-a-list-of-foreign-key-objects
+    # Immediately takes the query result (list of profiles from Order) and
+    # searches them using an IN query to get out Profile objects.
+
+    # Complex query, was initially a Union query. But that was not merging
+    # together eg. Would want 1,3,5 and 2,4,6 to become 1,2,3,4,5,6.
+    # Instead the generated queryset would be 1,3,5,2,4,6. So this uses an OR
+    # statement, which makes sense given that it is querying the same model
+    # but in differnet ways. First - It looks at where the iterated Profile
+    # in the query, appears in the Order model as a foreign key.
+    # Then it simply gets accounts which have an account_type of 0.
+
+    customer_order_queryset = Order.objects.filter(profile=profile_id)
+
+    # 7 results per page
+
+    orders = Paginator(customer_order_queryset, 7)
+
+    # Determine number of pages in query
+    page_number = request.GET.get("page")
+    page_obj = orders.get_page(page_number)
+
+    return render(
+        request, "customers/customer_order_list.html",
+        {"page_obj": page_obj, "profile_id": profile_id})
 
 
 def order_view(request, profile_id, order_id):
@@ -89,17 +125,19 @@ def order_view(request, profile_id, order_id):
         else:
             tab_return = None
 
+    account_type = request.user.profile.get_account_type()
 
     template = 'orders/order_view.html'
     context = {
         # 'order_view_form': order_view_form,
         'order': order,
+        'account_type': account_type,
         'tab_return': tab_return,
         'order_dates_form': dates_form,
         'order_item_form': item_form,
+        'profile_id': profile_id,
         # 'item_type'
         # 'profile'
-        # 'invoice': invoices,
         'json_item_list': json_item_list,
         'json_order_list': json_order_list,
         'json_item_type_list': json_item_type_list,
@@ -110,49 +148,134 @@ def order_view(request, profile_id, order_id):
 
 
 def order_edit(request, profile_id, order_id, order_note):
-    print(order_note)
-    print(request.POST)
-    print(request.GET)
-    print("GOT THESE")
-    if request.method == "POST":
 
-        print(request.GET['tab'])
-        tab_return = request.GET['tab']
+    account_type = request.user.profile.get_account_type()
+    get_order = Order.objects.get(pk=order_id)
+    print(account_type)
 
-        if tab_return == "despatches":
-            print("GOT TAB")
-            get_order = Order.objects.get(order__id=order_id)
-            # get_order.start_date = request.POST['start_date']
-            # get_order.end_date = request.POST['end_date']
+    if account_type == "Customer":
+        messages.error(
+            request,
+            "Permission Denied : A customer cannot modify an order")
+    else:
+        print(request.method)
+        if request.method == "POST":
 
-            form = OrderDatesForm(request.POST, instance=get_order)
-            form.save()
+            print(request.GET['tab'])
+            tab_return = request.GET['tab']
 
-            order_note = OrderNote.objects.create(
-                order=get_order,
-                note=order_note,
-                created_on=datetime.now(),
-                created_by=request.user
-            )
-            order_note.save()
-            print("saved stuff")
-            messages.success(
-                request,
-                "Order Edited : Date(s) have been changed for this order")
+            if tab_return == "despatches":
+                print("GOT TAB")
+                form = OrderDatesForm(request.POST, instance=get_order)
+                form.save()
 
-            print("URL BUILD")
-            url = reverse('order_view', args=[profile_id, order_id])
-            query = urlencode({'tab': tab_return})
-            final_url = '{}?{}'.format(url, query)
-            print(final_url)
-            return redirect(final_url)
+                save_order_note = OrderNote.objects.create(
+                    order=get_order,
+                    note=order_note,
+                    created_on=datetime.now(),
+                    created_by=request.user
+                )
+                save_order_note.save()
+                print("saved stuff")
+                messages.success(
+                    request,
+                    "Order Edited : Date(s) have been changed for this order")
+
+                url = reverse('order_view', args=[profile_id, order_id])
+                query = urlencode({'tab': tab_return})
+                final_url = '{}?{}'.format(url, query)
+
+                return redirect(final_url)
+            else:
+                messages.error(
+                    request,
+                    (
+                        "Order Edit Failed : There was a problem "
+                        "with the operation. Please contact your IT "
+                        "Administrator"))
+                return redirect(
+                    reverse('order_view', args=[profile_id, order_id]))
         else:
-            messages.success(
-                request,
-                (
-                    "Order Edit Failed : There was a problem "
-                    "saving the new date(s). Please try again"))
-            return redirect(reverse('order_view', args=[profile_id, order_id]))
+            if request.GET['tab'] == "payments":
+                invoice_id = request.GET['invoice']
+                status = request.GET['status']
+
+                print(status)
+                print(invoice_id)
+
+                if status == "unpaid":
+                    invoice = Invoice.objects.get(pk=invoice_id)
+                    invoice.status = False
+                    invoice.save()
+
+                    save_order_note = OrderNote.objects.create(
+                        order=get_order,
+                        note=f"Invoice {invoice_id} marked as unpaid",
+                        created_on=datetime.now(),
+                        created_by=request.user
+                    )
+                    save_order_note.save()
+
+                    messages.warning(
+                        request,
+                        (
+                            f"INVOICE UNPAID : {invoice_id} has"
+                            f" been been marked as unpaid!"
+                        )
+                    )
+                    print("UNPAID")
+                elif status == "paid":
+                    invoice = Invoice.objects.get(pk=invoice_id)
+                    invoice.status = True
+                    invoice.save()
+
+                    save_order_note = OrderNote.objects.create(
+                        order=get_order,
+                        note=f"Invoice {invoice_id} marked as paid",
+                        created_on=datetime.now(),
+                        created_by=request.user
+                    )
+                    save_order_note.save()
+
+                    messages.success(
+                        request,
+                        (
+                            f"INVOICE PAID : {invoice_id} has"
+                            f" been been marked as paid!"
+                        )
+                    )
+                    print("PAID")
+                elif status == "deleted":
+                    invoice = Invoice.objects.get(pk=invoice_id)
+                    invoice.delete()
+
+                    save_order_note = OrderNote.objects.create(
+                        order=get_order,
+                        note=f"INVOICE {invoice_id} DELETED",
+                        created_on=datetime.now(),
+                        created_by=request.user
+                    )
+                    save_order_note.save()
+
+                    messages.warning(
+                        request,
+                        f"INVOICE DELETED : {invoice_id} has been deleted!"
+                    )
+                    print("DELETED")
+                else:
+                    # error message
+                    messages.error(
+                        request,
+                        (
+                            "INVOICE ERROR : Unknown invoice operation. "
+                            "Show this URL to IT support."
+                        )
+                    )
+                url = reverse('order_view', args=[profile_id, order_id])
+                query = urlencode({'tab': request.GET['tab']})
+                final_url = '{}?{}'.format(url, query)
+
+                return redirect(final_url)
 
 
 @login_required
@@ -308,10 +431,10 @@ def payment_create(request, invoice_id):
     session_store_data["amount_paid"] = str(get_invoice.amount_paid)
     session_store_data.save()
 
-    # As "request" is not the method used. It uses a GET with the return of the 
-    # hosted payment page. This creates a session storage and posts the key to get in.
+    # As "request" is not the method used. It uses a GET with the return of
+    # the hosted payment page. This creates a session storage and posts the
+    # key to get in.
     # https://docs.djangoproject.com/en/5.1/topics/http/sessions/#using-sessions-out-of-views
-
     return redirect(checkout_session.url, code=303)
 
 
@@ -398,11 +521,13 @@ def order_create_checkout(request):
     # Using a hosted payment page. Greater security provided
     # Check session data required
     local_key = get_order_form_data(request)
+    print("KEY")
+    print(local_key)
     storage_update = SessionStore(session_key=local_key)
-    stripe_order = request.session["new_order"]
-    stripe_order_id = request.session["new_order_id"]
-    stripe_order_item_id = request.session["new_item_id"]
-    stripe_order_profile_id = request.session['new_profile_id']
+    stripe_order = storage_update["new_order"]
+    stripe_order_id = storage_update["new_order_id"]
+    stripe_order_item_id = storage_update["new_item_id"]
+    stripe_order_profile_id = storage_update['new_profile_id']
     stripe_line_item = (
         Item.objects.get(pk=stripe_order_item_id)
     )
@@ -502,8 +627,9 @@ def order_create_checkout(request):
     storage_update["checkout_session"] = checkout_session.id
     storage_update.save()
 
-    # As "request" is not the method used. It uses a GET with the return of the 
-    # hosted payment page. This creates a session storage and posts the key to get in.
+    # As "request" is not the method used. It uses a GET with the
+    # return of the hosted payment page. This creates a session storage
+    # and posts the key to get in.
     # https://docs.djangoproject.com/en/5.1/topics/http/sessions/#using-sessions-out-of-views
 
     return redirect(checkout_session.url, code=303)
@@ -515,7 +641,6 @@ def order_create_success(request):
     # Set your secret key.
     # See your keys here: https://dashboard.stripe.com/apikeys
     get_session = request.GET.get('session', '')
-
     # Two parts need to happen at this point to reflect the successful payment
     #
     # - The invoice needs to be set to paid
@@ -627,7 +752,6 @@ def order_create_cancel(request):
 def get_order_form_data(request):
 
     session_store_data = SessionStore()
-
     form_data = {
         # Accordion - Customer
         # user_name will default null, unless order is created
@@ -651,7 +775,6 @@ def get_order_form_data(request):
         'town': request.POST['town'],
         'county': request.POST['county'],
         'country': request.POST['country'],
-        'country_name': COUNTRIES[request.POST['country']],
         'postcode': request.POST['postcode'],
         # Accordion - Order
         'item': request.POST['item'],
@@ -661,7 +784,7 @@ def get_order_form_data(request):
         'end_date': request.POST['end_date'],
         # created_on: is done locally as datetime breaks json
         # and has no need to be transferred in form_data anywhere else
-        'created_by': request.user.id,
+        'created_by': str(request.user.id),
         # Accordion - Payment
         'invoice_notes': request.POST['invoice_notes'],
     }
@@ -769,8 +892,8 @@ def get_order_form_data(request):
     # a separate line in a string.
     invoice_note_list = ["Initial Rental Payment."]
     if form_data['invoice_notes']:
-        invoice_note_list.append[form_data['invoice_notes']]
-    invoice_note_final = '\n'.join(invoice_note_list)
+        invoice_note_list.append(form_data['invoice_notes'])
+    invoice_note_final = ' '.join(invoice_note_list)
     print(" --- FINAL INVOICE NOTES --- ")
     print(invoice_note_final)
 

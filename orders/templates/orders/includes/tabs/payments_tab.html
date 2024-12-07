@@ -26,24 +26,56 @@
                 <span class="d-block d-md-none"><strong>Due On: </strong></span>{{ invoice.due_on }}
             </div>
             <div class="col-12 col-md-5">
-                <span class="d-block d-md-none"><strong>Amount: </strong></span>{{ invoice.amount_paid }}
+                <span class="d-block d-md-none"><strong>Amount: </strong></span>£{{ invoice.amount_paid }}
             </div>
         </div>
         <!-- Create a row for email and button to navigate to profile  -->
-        <div class="renterprise-table-row bottom-row {% if invoice.is_late is True %}bg-danger-subtle{% else %}{% endif %}">
+        <div class="renterprise-table-row payment-row  {% if invoice.is_late is True %}bg-danger-subtle{% else %}{% endif %}">
             <div class="col-12 multi-element-column">
                 <span>
                     {% if invoice.is_late is True %}<strong>Payment Overdue - </strong>{% else %}{% endif %}
                     {{ invoice.note }}</span>
-                {% if invoice.is_late is True %}
+                {% if invoice.status == 0 %}
                 {% comment %} <!-- "{% url 'order_payment' invoice_id=invoice.id %}" --> {% endcomment %}
                     <a href="{% url 'payment_create' invoice.id %}" class="ms-2">
                         <i class="bi bi-stripe"></i>
                     </a>
                 {% else %}
-                    <a href="#" class="ms-2">
-                        <i class="bi bi-zoom-in"></i>
-                    </a>
+                {% endif %}
+                <a href="#" class="ms-2" data-bs-toggle="collapse" data-bs-target="#payment-extra-area-{{ invoice.id }}" aria-expanded="false" aria-controls="payment-extra-area">
+                    <i class="bi bi-zoom-in"></i>
+                </a>
+            </div>
+            <div class="collapse" id="payment-extra-area-{{ invoice.id }}">
+                <div class="renterprise-table-row px-0 {% if invoice.is_late is True %}bg-danger-subtle{% else %}{% endif %}">
+                    <div class="col-6">
+                        Created: {{ invoice.created_on }}
+                    </div>
+                    <div class="col-6">
+                        By: {{ invoice.created_by }}
+                    </div>
+                </div>
+                {% if account_type == "Administrator" %}
+                    {% url 'order_edit' profile_id order.id "Changed" as the_url %}
+                    <div class="renterprise-table-row px-0 {% if invoice.is_late is True %}bg-danger-subtle{% else %}{% endif %}">
+                        <div class="col-12 multi-element-column">
+                            {% if invoice.status == 0 %}
+                                <a href="{{ the_url }}?tab=payments&status=paid&invoice={{ invoice.id }}" 
+                                    class="default-button">
+                                    {% trans "Mark As Paid?" %}
+                                </a>
+                                <a class="danger-button"
+                                    href="{{ the_url }}?tab=payments&status=deleted&invoice={{ invoice.id }}">
+                                    {% trans "Delete Invoice?" %}
+                                </a>
+                            {% else %}
+                            <a href="{{ the_url }}?tab=payments&status=unpaid&invoice={{ invoice.id }}" 
+                                class="danger-button">
+                                {% trans "Mark As Unpaid?" %}
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         </div>
