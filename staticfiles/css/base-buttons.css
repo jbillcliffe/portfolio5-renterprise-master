@@ -1,0 +1,188 @@
+/* Moved buttons from the base.css file as it was becoming large.
+   Loaded into templates alongside base.css in base.html */
+
+/* Program wide buttons + Submit Button styles */
+button,
+button[class*="default-button"],
+input[class*="default-button"],
+label[class*="default-button"],
+a.default-button,
+a.url-nav-button {
+	display: inline-block;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #2D8B60;
+    border: 1px solid #000000;
+    padding: .375rem 2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+
+    /* standard bootstrap button transitions */
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+
+
+button.inline-form-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #2D8B60;
+    border: 1px solid #000000;
+    line-height: 1.5;
+    border-radius: 5px;
+    margin: 0 0 1rem auto;
+    width: max-content;
+    cursor: pointer;
+    /* standard bootstrap button transitions */
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+a.danger-button,
+button[class*="danger-button"],
+input[class*="danger-button"] {
+    display: inline-block;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #C40000;
+    border: 1px solid #000000;
+    padding: .375rem 2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+
+    /* standard bootstrap button transitions */
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.default-button-view-only,
+.danger-button-view-only {
+    cursor: default !important;
+    color:#000000 !important;
+}
+
+/* Program wide buttons + Submit Button styles for hover over */
+button:hover,
+button[class*="default-button"]:hover,
+input[class*="default-button"]:hover,
+label[class*="default-button"]:hover,
+.inline-form-button:hover {	
+	color: #FFFFFF;
+    background-color: #154D33;
+    border-color: #000000;
+}
+
+
+
+button[class*="danger-button"]:hover,
+input[class*="danger-button"]:hover
+{
+    color: #FFFFFF;
+    background-color: #910000;
+    border-color: #000000;
+}
+
+#view-only-type:hover {
+    /* These colours are the same, so there is no change in appearance.
+    As this is a "display only" button */
+    color: #FFFFFF;
+    background-color: #2D8B60;
+    border-color: #000000;
+}
+
+button:disabled,
+button:hover:disabled,
+button[class*="default-button"]:disabled,
+button[class*="default-button"]:hover:disabled,
+button[class*="danger-button"]:disabled,
+button[class*="danger-button"]:hover:disabled,
+.inline-form-button:disabled,
+.inline-form-button:hover:disabled {
+    color: rgba(33, 37, 41, 0.35);
+    background-color: rgba(108, 107, 125, 0.35);
+    border: 1px solid rgba(108, 107, 125, 0.5);
+}
+
+/* For program wide a tag buttons */
+a.not-submit {
+    display: inline-block;
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+    padding: .375rem 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 5px;
+
+    /* standard bootstrap button transitions */
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+/* For program wide a tag buttons hover over style */
+a.not-submit:hover {
+    background-color: #C9F0FF;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #FFFFFF;
+    background-color: #2D8B60;
+    box-shadow: 1px 1px 4px 0px black;
+}
+.accordion-button.collapsed:hover {
+    color: #000000;
+    background-color: #C9F0FF;
+    box-shadow: 1px 1px 6px 0px black;
+}
+
+
+
+/* At just below this resolution, form buttons "could"
+   stack in a weird way. This will make the buttons full width
+   slightly earlier to prevent this effect */
+@media (max-width:600px) {
+    form>button,
+    form>input[type='submit'],
+    form>a.not-submit {
+        width: 100%;
+        margin-top: 0.25rem;
+        margin: 0 auto 0.75rem auto;
+    }
+}
+
+/* For Bootstrap XS sizing for header menu. 
+Increase height to
+allow the drop down menu to move */
+@media (max-width: 575px) {
+    button.inline-form-button {
+        width: 100%;
+    }
+}

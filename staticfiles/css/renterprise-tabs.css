@@ -1,0 +1,74 @@
+
+#id-order-tabs {
+    border-bottom: 1px solid #528265;
+    opacity: 1;
+    
+}
+
+.order-tab {
+    background-color:#FFFFFF;
+}
+
+button.nav-link {
+    color:#000000;
+    background-color: #FFFFFF;
+    padding-bottom: 7px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* unvisited link */
+button.nav-link:link {
+    color: #000000;
+  }
+  
+  /* visited link */
+button.nav-link:visited {
+    color: #000000;
+}
+  
+  /* mouse over link */
+button.nav-link:hover {
+    color: #000000;
+    background-color: #C9F0FF;   
+}
+
+.nav-tabs .nav-link {
+    border: 0;
+    margin-bottom: 0;
+}
+  
+  /* selected link */
+.nav-tabs .nav-link.active {
+    color: #000000;
+    background-color: #A3CFBB;
+}
+
+/* <i class="bi bi-stripe"></i> */
+i.bi.bi-stripe{
+    /* Set the colour to Stripe's brand "blurple" */
+    color: #5533FF;
+}
+
+.tab-pane {
+    background-color: #FFFFFF;
+    padding: 1rem;
+    border: 1px solid #528265;
+    border-top: 0;
+}
+
+@media (max-width: 585px) {
+    .order-tab {
+        width:50%;
+        background-color:#FFFFFF;
+    }
+    .nav-tabs .nav-link {
+        width:100%;
+    }
+}
+
+@media (max-width: 377px) {
+    .order-tab {
+        width:100%;
+    }
+}

@@ -1,0 +1,154 @@
+#side-navigation-bar {  
+    /* Styling for Side Nav bar. Height, width, padding, 
+       margin, z-index and background colour */
+    display: flex;
+    flex-direction: column;
+    background: #DDDDDD;
+    border: 1px solid #D3D3D3;
+    padding: 1rem 0;
+    margin: 0 1rem 0 0;
+    width: 250px;
+    height: auto;
+    min-height: 60vh;
+    z-index: 10;
+}
+
+/* Setting these values. Removes the bullet points from the list.
+   removes any edges on the left. But most importantly, sets a sticky
+   value, so that when a user scrolls the page. It appears that only
+   the app-container is scrolled as the header and navigation stay in place. */
+
+#rest-of-sidebar {
+    position: sticky;
+    top: 117px;
+}
+#rest-of-sidebar>ul {
+    list-style-type:none;
+    margin: 0;
+    padding: 0;
+    width:100%;
+}
+
+.nav.nav-list {
+    /* display: block; */
+    flex-direction:column;
+}
+
+#collapse-sidebar {
+    display:none;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1rem;
+    cursor:pointer;
+    width:100%;
+    padding-right:0;
+}
+
+span#menu-text-holder {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 1rem;
+    width: 100%;
+}
+#side-menu-text {
+    width:100%;
+    color:#000000;
+    text-shadow:none;
+    text-decoration:none;
+    padding: 0.5rem 1rem;
+    font-size: medium;
+}
+
+a.nav-link {
+    color:#000000;
+    text-shadow:none;
+    font-size: large;
+    text-decoration:none;
+    border:none;
+    transition: all 0.3s;
+}
+
+a.nav-link:visited {
+    color:#000000;
+    text-shadow:none;
+    font-size: large;
+    text-decoration:none;
+    border:none;
+}
+
+a.nav-link:hover {
+    color: #FFFFFF;
+    text-shadow: 0px 1px 5px #000000;
+    background-color: #17A2B8;
+}
+
+a.nav-link.close-cancel:hover {
+    color: #FFFFFF;
+    text-shadow: 0px 1px 5px #000000;
+    background-color: #C40000;
+}
+
+.nav-link.white-text {
+    color:#FFFFFF !important;
+    text-shadow: 0px 1px 5px #000000;
+}
+
+.side-bar.nav-link.active {
+    cursor:default;
+}
+
+i.nav-icon {
+    padding: 0.5rem;
+    font-size: x-large;
+    width:45px;
+    height:45px;
+}
+
+hr.nav-hr {
+    color:black;
+}
+
+li.nav-item.sidebar {
+    width: 100%;
+}
+
+li.nav-item.sidebar>a.nav-link.active {
+    color: #FFFFFF;
+    text-shadow: 0px 1px 5px #000000;
+    background-color: #1B9964;
+}
+
+
+@media (max-width: 575px) {
+    
+    #collapse-sidebar {
+        display: list-item;
+        text-decoration: none;
+    }
+
+    /* Change side navigation bar, to be a top navigation bar */
+    #side-navigation-bar {
+        padding: 0 1rem;
+        margin: 0;
+        width: 100%;
+
+        min-height: auto;
+        position: sticky;
+        top: 135px;
+        box-shadow: 0px 1px 4px 0px rgba(57, 61, 63, 0.8);
+    }
+
+    .nav.nav-list {
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 576px) {
+
+    .nav.nav-list {
+        display: block;
+        flex-direction:column;
+    }
+}

@@ -1,0 +1,68 @@
+/* Container for the toasts */
+
+.toast-container {
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    top: 131px;
+    width: 100%;
+    z-index: 21;
+}
+
+.toast-body {
+    display: flex;
+    justify-content: center;
+}
+
+#renterprise-toast {
+    position: relative;
+    width: 30%;
+    margin: 0 2rem;
+    background-color: #FFFFFF;
+}
+
+/* 1600+ px */
+@media (min-width: 1600px) {
+    /* Smaller still for extreme screen width */
+    #renterprise-toast {
+        width: 25%;
+    }
+}
+/* 1200+ px */
+@media (min-width: 1200px) {
+    
+    /* Margins created at edges */
+    .toast-container {
+        width: 80%;
+    }
+}
+
+/* < 800px */
+@media (max-width: 800px) {
+
+    /* Change width of toast */
+    #renterprise-toast {
+        width: 50%;
+    }
+}
+
+/* < 575px */
+@media (max-width: 575px) {
+
+     /* Change x position of toast when header
+     has a larger height */
+    .toast-container {
+        top: 166px;
+    }
+}
+
+/* < 500px */
+@media (max-width: 500px) {
+    
+    /* Change width of toast */
+    #renterprise-toast {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+

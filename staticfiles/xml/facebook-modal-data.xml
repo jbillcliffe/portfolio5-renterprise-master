@@ -1,0 +1,42 @@
+
+<modaldata>
+    <modaltitle>Dummy Facebook Page</modaltitle>
+    <modalbody>
+        <div id="facebook-image-carousel" class="carousel slide" data-bs-ride="false" data-bs-interval="0">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#facebook-image-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#facebook-image-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#facebook-image-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src='/static/images/facebook/facebook-mock-full.webp' class="d-block w-100 img-fluid" alt="An image showing a full screen shot of a dummy facebook page for Renterprise"/>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="text-black">Full Mockup Facebook Page</h5>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src='/static/images/facebook/facebook-mock-top.webp' class="d-block w-100 img-fluid" alt="An image showing the top section of the full page mockup of a facebook page, but zoomed in for greater clarity"/>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="text-black">Top Section Of Mockup Facebook Page</h5>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src='/static/images/facebook/facebook-mock-bottom.webp' class="d-block w-100 img-fluid" alt="An image showing the bottom section of the full page mockup of a facebook page, but zoomed in for greater clarity"/>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="text-black">Bottom Section Of Mockup Facebook Page</h5>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#facebook-image-carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#facebook-image-carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </modalbody>
+    <modalfooter></modalfooter>
+</modaldata>

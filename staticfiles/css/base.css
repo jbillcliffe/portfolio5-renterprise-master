@@ -1,0 +1,422 @@
+/* Include padding + margin in width (recommended by Bootstrap) */
+* {
+    box-sizing: border-box;
+}
+
+/*set the logo font across all areas, with a fallback font available too */
+body, h1, h2, h3, h4, h5, h6,
+p, input, button, li, a, span, label, strong {
+    font-family: 'Hind', sans-serif;
+}
+
+/* h1 tags are surrounded by hr tags, which provide a border. Removing the 
+bottom margin makes it have a central appearance.  
+Set the font-size of the h1 tags to be slightly smaller than default so they
+are not too dominating.
+*/
+h1 {
+    margin-bottom:0;
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom:0;
+}
+
+/* Apply flex across body elements. Add divs in a column. 
+Set background to be ghost white. A solid white would be quite harsh on
+the eyes over extended viewing. Which is what software would have happen
+unlike regular websites */
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #F5F5F5;
+}
+
+/* Make the header sticky so that it does not get lost when 
+   scrolling down on mobile devices. */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+footer {
+    background-color: #2D8B60;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+}
+.social-networks {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-evenly;
+    width: 50%;
+    margin-bottom: 0;
+    padding: 1rem 0 .5rem 0;
+}
+footer>ul>li>a>i {
+    font-size:2rem;
+}
+
+/* #facebook-link, #twitter-link,
+#youtube-link, #instagram-link {
+    transition: color 2s;
+} */
+
+#facebook-link, #facebook-link:visited,
+#twitter-link, #twitter-link:visited,
+#youtube-link, #youtube-link:visited,
+#instagram-link, #instagram-link:visited {
+    color: #FFFFFF;
+    transition: color 0.6s;
+}
+
+#facebook-link:hover,
+#twitter-link:hover,
+#youtube-link:hover,
+#instagram-link:hover {
+    color: #41f2ff;
+} 
+
+#about-main,
+.about-renterprise {
+    display: flex;
+    flex-direction: column;
+}
+
+.about-renterprise span {
+    margin-bottom: 1rem;
+}
+
+.map-container {
+    width: 100%;
+    height: 300px;
+}
+
+.map-container>iframe {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+/* Make the document full height */
+html {
+    height: 100%;
+    background-color: #F5F5F5;
+}
+
+/* Styling for <p> tags - dark grey font */
+p {
+    margin-top: 1.5rem;
+    color: #42494E;
+}
+
+/* Change hr styling to match secondary colour theme from designs */
+hr {
+    border: 1px solid #528265;
+    opacity: 1;
+}
+
+/* Styling for all inputs, black border and rounded corners */
+input {
+    border-color: #000000;
+    border-radius: 5px;
+}
+
+/* For Bootstrap dropdown lists used in forms where an active option will be required */ 
+a.dropdown-item.list-active {
+    color: #FFFFFF;
+    text-shadow: 0px 1px 5px #000000;
+    background-color: #1B9964;
+}
+a.dropdown-item.list-active:hover {
+    cursor:default;
+    color: #FFFFFF;
+    text-shadow: 0px 1px 5px #000000;
+    background-color: #1B9964;
+}
+a.dropdown-item:not(.list-active),
+a.dropdown-item:not(.list-active:hover) {
+    cursor:pointer;
+}
+
+i {
+    font-size: x-large;
+}
+
+i.icon-button {
+    cursor: pointer;
+    color:#2D8B60;
+}
+
+.multi-element-column {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Muted text styling for placeholders */
+input::placeholder {
+    color: #AAB7C4;
+}
+
+#div_id_edit-item-item_type {
+    margin-bottom: 1rem !important;
+}
+
+/* Text shadow on white text emphasises it */
+.white-text {
+    /* color:#FFFFFF !important; */
+    color:#FFFFFF;
+    text-shadow: 0px 1px 5px #000000;
+}
+
+/* Colours text with the green in the logo */
+.renterprise-green-text {
+    color: #2D8B60;
+    text-shadow: 0px 1px 5px #FFFFFF;
+}
+
+.renterprise-dark-green-text {
+    /* Dark green text - Secondary colour style from designs*/
+    color: #528265;
+    text-shadow: 0px 1px 5px #FFFFFF;
+}
+
+/* Removes underline on text */
+.no-decoration {
+    text-decoration: none;
+}
+
+/* Set header to be full page width and fixed height */
+.main-header {
+    width: 100%;
+    height: 100px;
+    background-color: #2D8B60;
+    box-shadow: 0 3px 2px 0px rgba(57, 61, 63, 0.8);
+}
+
+/* Set the user welcome message to be right aligned and non dropdown options */
+.renterprise-dropdown,
+.renterprise-non-user {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Remove bullet points from non-user list and set list options to be right aligned */
+.renterprise-non-user {
+    list-style-type: none;
+    flex-direction: column;
+}
+
+/* base settings for dropdown in header for user control */
+.renterprise-dropdown *,
+.renterprise-non-user * {
+    color:#FFFFFF;
+    background-color: #2D8B60;
+    border: none;
+    font-size: large;
+}
+
+/* Set the "Welcome, X" message to have larger text than the dropdown options */
+.renterprise-dropdown .login-dropdown {
+    font-size:larger;
+}
+
+/* Styling for mouse over on header dropdown elements and
+   header non-user elements */
+.renterprise-dropdown button:hover,
+.renterprise-dropdown-menu li:hover,
+.renterprise-non-user li:hover {
+    color:#FFFFFF;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Styling for active link on header dropdown */
+.renterprise-dropdown .login-dropdown:active {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.program-holder {
+    display:flex;
+    flex-direction: row;
+    width:100%;
+    margin: 0 auto;
+}
+
+
+
+/* Divs to be used to hold the app below the header */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+}
+
+
+/* --- Form Styling --- */
+
+/* Alter the Bootstrap5 floating field values for color. */
+
+/* For a floating field label when it is in the place holder position */
+.form-floating>label {
+    color: rgba(33, 37, 41, 0.35) !important;
+}
+
+/* For a floating field label when it is "floating" at the top of the parent element */
+.form-floating>.form-control-plaintext~label,
+.form-floating>.form-control:focus~label,
+.form-floating>.form-control:not(:placeholder-shown)~label,
+.form-floating>.form-select~label {
+    color: rgba(33, 37, 41, 0.795) !important;
+}
+/* --- Specific Allauth form formatting ----
+   Boutique Ado tutorial as guidance */
+
+/* Hide form labels (except remember me for screen readers)
+as placeholders show the user required input data */
+.allauth-form-inner-content label:not([for='id_remember']) {
+    display: none;
+    color:#0066ff
+}
+
+/* <a> styling, such as "Forgot Password" */
+.allauth-form-inner-content a {
+	color: #17A2B8;
+}
+
+/* Item Image (in Item View) */
+.item-image,
+.item-image-sku {
+    width: 296px;
+    max-width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid;
+    text-align: center;
+    border-radius: 0;
+}
+
+.app-loading-overlay {
+    width: 100%;
+    display: none;
+    position: absolute;
+    height: -webkit-fill-available;
+    margin-left: -1rem;
+    margin-top: 0.20rem;
+}
+
+
+/* --- Media Queries --- */
+
+/* For High Resolution Desktop Screens */
+@media (min-width: 1200px) {
+
+    /* Margins created at edges */
+    .main-header,
+    .program-holder,
+    footer {
+        width: 80%;
+    }
+}
+
+ 
+/* For Desktop Screens */
+@media (min-width: 992px) {
+    /* .item-image,
+    .item-image-sku {
+        min-width: 296px;
+    } */
+}
+  
+/* For Mobile Devices */
+/* @media (max-width: 991px) {
+
+} */
+
+/* A size used on buttons as near this is a breaking
+resolution, without quite making it to the XS breakpoint*/
+/* @media (max-width:600px) {
+
+} */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+    h2 {
+        font-size: 1.3rem;
+        margin-bottom:0;
+    }
+    .app-container {
+        width: 100%;
+        /* margin-bottom: 1rem; */
+        margin-right: 1rem;
+    }
+}
+
+/* For Bootstrap XS sizing for header menu. 
+Increase height to
+allow the drop down menu to move */
+@media (max-width: 575px) {
+
+    h1, hr, .row {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .main-header {
+        height: 135px;
+    }
+
+    .social-networks {
+        width: 100%;
+    }
+    
+    .program-holder {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .app-container {
+        width: 100%;
+        margin-right: 0;
+        margin-left: 0;
+    }
+    
+    .app-loading-overlay {
+        margin-left: 0;
+        margin-top: 0;
+    }
+
+    .renterprise-dropdown .login-dropdown,
+    .renterprise-dropdown-menu {
+        font-size: medium;
+    }
+
+    .renterprise-non-user {
+        flex-direction: row;
+    }
+
+    #div_id_edit-item-item_type {
+        margin-bottom: 0.25rem !important;
+    }
+}
+
+/* For Small resolution phones */
+@media (max-width: 380px) {
+    /* Set the "Welcome, X" message to have larger text than the dropdown options */
+    .renterprise-dropdown .login-dropdown,
+    .renterprise-dropdown-menu {
+        font-size: smaller;
+    }
+}

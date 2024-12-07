@@ -1,0 +1,153 @@
+/*
+Styling of the Switch to include the circle on the switch.
+https://stackoverflow.com/questions/65245405/how-to-change-color-of-knob-in-bootstrap-5-switch
+*/
+/* AVAILABLE = 0 green
+   SCRAPPED = 1 black
+   MISSING = 2 red
+   SOLD = 3 - blue
+   REPAIR = 4  yellow */
+
+
+/*  ****** Available ****** */
+/*  ---- The Background ---- */
+/* Selected with and without focus */
+.form-check-input.available:checked,
+.form-check-input.available:checked:focus {
+    background-color: #198754;
+    border-color:#198754;
+    box-shadow: none;
+}
+/* Not selected with and without focus */
+.form-check-input.available,
+.form-check-input.available:focus {
+    background-color: #FFFFFF;
+    border-color:#198754;
+    box-shadow: none;
+}
+/*  ---- The Circle ---- */
+/* An RGB value will need to be used for the circle fill as it does not accept hex values */
+.form-switch .form-check-input.available {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb(25,135,84)'/%3e%3c/svg%3e");
+}
+.form-switch .form-check-input.available:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb(25,135,84)'/%3e%3c/svg%3e");
+}
+/*  *********************** */
+
+/*  ******* Scrapped ******* */
+/*  ---- The Background ---- */
+/* Selected with and without focus */
+.form-check-input.scrapped:checked,
+.form-check-input.scrapped:checked:focus {
+    background-color: #6C757D;
+    border-color:#6C757D;
+    box-shadow: none;
+}
+/* Not selected with and without focus */
+.form-check-input.scrapped,
+.form-check-input.scrapped:focus {
+    background-color: #FFFFFF;
+    border-color:#6C757D;
+    box-shadow: none;
+}
+/*  ---- The Circle ---- */
+/* An RGB value will need to be used for the circle fill as it does not accept hex values */
+.form-switch .form-check-input.scrapped {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb(108,117,125)'/%3e%3c/svg%3e");
+}
+.form-switch .form-check-input.scrapped:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb(108,117,125)'/%3e%3c/svg%3e");
+}
+/*  *********************** */
+
+/*  ******* MISSING ******* */
+/*  ---- The Background ---- */
+/* Selected with and without focus */
+.form-check-input.missing:checked,
+.form-check-input.missing:checked:focus {
+    background-color: #DC3545;
+    border-color:#DC3545;
+    box-shadow: none;
+}
+/* Not selected with and without focus */
+.form-check-input.missing,
+.form-check-input.missing:focus {
+    background-color: #FFFFFF;
+    border-color:#DC3545;
+    box-shadow: none;
+}
+/*  ---- The Circle ---- */
+/* An RGB value will need to be used for the circle fill as it does not accept hex values */
+.form-switch .form-check-input.missing {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb(220,53,69)'/%3e%3c/svg%3e");
+}
+.form-switch .form-check-input.missing:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb(220,53,69)'/%3e%3c/svg%3e");
+}
+/*  *********************** */
+
+/*  ******* SOLD ******* */
+/*  ---- The Background ---- */
+/* Selected with and without focus */
+.form-check-input.sold:checked,
+.form-check-input.sold:checked:focus {
+    background-color: #0A58CA;
+    border-color:#0A58CA;
+    box-shadow: none;
+}
+/* Not selected with and without focus */
+.form-check-input.sold,
+.form-check-input.sold:focus {
+    background-color: #FFFFFF;
+    border-color:#0A58CA;
+    box-shadow: none;
+}
+/*  ---- The Circle ---- */
+/* An RGB value will need to be used for the circle fill as it does not accept hex values */
+.form-switch .form-check-input.sold {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb(10,88,202)'/%3e%3c/svg%3e");
+}
+.form-switch .form-check-input.sold:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb(10,88,202)'/%3e%3c/svg%3e");
+}
+/*  *********************** */
+
+/*  ******* REPAIR ******* */
+/*  ---- The Background ---- */
+/* Selected with and without focus */
+.form-check-input.repair:checked,
+.form-check-input.repair:checked:focus {
+    background-color: #FFC107;
+    border-color:#FFC107;
+    box-shadow: none;
+}
+/* Not selected with and without focus */
+.form-check-input.repair,
+.form-check-input.repair:focus {
+    background-color: #FFFFFF;
+    border-color:#FFC107;
+    box-shadow: none;
+}
+/*  ---- The Circle ---- */
+/* An RGB value will need to be used for the circle fill as it does not accept hex values */
+.form-switch .form-check-input.repair {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb(255,193,7)'/%3e%3c/svg%3e");
+}
+.form-switch .form-check-input.repair:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb(255,193,7)'/%3e%3c/svg%3e");
+}
+/*  *********************** */
+
+
+/*  ******* THE CIRCLE CHECKED ******* */
+/* This white part of the switch will apply to all status options as it will always need to be white when checked */
+.form-switch .form-check-input:checked,
+.form-switch .form-check-input:checked:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='white'/%3e%3c/svg%3e");
+}
+
+
+
+
+
