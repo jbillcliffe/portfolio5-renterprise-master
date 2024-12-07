@@ -30,7 +30,7 @@ SECRET_KEY = (
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '8000-jbillcliffe-portfolio5r-prmccqurny4.ws.codeinstitute-ide.net'
@@ -248,7 +248,7 @@ DEFAULT_NO_IMAGE = '/static/images/default.webp'
 #     }
 
 #     # Bucket Config
-#     AWS_STORAGE_BUCKET_NAME = 'jbill-boutique-ado'
+#     AWS_STORAGE_BUCKET_NAME = 'jbill-renterprise'
 #     AWS_S3_REGION_NAME = 'eu-north-1'
 #     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 #     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
