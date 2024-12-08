@@ -10,9 +10,11 @@ from django.utils.decorators import method_decorator
 from django.utils.safestring import mark_safe
 from django.views.generic import ListView
 
+import base64
 from pathlib import Path
 from PIL import Image
-
+import cloudinary
+from cloudinary.uploader import upload
 from .models import Item, ItemType
 from .forms import (
     ItemTypeForm, ItemTypeEditForm, ItemTypeCreateForm, ItemTypeFullForm,
@@ -240,14 +242,14 @@ def item_type_create(request):
         return redirect('menu')
     else:
         if request.method == "POST":
-
+            upload_result = None
             form = ItemTypeCreateForm(request.POST)
             # This allows the use of a text field in the category section.
             # Giving the ability now to select a previously used category or
             # to create a new one.print("FORM")
-            form.clean_category()
 
             if form.is_valid():
+                form.clean_category()
                 print("HERE1")
                 image_name = form.data['image-input-name']
                 # Check the file does not already exist
@@ -258,20 +260,17 @@ def item_type_create(request):
                     # Although no image exists, another is not required
                     image_name = "/static/images/default.webp"
                 else:
+                    
                     # If the file does not exist, then create one
                     # take the file from the "image-button"
                     if 'image-button' in request.FILES:
-                        image_name = slugify(form.data['name']) + ".webp"
+                        
                         try:
                             print("In the files")
-                            with (
-                                Image.open(
-                                    request.FILES['image-button']) as img):
-                                img.convert('RGB')
-                                # Create the image name to use
-                                img.name = image_name
-                                img_path = f"{settings.MEDIA_ROOT}/{image_name}"
-                                img.save(img_path, 'webp')
+                            upload_result = upload(
+                                request.FILES['image-button'],
+                                use_filename=True)
+                            print(upload_result)
 
                         except IOError:
                             print("HERE4")
@@ -308,7 +307,7 @@ def item_type_create(request):
                     )
                 print("HERE8")
                 new_item_type = form.save(commit=False)
-                new_item_type.image = image_name
+                new_item_type.image = upload_result["secure_url"]
                 new_item_type.save()
                 new_type_id = new_item_type.id
                 messages.success(
@@ -350,7 +349,7 @@ def item_type_update_inline(request, item_id, type_id):
     """
     item = get_object_or_404(Item, pk=item_id)
     account_type = request.user.profile.get_account_type()
-
+    upload_result = None
     # When form is submitted.
     if request.method == "POST":
         if account_type == 'Administrator':
@@ -383,47 +382,17 @@ def item_type_update_inline(request, item_id, type_id):
                 Q(category__iexact=submit_type_category))
 
             previous_image_exists = False
-            image_name = submit_type_form.data['image-input-name']
+            # image_name = submit_type_form.data['image-input-name']
             # Check the file does not already exist
-            if Path(f"{settings.MEDIA_ROOT}/{image_name}").exists():
-                # If it exists, another one should not be created
-                previous_image_exists = True
-            # Check that the user has not submitted a "No Image"
-            elif submit_type_form.data['image-input-name'] == ("No Image"):
+            if submit_type_form.data['image-input-name'] == ("No Image"):
                 # Although no image exists, another is not required
                 previous_image_exists = False
                 image_name = settings.DEFAULT_NO_IMAGE
             else:
                 # If the file does not exist, then create one
-                previous_image_exists = False
+                previous_image_exists = True
                 # If there is a file with image-button as a key
-                if 'image-button' in request.FILES:
-                    image_name = slugify(submit_type_name) + ".webp"
-                    try:
-                        print("In the files")
-                        with (
-                            Image.open(
-                                request.FILES['image-button']) as img):
-                            img.convert('RGB')
-                            # Create the image name to use
-                            img.name = image_name
-                            img_path = f"{settings.MEDIA_ROOT}/{image_name}"
-                            img.save(img_path, 'webp')
 
-                    except IOError:
-                        image_name = settings.DEFAULT_NO_IMAGE
-
-                        messages.error(
-                            request, (
-                                'An error occurred while trying'
-                                ' to open the image.'
-                                ' Default image will be used'
-                            )
-                        )
-                        pass
-                else:
-                    # If no image uploaded /static/images/default.webp
-                    image_name = settings.DEFAULT_NO_IMAGE
 
             if item_type_check:
                 # If entry found, then this is an update of a previous object
@@ -444,11 +413,54 @@ def item_type_update_inline(request, item_id, type_id):
                     submit_type_form.data['edit-type-cost_week'])
                 # If true, as obtained by previous function.
                 if previous_image_exists is True:
+
+                    if 'image-button' in request.FILES:
+                        try:
+                            print("In the files")
+                            upload_result = upload(
+                                request.FILES['image-button'],
+                                use_filename=True)
+                            print(upload_result)
+
+                        except IOError:
+                            image_name = settings.DEFAULT_NO_IMAGE
+
+                            messages.error(
+                                request, (
+                                    'An error occurred while trying'
+                                    ' to open the image.'
+                                    ' Default image will be used'
+                                )
+                            )
+                            pass
+                        update_type.image = upload_result["secure_url"]
                     # Use the original image value
-                    update_type.image = update_type.image
+                    else:
+                        update_type.image = update_type.image
                 else:
                     # Use the newly created image value
-                    update_type.image = image_name
+                    if 'image-button' in request.FILES:
+                        try:
+                            print("In the files")
+                            upload_result = upload(
+                                request.FILES['image-button'],
+                                use_filename=True)
+                            print(upload_result)
+
+                        except IOError:
+                            image_name = settings.DEFAULT_NO_IMAGE
+
+                            messages.error(
+                                request, (
+                                    'An error occurred while trying'
+                                    ' to open the image.'
+                                    ' Default image will be used'
+                                )
+                            )
+                            pass
+                        update_type.image = upload_result["secure_url"]
+                    else:
+                        update_type.image = settings.DEFAULT_NO_IMAGE
 
                 # Until implementation, do not update the meta_tags field
                 update_type.meta_tags = update_type.meta_tags

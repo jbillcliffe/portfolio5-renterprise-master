@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from django.conf import settings
-
+import os
 
 
 def index(request):
@@ -8,6 +7,7 @@ def index(request):
     Function to display the main menu at the root
     of the project. Render a template, nothing more.
     """
+    print(os.environ)
     return render(request, 'menu/index.html')
 
 

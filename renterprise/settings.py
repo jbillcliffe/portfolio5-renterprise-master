@@ -31,7 +31,7 @@ SECRET_KEY = (
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '8000-jbillcliffe-portfolio5r-prmccqurny4.ws.codeinstitute-ide.net',
