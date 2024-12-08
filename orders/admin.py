@@ -7,7 +7,9 @@ class OrderAdmin(admin.ModelAdmin):
     model = Order
     can_delete = False
     verbose_name_plural = "Orders"
-    list_display = ('id', 'profile', 'order_item_name', 'start_date', 'end_date')
+    list_display = (
+        'id', 'profile', 'order_item_name',
+        'start_date', 'end_date')
 
 
 class OrderNoteAdmin(admin.ModelAdmin):

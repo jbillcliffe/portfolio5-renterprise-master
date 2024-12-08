@@ -9,12 +9,9 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.db import IntegrityError
 from .models import Profile, CustomerNote
-from .forms import UserForm, ProfileForm
+from .forms import UserForm, ProfileForm, CustomerNoteForm
 
 from orders.models import Order
-
-import json
-
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
@@ -73,6 +70,69 @@ def customer_list(request):
 
     return render(
         request, "customers/customer_list.html", {"page_obj": page_obj})
+
+
+@login_required
+def customer_notes(request, profile_id):
+    # Build query, users with account type 0 are customers.
+
+    # Also want to include any profiles on an order otherwise. Staff members can be a customer
+    # too if they make an order. So they would not have an "account_type" of 0
+    # So best method is to get an iterable of "profile ids" from the Orders model. To then
+    # get profile objects
+    # https://docs.djangoproject.com/en/5.1/ref/models/querysets/#in
+
+    # Found list of foreign key object query :
+    # https://stackoverflow.com/questions/45062238/django-getting-a-list-of-foreign-key-objects
+    # Immediately takes the query result (list of profiles from Order) and searches them using an IN
+    # query to get out Profile objects.
+
+    # Complex query, was initially a Union query. But that was not merging together eg.
+    # Would want 1,3,5 and 2,4,6 to become 1,2,3,4,5,6. Instead the generated queryset would be
+    # 1,3,5,2,4,6. So this uses an OR statement, which makes sense given that it is querying the
+    # same model but in differnet ways.
+    # FIrst - It looks at where the iterated Profile in the query, appears in the Order model as
+    # a foreign key.
+    # Then it simply gets accounts which have an account_type of 0.
+    # Using distinct on the end ensures that each Profile is only returned once.
+    get_notes = CustomerNote.objects.filter(profile=profile_id)
+    # 7 results per page
+    print(CustomerNote.objects.all())
+    print("----------------")
+    print(get_notes)
+    customer_notes = Paginator(get_notes, 7)
+
+    # Determine number of pages in query
+    page_number = request.GET.get("page")
+    page_obj = customer_notes.get_page(page_number)
+
+    if request.method == "POST":
+        customer_note = CustomerNoteForm(request.POST)
+        profile = Profile.objects.get(pk=profile_id)
+
+        if customer_note.is_valid():
+            customer_note_obj = CustomerNote.objects.create(
+                note=request.POST['note'],
+                profile=profile,
+                created_by=request.user,
+                created_on=datetime.now())
+            customer_note_obj.save()
+
+            messages.success(
+                    request,
+                    'Customer Note created'
+            )
+        return redirect(reverse('customer_notes', args=[profile_id]))
+    else:
+        customer_note_form = CustomerNoteForm()
+        return render(
+            request, "customers/customer_notes.html",
+            {
+                "page_obj": page_obj,
+                "profile_id": profile_id,
+                "customer_note_form": customer_note_form
+            }
+        )
 
 
 @login_required
@@ -471,3 +531,6 @@ def user_profile_create(request, is_customer):
 
             # Render the view
             return render(request, template, context)
+
+# def add_customer_note(request, profile_id):
+#     if request.method == "POST":

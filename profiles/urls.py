@@ -40,6 +40,10 @@ urlpatterns = [
         {"is_customer": True},
         name="customer_view"),
     path(
+        'customers/<int:profile_id>/notes/',
+        views.customer_notes,
+        name="customer_notes"),
+    path(
         'customers/<int:profile_id>/order/create/',
         order_create,
         name='customer_order_create',

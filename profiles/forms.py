@@ -5,10 +5,10 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
-from .models import Profile
+from .models import Profile, CustomerNote
 
 """
-Creating a UserForm & Profile Form. 
+Creating a UserForm & Profile Form.
 These merge into the overall profile form on post.
 eg. User Field : profile.user.first_name
     Profile Field : profile.address_line_1
@@ -40,7 +40,7 @@ class UserForm(forms.ModelForm):
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
         self.fields['email'].required = True
-        
+
         # To prevent editing email visually.
         # views.py handles any other attempts by not using any
         # email value from the post.
@@ -101,3 +101,33 @@ class ProfileForm(forms.ModelForm):
                 FloatingField("country"),
                 FloatingField("postcode")
             )
+
+
+class CustomerNoteForm(forms.ModelForm):
+
+    # Exclude the user value, this will be handled in views.py
+    class Meta:
+        model = CustomerNote
+        fields = ['note']
+
+    def __init__(self, *args, **kwargs):
+        super(CustomerNoteForm, self).__init__(*args, **kwargs)
+        """
+        Add placeholders and classes, remove auto-generated
+        labels and set autofocus on first field
+        """
+        self.fields['note'] = forms.CharField(
+            required=False,
+            widget=forms.Textarea(
+                attrs={
+                    "rows": "3"
+                })
+            )
+
+        self.helper = FormHelper(self)
+        self.helper.attrs['autocomplete'] = 'off'
+        self.helper.form_tag = False
+
+        self.helper.layout = Layout(
+            FloatingField("note")
+        )

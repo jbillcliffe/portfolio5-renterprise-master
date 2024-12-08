@@ -68,7 +68,7 @@ class ItemForm(forms.ModelForm):
                 "item_serial",
                 wrapper_class="col-12 order-3 p-0"),
         )
-    
+
 
 class ItemCreateForm(forms.ModelForm):
     """

@@ -4,17 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
-from django.template.defaultfilters import slugify
 from django.templatetags.static import static
 from django.utils.decorators import method_decorator
 from django.utils.safestring import mark_safe
 from django.views.generic import ListView
 
-import base64
-from pathlib import Path
-from PIL import Image
-import cloudinary
 from cloudinary.uploader import upload
+from pathlib import Path
+
 from .models import Item, ItemType
 from .forms import (
     ItemTypeForm, ItemTypeEditForm, ItemTypeCreateForm, ItemTypeFullForm,
@@ -260,11 +257,9 @@ def item_type_create(request):
                     # Although no image exists, another is not required
                     image_name = "/static/images/default.webp"
                 else:
-                    
                     # If the file does not exist, then create one
                     # take the file from the "image-button"
                     if 'image-button' in request.FILES:
-                        
                         try:
                             print("In the files")
                             upload_result = upload(
@@ -392,7 +387,6 @@ def item_type_update_inline(request, item_id, type_id):
                 # If the file does not exist, then create one
                 previous_image_exists = True
                 # If there is a file with image-button as a key
-
 
             if item_type_check:
                 # If entry found, then this is an update of a previous object

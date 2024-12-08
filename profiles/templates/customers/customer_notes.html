@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block extra_css %}
+    <link href="{% static "css/renterprise-tables.css" %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block extra_title %}{% blocktrans %}Customer Listing{% endblocktrans %}{% endblock extra_title %}
+<!-- div app container holds this -->
+{% block content %}
+    <hr>
+        <h1>Customer Notes</h1>
+    <hr>
+    <div class="row">
+        <div class="col-12 col-xxl-10">
+            <!-- If user is logged in -->
+            {% if user.is_authenticated %}
+                <!-- Create "account_type" variable -->
+                {% with account_type=user.profile.account_type %}
+                    <!-- 2 & 3 = HR & Administrator privileges -->
+                    {% if account_type != 0 %}
+                        <!-- Create Table Div-->
+                        <div class="renterprise-table mb-3">
+                            <!-- Create Table Header -->
+                             <!-- No header in this list display-->
+                            <!-- For each profile/user object -->
+                            {% for note in page_obj %}
+                                <!-- Create a row for first name, surname and username -->
+                                <div class="renterprise-table-row bottom-row py-0 px-2">
+                                    <div class="col-12">
+                                        <span>{{ note.created_on }} -- {{ note.note }}</span>
+                                        <!-- Staff can be customers too! -->
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% include "includes/paginate.html" %}
+                        </div>                 
+                        <form id="customer_note_form" action="{% url 'customer_notes' profile_id %}" method="POST">
+                            {% csrf_token %}
+                            {% crispy customer_note_form customer_note_form.helper %}
+                            <button type="submit" class="button white-text">Add Customer Note</button>
+                        </form>
+                    {% else %}
+                    <!-- This is for customers trying to get in via direct url navigation -->
+                    {% blocktrans %}<h3 class="text-danger">Not Authorised</h3>{% endblocktrans %}
+                        {% blocktrans %}
+                            <p>You need to be logged in to access the program.</p>
+                            <p>Log in to continue using this application.</p>
+                        {% endblocktrans %}
+                        <a class="button white-text" href="{% url 'account_login' %}">{% trans "Log In" %}</a>
+                    {% endif %}
+                {% endwith %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
