@@ -15,7 +15,9 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
 
-from .forms import OrderForm, OrderDatesForm, OrderItemForm
+from .forms import (
+    OrderForm, OrderDatesForm,
+    OrderItemForm, OrderNoteForm)
 from .models import Order, Invoice, OrderNote
 from items.models import Item, ItemType
 from profiles.models import Profile
@@ -89,13 +91,19 @@ def order_view(request, profile_id, order_id):
     invoices = Invoice.objects.filter(order__id=order_id)
     dates_form = OrderDatesForm(instance=order)
     item_form = OrderItemForm(instance=item)
-
+    order_note_form = OrderNoteForm()
     invoice_list = Paginator(invoices, 5)
 
     # Determine number of pages in query
     page_number = request.GET.get("page")
     page_obj = invoice_list.get_page(page_number)
 
+    order_notes = OrderNote.objects.filter(order=order_id)
+    order_notes_list = Paginator(order_notes, 5)
+    # Determine number of pages in query
+    page_number_extra = request.GET.get("page-extra")
+    page_obj_extra = order_notes_list.get_page(page_number_extra)
+    
     if request.user.profile.get_account_type == 'Customer':
         json_item_list = ""
         json_item_type_list = ""
@@ -135,6 +143,7 @@ def order_view(request, profile_id, order_id):
         'tab_return': tab_return,
         'order_dates_form': dates_form,
         'order_item_form': item_form,
+        'order_note_form': order_note_form,
         'profile_id': profile_id,
         # 'item_type'
         # 'profile'
@@ -142,6 +151,7 @@ def order_view(request, profile_id, order_id):
         'json_order_list': json_order_list,
         'json_item_type_list': json_item_type_list,
         "page_obj": page_obj,
+        "page_obj_extra": page_obj_extra,
     }
 
     return render(request, template, context)
@@ -158,13 +168,36 @@ def order_edit(request, profile_id, order_id, order_note):
             request,
             "Permission Denied : A customer cannot modify an order")
     else:
-        print(request.method)
+        print(request.POST)
         if request.method == "POST":
 
-            print(request.GET['tab'])
             tab_return = request.GET['tab']
+            
+            if tab_return == "notes":
+                print(request.POST)
 
-            if tab_return == "despatches":
+                new_order_note = OrderNote.objects.create(
+                    note=request.POST['note'],
+                    order=get_order,
+                    created_by=request.user,
+                    created_on=datetime.now())
+                new_order_note.save()
+
+                print(new_order_note.id)
+                print(new_order_note.note)
+                print(new_order_note.created_by)
+
+                messages.success(
+                    request,
+                    ("A new order note has been created")
+                )
+
+                url = reverse('order_view', args=[profile_id, order_id])
+                query = urlencode({'tab': tab_return})
+                final_url = '{}?{}'.format(url, query)
+                return redirect(final_url)
+
+            elif tab_return == "despatches":
                 print("GOT TAB")
                 form = OrderDatesForm(request.POST, instance=get_order)
                 form.save()
@@ -179,7 +212,7 @@ def order_edit(request, profile_id, order_id, order_note):
                 print("saved stuff")
                 messages.success(
                     request,
-                    "Order Edited : Date(s) have been changed for this order")
+                    "Order Edited : Date(s) changed for this order")
 
                 url = reverse('order_view', args=[profile_id, order_id])
                 query = urlencode({'tab': tab_return})

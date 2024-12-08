@@ -1,0 +1,18 @@
+{% load static %}
+{% load i18n %}
+
+<div id="table-paginator-extra" class="paginate-foot">
+    {% if page_obj_extra.has_previous %}
+        <a href="?page-extra=1" class="paginate-arrows"><i class="bi bi-chevron-double-left"></i></a>
+        <a href="?page-extra={{ page_obj-extra.previous_page_number }}"
+           class="paginate-arrows"><i class="bi bi-chevron-left"></i></a>
+    {% endif %}
+    <span id="paginator-page-text-extra">
+        {% trans "Page " %}{{ page_obj-extra.number }}{% trans " of " %}{{ page_obj-extra.paginator.num_pages }}
+    </span>
+    {% if page_obj-extra.has_next %}
+        <a href="?page-extra={{ page_obj-extra.next_page_number }}" class="paginate-arrows"><i class="bi bi-chevron-right"></i></a>
+        <a href="?page-extra={{ page_obj-extra.paginator.num_pages }}"
+           class="paginate-arrows"><i class="bi bi-chevron-double-right"></i></a>
+    {% endif %}
+</div>

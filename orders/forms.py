@@ -7,7 +7,7 @@ from crispy_bootstrap5.bootstrap5 import BS5Accordion, FloatingField
 from django_countries.fields import CountryField
 from localflavor.gb.gb_regions import GB_REGION_CHOICES
 
-from .models import Order
+from .models import Order, OrderNote
 # from profiles.models import Profile, User
 # from profiles.forms import ProfileForm, UserForm
 from items.models import ItemType, Item
@@ -295,4 +295,34 @@ class OrderForm(forms.Form):
                 flush=True,
                 always_open=False,
             ),
+        )
+
+
+class OrderNoteForm(forms.ModelForm):
+
+    # Exclude the user value, this will be handled in views.py
+    class Meta:
+        model = OrderNote
+        fields = ['note']
+
+    def __init__(self, *args, **kwargs):
+        super(OrderNoteForm, self).__init__(*args, **kwargs)
+        """
+        Add placeholders and classes, remove auto-generated
+        labels and set autofocus on first field
+        """
+        self.fields['note'] = forms.CharField(
+            required=False,
+            widget=forms.Textarea(
+                attrs={
+                    "rows": "3"
+                })
+            )
+
+        self.helper = FormHelper(self)
+        self.helper.attrs['autocomplete'] = 'off'
+        self.helper.form_tag = False
+
+        self.helper.layout = Layout(
+            FloatingField("note")
         )
