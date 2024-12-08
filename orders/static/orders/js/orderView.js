@@ -37,13 +37,6 @@ function validateDates(){
     endDate.setHours(0);
     today.setHours(0);
 
-    console.log("OLD START MS :"+oldStartDate.getTime());
-    console.log("NEW START MS :"+startDate.getTime());
-    console.log("OLD END MS :"+oldEndDate.getTime());
-    console.log("NEW END MS :"+endDate.getTime());
-    
-    //id_item_type.value
-
     if (startDate == "Invalid Date" || endDate == "Invalid Date") {
         
         if (startDate < today) {
@@ -56,8 +49,6 @@ function validateDates(){
         submitAllowed = false;
     
     } else if (startDate && endDate) {
-        console.log("START - Old: "+oldStartDate+", New: "+startDate);
-        console.log("END - Old: "+oldEndDate+", New: "+endDate);
 
         if (startDate < today && startDate.getTime() != oldStartDate.getTime()) {
             errorSet('danger', `Changed change start date to be before today. It can be left the same.`);
@@ -85,7 +76,6 @@ function validateDates(){
                     assetsOwned.push(fullItemList[x]);
                 }
             } 
-            console.log("OWNED: "+assetsOwned);
             if (assetsOwned.length == 0) {
                 errorSet('danger', `None of these are owned.`);
 
@@ -119,14 +109,11 @@ function getAvailableStockAfterOrders(assetList, newStart, newEnd) {
     let currentOrderId = document.getElementById('order-view-tab-content').dataset.orderId;
     
     assetList = JSON.parse(`${assetList}`);
-    console.log("AL: "+assetList);
 
     //start by loading each item.
     for (let x = 0; x < assetList.length; x++) {
         let newItemObject = assetList[x];
         let newItem = newItemObject.pk;
-        console.log("newIObject : "+newItemObject);
-        console.log("newIPK : "+newItem);
 
         //first check it is available and double check against a repair date on the item
         if (assetList[x].fields.status == 0 && !assetList[x].fields.repair_date) {
@@ -191,16 +178,7 @@ function getAvailableStockAfterOrders(assetList, newStart, newEnd) {
             continue;
         }
     }
-    // TEST ITEMS
-    // let testChoices = [];
-    // for (let z = 0; z < 2; z++)
-    // {   
-    //     testChoices.push(JSON.parse(`{"model":"items.item","pk":${z},"fields":{"item_type":5,"delivery_date":null,"collect_date":null,"repair_date":null,"income":"0.00","status":0}}`))
-    // }
-    // availableChoices = testChoices
-    // console.log(testChoices)
     
-    console.log("CHOICES : "+availableChoices);
 
     if (availableChoices.length > 0) {
 
@@ -211,14 +189,11 @@ function getAvailableStockAfterOrders(assetList, newStart, newEnd) {
         for (let z = 0; z < availableChoices.length; z++)
         {   
             parsedChoiceObject = JSON.parse(availableChoices[z]);
-            console.log("availableChoices Z PARSE: "+JSON.parse(availableChoices[z]).pk)
 
             if (parsedChoiceObject.pk == currentItemId) {
 
                 // Force it to pick the item already ordered. Much simpler and if it is close
                 // to despatch date, then the likelihood is that item will lose money.
-                console.log("found current item @ ("+z+"): "+parsedChoiceObject.pk)
-                console.log("found current item @ ("+z+"): "+parsedChoiceObject.fields)
                 autoSelectStock(JSON.stringify(parsedChoiceObject));
                 break;
 
@@ -228,7 +203,6 @@ function getAvailableStockAfterOrders(assetList, newStart, newEnd) {
                     //last item in the list to check for and it still has not
                     //found the current item available. So a selection needs to be
                     //made from the full array.
-                    console.log("LASTCHANCE: "+JSON.stringify(availableChoices));
                     autoSelectStock(JSON.stringify(availableChoices));
                     getAvailableStockAfterOrders(JSON.stringify(assetsOwned), startDate, endDate);
                 }
@@ -244,24 +218,15 @@ function getAvailableStockAfterOrders(assetList, newStart, newEnd) {
 function autoSelectStock(availableItems) {
     
     availableItems = JSON.parse(`[${availableItems}]`)
-    console.log("START AVAILABLE : "+availableItems);
-    console.log([availableItems[0]])
-    console.log("AVAILABLE LEN : "+availableItems.length);
-    console.log("TYPE: "+(typeof availableItems))
-    console.log("AVAILABLE : "+availableItems);
-
     let itemSelect;
     for (let x = 0; x < availableItems.length; x++) {
 
         newItemObject = availableItems[x];
-        console.log(newItemObject);
 
         if (x ==  0)  {
             itemSelect = availableItems[x];
         } else {
             // if they match (most likely at 0.00) then don't change.
-            console.log("NIO Income : "+newItemObject.fields.income);
-            console.log("IS Income : "+itemSelect.fields.income);
             if (newItemObject.fields.income < itemSelect.fields.income) {
                 itemSelect = newItemObject;
             } else {
@@ -278,8 +243,7 @@ function autoSelectStock(availableItems) {
         let orderProfile = document.getElementById('order-view-tab-content').dataset.profileId;
         let orderId = document.getElementById('order-view-tab-content').dataset.orderId;
         let orderNote = buildOrderNote();
-        console.log(orderNote);
-        
+
         if (orderNote == "empty"){
             submitAllowed = false;
             submitButton.hidden = true;
@@ -345,9 +309,6 @@ function errorSet(textClass, textMessage) {
     )
     dateErrors.classList.add(`text-${textClass}`);
     dateErrors.textContent = textMessage;
-    // for (let x = 0; x < classNumber;)
-    // dateErrors.classList.remove();
-    // dateErrors.classList.add(`text-${textClass}`);
 }
 
 function buildOrderNote() {

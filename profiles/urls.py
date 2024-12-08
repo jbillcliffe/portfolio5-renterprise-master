@@ -31,7 +31,7 @@ urlpatterns = [
         name='customer_list'),
     path(
         'customers/create/',
-        views.user_profile_create,
+        views.customer_create,
         {"is_customer": True},
         name="customer_create"),
     path(

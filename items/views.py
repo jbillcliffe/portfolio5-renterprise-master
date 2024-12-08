@@ -43,7 +43,6 @@ class ItemTypeList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ItemTypeList, self).get_context_data(**kwargs)
-        print(context)
         return context
 
 
@@ -66,11 +65,6 @@ def item_view(request, item_id):
         # Only need to search for the one prefix, because someone without
         # "edit" should not be able to change the details and they are
         # display only
-        # selected_type = get_object_or_404(
-        #     ItemType,
-        #     pk=request.POST['edit-item-item_type'])
-        # item_new.type = selected_type
-        # item_new.item_type = selected_type
         item_new.item_serial = request.POST['edit-item-item_serial']
 
         try:
@@ -103,10 +97,6 @@ def item_view(request, item_id):
 
         queryset = ItemType.objects.all()
         item_type_list = list(queryset)
-
-        # testing
-        # for x in item_type_list:
-        #     print(x.sku)
 
         item_form = ItemForm(
             account_type=account_type,
@@ -150,12 +140,7 @@ def item_type_view(request, type_id):
     """
     View to display the properties of an individual item type
     """
-    print(type_id)
-    print(request)
     item_type = get_object_or_404(ItemType, pk=type_id)
-
-    print(item_type)
-    # account_type = request.user.profile.get_account_type()
 
     # When form is submitted, note to ignore the ItemType form, they are
     # disabled in the form and they are display only, carrying the values
@@ -165,29 +150,7 @@ def item_type_view(request, type_id):
         # Work with a duplicate of the original instance, just in case
         item_type_new = item_type
         item_type_form = ItemTypeFullForm(request.POST)
-        # Only need to search for the one prefix, because someone without
-        # "edit" should not be able to change the details and they are
-        # display only
-        # selected_type = get_object_or_404(
-        #     ItemType,
-        #     pk=request.POST['edit-item-item_type'])
-        # item_new.type = selected_type
-        # item_new.item_type = selected_type
-
-        # try:
-        #     item_new.full_clean()
-        # except ValidationError as e:
-        #     messages.error(
-        #         request, (
-        #             e,
-        #             'Item data is not valid.'
-        #             'Please check the validation prompts.'
-        #         )
-        #     )
-        #     pass
-
-        # item_new.save()
-
+  
         # Display a message to the user to show it has worked
         messages.success(
             request,
@@ -199,18 +162,8 @@ def item_type_view(request, type_id):
     else:
 
         item_type_form = ItemTypeFullForm(instance=item_type)
-        # return redirect('item_type_view', type_id=item_type.id)
-        # The query is a GET. So data/context/template needs to
-        # sent to the form to load.
-
-        # queryset = ItemType.objects.all()
-        # item_type_list = list(queryset)
-
-        # item_type_form = ItemTypeFullForm(instance=item_type)
 
     # Set template and context
-    # print("Hello")
-
     template = 'items/item_type.html'
     context = {
         'item_type_name': item_type.name,
@@ -227,9 +180,7 @@ def item_type_create(request):
     account_type = request.user.profile.get_account_type()
     all_categories = (
         ItemType.objects.values('category').distinct('category'))
-    # item_type_list = list(item_type_queryset)
-    # 'all_types': item_type_list,
-    # print(previous_categories)
+    
     # This will determine if they have navigated by the url directly.
     # If they are a customer, it will bump that to the main menu, all
     # other accounts (Staff,HR,Administrator) are permitted to do this.
@@ -241,13 +192,9 @@ def item_type_create(request):
         if request.method == "POST":
             upload_result = None
             form = ItemTypeCreateForm(request.POST)
-            # This allows the use of a text field in the category section.
-            # Giving the ability now to select a previously used category or
-            # to create a new one.print("FORM")
 
             if form.is_valid():
                 form.clean_category()
-                print("HERE1")
                 image_name = form.data['image-input-name']
                 # Check the file does not already exist
                 if Path(f"{settings.MEDIA_ROOT}/{image_name}").exists():
@@ -261,14 +208,11 @@ def item_type_create(request):
                     # take the file from the "image-button"
                     if 'image-button' in request.FILES:
                         try:
-                            print("In the files")
                             upload_result = upload(
                                 request.FILES['image-button'],
                                 use_filename=True)
-                            print(upload_result)
 
                         except IOError:
-                            print("HERE4")
                             image_name = "/static/images/default.webp"
 
                             messages.error(
@@ -278,21 +222,16 @@ def item_type_create(request):
                                     ' Default image will be used'
                                 )
                             )
-                        print("HERE4")
                         pass
                     else:
                         # If no image uploaded /static/images/default.webp
-                        print("HERE5")
                         image_name = "settings.DEFAULT_NO_IMAGE"
                         new_item_type = form
 
                 try:
-                    print("HERE6")
                     form.full_clean()
-                    print(form.full_clean())
 
                 except ValidationError as e:
-                    print("HERE7")
                     messages.error(
                         request, (
                             e,
@@ -300,7 +239,6 @@ def item_type_create(request):
                             'Please check the validation prompts.'
                         )
                     )
-                print("HERE8")
                 new_item_type = form.save(commit=False)
                 new_item_type.image = upload_result["secure_url"]
                 new_item_type.save()
@@ -309,7 +247,6 @@ def item_type_create(request):
                     request, 'This type has been newly created')
                 return redirect('item_type_view', new_type_id)
             else:
-                print("HERE9")
                 messages.error(
                     request,
                     (
@@ -353,8 +290,6 @@ def item_type_update_inline(request, item_id, type_id):
             submit_type_form = ItemTypeForm(request.POST, request.FILES)
             submit_type_name = submit_type_form.data['edit-type-name']
             submit_type_category = submit_type_form.data['edit-type-category']
-            print("----- FORM DATA ----")
-            print(submit_type_form.data)
             new_or_old_type = "new"
 
             try:
@@ -368,16 +303,11 @@ def item_type_update_inline(request, item_id, type_id):
                     )
                 )
 
-            # item_type_check = ItemType.objects.filter(
-            #     Q(name__iexact=submit_type_name) &
-            #     Q(category__iexact=submit_type_category))
-
             item_type_check = ItemType.objects.get(
                 Q(name__iexact=submit_type_name) &
                 Q(category__iexact=submit_type_category))
 
             previous_image_exists = False
-            # image_name = submit_type_form.data['image-input-name']
             # Check the file does not already exist
             if submit_type_form.data['image-input-name'] == ("No Image"):
                 # Although no image exists, another is not required
@@ -410,11 +340,9 @@ def item_type_update_inline(request, item_id, type_id):
 
                     if 'image-button' in request.FILES:
                         try:
-                            print("In the files")
                             upload_result = upload(
                                 request.FILES['image-button'],
                                 use_filename=True)
-                            print(upload_result)
 
                         except IOError:
                             image_name = settings.DEFAULT_NO_IMAGE
@@ -435,11 +363,9 @@ def item_type_update_inline(request, item_id, type_id):
                     # Use the newly created image value
                     if 'image-button' in request.FILES:
                         try:
-                            print("In the files")
                             upload_result = upload(
                                 request.FILES['image-button'],
                                 use_filename=True)
-                            print(upload_result)
 
                         except IOError:
                             image_name = settings.DEFAULT_NO_IMAGE
@@ -458,9 +384,6 @@ def item_type_update_inline(request, item_id, type_id):
 
                 # Until implementation, do not update the meta_tags field
                 update_type.meta_tags = update_type.meta_tags
-                print("----- UPDATE DATA ----")
-                print(update_type)
-                print("old save")
                 update_type.save()
 
                 # Then needs to set this type to the item (this allows for
@@ -489,9 +412,6 @@ def item_type_update_inline(request, item_id, type_id):
                     image=image_name,
                     meta_tags=None
                 )
-                print("----- NEW DATA ----")
-                print(new_item_type)
-                print("new save")
                 # Save the new object
                 new_item_type.save()
 
@@ -569,8 +489,6 @@ def item_create(request):
                     item_check = Item.objects.get(
                         Q(item_type__exact=new_item.item_type) &
                         Q(item_serial=new_item.item_serial))
-                    print(item_check)
-                    print(item_check.id)
 
                     check_type_id = item_check.id
                     check_serial = item_check.item_serial
@@ -614,10 +532,6 @@ def item_create(request):
 
 @login_required
 def item_status_edit(request, item_id):
-    print("-----------------")
-    print(request.POST)
-    print(item_id)
-    print("-----------------")
     account_type = request.user.profile.get_account_type()
     if account_type == 'Customer':
         messages.error(
@@ -636,7 +550,6 @@ def item_status_edit(request, item_id):
                 request, 'The status has been updated')
             return redirect('item_view', item_id)
         else:
-            # form = ItemStatusForm(item_id=item_id, prefix="status-")
             pass
             messages.error(
                     request,

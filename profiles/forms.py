@@ -31,8 +31,6 @@ class UserForm(forms.ModelForm):
         """
         self.is_customer = kwargs.pop("is_customer", None)
         super().__init__(*args, **kwargs)
-        print("IS CUST?: ")
-        print(self.is_customer)
 
         self.helper = FormHelper(self)
         self.helper.attrs['autocomplete'] = 'off'
@@ -76,7 +74,13 @@ class ProfileForm(forms.ModelForm):
         self.helper.form_tag = False
 
         if self.is_customer is True:
-            print("Create a customer")
+
+            self.fields['address_line_1'].required = True
+            self.fields['town'].required = True
+            self.fields['county'].required = True
+            self.fields['postcode'].required = True
+            self.fields['phone_number'].required = True
+
             self.helper.layout = Layout(
                 FloatingField("phone_number"),
                 FloatingField("address_line_1"),
@@ -89,7 +93,6 @@ class ProfileForm(forms.ModelForm):
             )
         else:
             self.Meta.exclude = ('user')
-            print("Create Staff")
             self.helper.layout = Layout(
                 FloatingField("phone_number"),
                 FloatingField("account_type"),

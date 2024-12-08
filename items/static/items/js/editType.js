@@ -1,7 +1,4 @@
 function typeCategoryChanged(categoryString, from_where){
-    console.log("category value : " +categoryString);
-    console.log("1."+from_where);
-
     let categoryListElements = document.getElementsByClassName('type-category-list-item');
     let categoriesAvailable = [];
 
@@ -23,7 +20,6 @@ function typeCategoryChanged(categoryString, from_where){
         // If the selection made matches the currently iterated list item.
         if (categoryListElements[x].innerText.trim() == categoryString) {
             if ( from_where == "rerun" ) {
-                console.log("found at : "+categoryListElements[x].innerText);
             }
             // Set the style of the element to be "list-active"
             categoryListElements[x].className = "dropdown-item type-category-list-item list-active";
@@ -33,18 +29,15 @@ function typeCategoryChanged(categoryString, from_where){
         }
     }
 
-    console.log(categoriesAvailable);
     //Get original category value
     let originalCategory = categoryElement.value;
     
-    //Compare against selection to determine if there has been a change.
-    console.log("2."+from_where);
     //If no change
     if ( from_where == "drop" || from_where == "rerun" ) {
         dropdownButton.disabled = false;
         if (originalCategory == categoryString && from_where == "drop"){
             // Do Nothing, there has been no change
-            console.log("Same category as before");
+
             skuElement.readOnly = true;
         } else {
 
@@ -66,8 +59,6 @@ function typeCategoryChanged(categoryString, from_where){
 
         }
     } else {
-        console.log("Input string : "+categoryString);
-
         if (categoriesAvailable.includes(categoryString) == true) {
             //found in original categories.
             //Rerun the function as if from the drop to reset the types
@@ -139,8 +130,6 @@ function typeChanged(typeId = null){
     
 
     if (typeId == null) {
-        //This change is sent from the input field.
-        console.log("nullid")
 
         // Initially no type is found, if this remains it will then have to determine if there
         // previously was a type, by using the image value.
@@ -150,14 +139,14 @@ function typeChanged(typeId = null){
         // categories ignoring all those with d-none
         //let typeListElements = document.getElementsByClassName('edit-type-list-item');
         let typeListElements = document.querySelectorAll('.edit-type-list-item:not(.d-none)');
-        console.log("I am null typeid");
+
         for ( let x = 0; x < typeListElements.length; x++) {
             //get relational id
             let foundTypeId = (typeListElements[x].id).replace('li-', '')
             let relationalId = `li-a-${foundTypeId}`;
             let typeAvailableValue = document.getElementById(relationalId).innerHTML.trim();
     
-            console.log(typeAvailableValue+" : "+typeNameElement.value.trim());
+
 
             if (typeAvailableValue == typeNameElement.value.trim()) {
                 //set the found type to be "active"
@@ -222,11 +211,6 @@ function typeChanged(typeId = null){
         let typeListElements = document.getElementsByClassName('dropdown-item type-name-list-item');
 
         let selectedTypeOption = document.getElementById("li-a-"+typeId);
-
-        console.log(typeListElements);
-        console.log("some id")
-        console.log(selectedTypeOption);
-
         for ( let x = 0; x < typeListElements.length; x++) {
             typeListElements[x].className = "dropdown-item type-name-list-item";
 

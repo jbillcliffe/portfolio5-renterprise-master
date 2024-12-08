@@ -2,7 +2,6 @@
 const fullItemList = JSON.parse(JSON.parse(document.getElementById('json-item-list').textContent));
 const fullItemTypesList = JSON.parse(JSON.parse(document.getElementById('json-item-type-list').textContent));
 const fullOrderList = JSON.parse(JSON.parse(document.getElementById('json-order-list').textContent));
-console.log(fullOrderList);
 
 // Define the category and type selectors.
 let categorySelectElement = document.getElementById("id_category");
@@ -41,12 +40,9 @@ function validateDates(){
     }
 
     if (startDate == "Invalid Date" || endDate == "Invalid Date") {
-        console.log("only one date set")
-        
+        // only one day
         if (startDate < today) {
-            console.log("Less than today");
         } else if (endDate < today) {
-            console.log("Less than today");
         }
     } else if (startDate && endDate) {
         if (startDate < today || endDate < today) {
@@ -147,7 +143,6 @@ function validateDates(){
 
 function getAvailableStockAfterOrders(assetList, newStart, newEnd, selectedCategory) {
     
-    //console.log("INIT: "+assetList)
     let availableChoices = [];
     assetList = JSON.parse(`${assetList}`);
     
@@ -155,7 +150,6 @@ function getAvailableStockAfterOrders(assetList, newStart, newEnd, selectedCateg
     for (let x = 0; x < assetList.length; x++) {
         let newItemObject = assetList[x];
         let newItem = newItemObject.pk;
-        //console.log(`Item : ${newItem}`)
 
         //first check it is available and double check against a repair date on the item
         if (assetList[x].fields.status == 0 && !assetList[x].fields.repair_date) {
@@ -244,7 +238,6 @@ function autoSelectStock(availableItems) {
             }
         }
     }
-    console.log(itemSelect);
     document.getElementById('id_item').value = itemSelect.pk;   
 }
 function areDatesClear(newStartDate, newEndDate, previousStartDate, previousEndDate) {
@@ -312,8 +305,6 @@ function getCreateOrderItemTypes(){
             // do nothing.
         }
     }
-
-    console.log(categoryString);
 
     // Iterate through all the types
     for (let x = 0; x < typeOptions.length; x++) {

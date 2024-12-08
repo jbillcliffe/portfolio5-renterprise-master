@@ -25,10 +25,6 @@ document.getElementById('type-image-select').addEventListener('change', function
 	  imageURLField.value = `${imageURLToShow}	** Not Uploaded! **`;
     }
 
-    console.log(fileReader);
-    console.log(imageBox);
-    console.log(fileReader);
-
     // This tells the file reader how to read the file loaded. readAsDataURL turns the file
     // into a base64 encoded string which is the required way for an image (Blob data)
     fileReader.readAsDataURL(e.target.files[0]);

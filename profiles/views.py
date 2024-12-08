@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -12,6 +12,7 @@ from .models import Profile, CustomerNote
 from .forms import UserForm, ProfileForm, CustomerNoteForm
 
 from orders.models import Order
+
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
@@ -36,25 +37,34 @@ class ProfileList(ListView):
 def customer_list(request):
     # Build query, users with account type 0 are customers.
 
-    # Also want to include any profiles on an order otherwise. Staff members can be a customer
-    # too if they make an order. So they would not have an "account_type" of 0
-    # So best method is to get an iterable of "profile ids" from the Orders model. To then
+    # Also want to include any profiles on an order otherwise. Staff
+    # members can be a customer
+    # too if they make an order. So they would not have an "account_type"
+    # of 0
+    # So best method is to get an iterable of "profile ids" from the Orders
+    # model. To then
     # get profile objects
     # https://docs.djangoproject.com/en/5.1/ref/models/querysets/#in
 
     # Found list of foreign key object query :
     # https://stackoverflow.com/questions/45062238/django-getting-a-list-of-foreign-key-objects
-    # Immediately takes the query result (list of profiles from Order) and searches them using an IN
+    # Immediately takes the query result (list of profiles from Order) and
+    # searches them using an IN
     # query to get out Profile objects.
 
-    # Complex query, was initially a Union query. But that was not merging together eg.
-    # Would want 1,3,5 and 2,4,6 to become 1,2,3,4,5,6. Instead the generated queryset would be
-    # 1,3,5,2,4,6. So this uses an OR statement, which makes sense given that it is querying the
+    # Complex query, was initially a Union query. But that was not merging
+    # together eg.
+    # Would want 1,3,5 and 2,4,6 to become 1,2,3,4,5,6.
+    # Instead the generated queryset would be
+    # 1,3,5,2,4,6. So this uses an OR statement, which makes sense given that
+    # it is querying the
     # same model but in differnet ways.
-    # FIrst - It looks at where the iterated Profile in the query, appears in the Order model as
+    # FIrst - It looks at where the iterated Profile in the query, appears in
+    # the Order model as
     # a foreign key.
     # Then it simply gets accounts which have an account_type of 0.
-    # Using distinct on the end ensures that each Profile is only returned once.
+    # Using distinct on the end ensures that each
+    # Profile is only returned once.
     customer_queryset = Profile.objects.filter(
         Q(order_profile__in=Order.objects.distinct("profile_id")) |
         Q(account_type=0)
@@ -74,27 +84,7 @@ def customer_list(request):
 
 @login_required
 def customer_notes(request, profile_id):
-    # Build query, users with account type 0 are customers.
 
-    # Also want to include any profiles on an order otherwise. Staff members can be a customer
-    # too if they make an order. So they would not have an "account_type" of 0
-    # So best method is to get an iterable of "profile ids" from the Orders model. To then
-    # get profile objects
-    # https://docs.djangoproject.com/en/5.1/ref/models/querysets/#in
-
-    # Found list of foreign key object query :
-    # https://stackoverflow.com/questions/45062238/django-getting-a-list-of-foreign-key-objects
-    # Immediately takes the query result (list of profiles from Order) and searches them using an IN
-    # query to get out Profile objects.
-
-    # Complex query, was initially a Union query. But that was not merging together eg.
-    # Would want 1,3,5 and 2,4,6 to become 1,2,3,4,5,6. Instead the generated queryset would be
-    # 1,3,5,2,4,6. So this uses an OR statement, which makes sense given that it is querying the
-    # same model but in differnet ways.
-    # FIrst - It looks at where the iterated Profile in the query, appears in the Order model as
-    # a foreign key.
-    # Then it simply gets accounts which have an account_type of 0.
-    # Using distinct on the end ensures that each Profile is only returned once.
     get_notes = CustomerNote.objects.filter(profile=profile_id)
     # 7 results per page
     print(CustomerNote.objects.all())
@@ -133,69 +123,6 @@ def customer_notes(request, profile_id):
                 "customer_note_form": customer_note_form
             }
         )
-
-@login_required
-def customer_notes(request, profile_id):
-    # Build query, users with account type 0 are customers.
-
-    # Also want to include any profiles on an order otherwise. Staff members can be a customer
-    # too if they make an order. So they would not have an "account_type" of 0
-    # So best method is to get an iterable of "profile ids" from the Orders model. To then
-    # get profile objects
-    # https://docs.djangoproject.com/en/5.1/ref/models/querysets/#in
-
-    # Found list of foreign key object query :
-    # https://stackoverflow.com/questions/45062238/django-getting-a-list-of-foreign-key-objects
-    # Immediately takes the query result (list of profiles from Order) and searches them using an IN
-    # query to get out Profile objects.
-
-    # Complex query, was initially a Union query. But that was not merging together eg.
-    # Would want 1,3,5 and 2,4,6 to become 1,2,3,4,5,6. Instead the generated queryset would be
-    # 1,3,5,2,4,6. So this uses an OR statement, which makes sense given that it is querying the
-    # same model but in differnet ways.
-    # FIrst - It looks at where the iterated Profile in the query, appears in the Order model as
-    # a foreign key.
-    # Then it simply gets accounts which have an account_type of 0.
-    # Using distinct on the end ensures that each Profile is only returned once.
-    get_notes = CustomerNote.objects.filter(profile=profile_id)
-    # 7 results per page
-    print(CustomerNote.objects.all())
-    print("----------------")
-    print(get_notes)
-    customer_notes = Paginator(get_notes, 7)
-
-    # Determine number of pages in query
-    page_number = request.GET.get("page")
-    page_obj = customer_notes.get_page(page_number)
-
-    if request.method == "POST":
-        customer_note = CustomerNoteForm(request.POST)
-        profile = Profile.objects.get(pk=profile_id)
-
-        if customer_note.is_valid():
-            customer_note_obj = CustomerNote.objects.create(
-                note=request.POST['note'],
-                profile=profile,
-                created_by=request.user,
-                created_on=datetime.now())
-            customer_note_obj.save()
-
-            messages.success(
-                    request,
-                    'Customer Note created'
-            )
-        return redirect(reverse('customer_notes', args=[profile_id]))
-    else:
-        customer_note_form = CustomerNoteForm()
-        return render(
-            request, "customers/customer_notes.html",
-            {
-                "page_obj": page_obj,
-                "profile_id": profile_id,
-                "customer_note_form": customer_note_form
-            }
-        )
-
 
 
 @login_required
@@ -304,7 +231,6 @@ def customer_view(request, profile_id, **kwargs):
     If one is found by its "user" (unique). Then it will load that
     data into the ProfileForm
     """
-    #############################################
     get_profile = Profile.objects.get(pk=profile_id)
     get_user = get_profile.user
 
@@ -351,6 +277,7 @@ def customer_view(request, profile_id, **kwargs):
 
     # Render the view
     return render(request, template, context)
+
 
 @login_required
 def profile_manage(request, user_id):
@@ -466,16 +393,8 @@ def user_profile_create(request, is_customer):
 
     if is_customer is True:
         template = 'customers/customer_create.html'
-        user_defaults_object = {
-            "is_superuser": False,
-            "is_staff": False,
-        }
     else:
         template = 'profiles/profile_create.html'
-        user_defaults_object = {
-            "is_superuser": False,
-            "is_staff": True,
-        }
 
     if account_type == 'Customer':
         messages.error(
@@ -505,81 +424,80 @@ def user_profile_create(request, is_customer):
                 # profile details.
                 # Individually referring to each object and updating it.
 
-                # NB. Email should be readonly in the profile. If it is changed,
-                # the email is no longer validated and can cause issues
+                # NB. Email should be readonly in the profile.
+                # If it is changed, the email is no longer validated
+                # and can cause issues
 
                 # get_user = User.objects.get(order__id=order_id)
                 # user_form = UserForm(request.POST)
+                todays_date = date.today()
                 try:
                     new_user = User.objects.create(
+                        username=(
+                            f"{request.POST['last_name']}"
+                            f"{todays_date.day}{todays_date.month}"),
                         first_name=request.POST['first_name'],
                         last_name=request.POST['last_name'],
-                        email=request.POST['email'],
-                        defaults=user_defaults_object
+                        email=request.POST['email']
                     )
-                except IntegrityError as e:
-                    if 'unique constraint' in e.message:
-                        messages.error(
-                            request, (
-                                'Email Error:'
-                                'This email is already in use.'
-                            )
+                except IntegrityError:
+                    messages.error(
+                        request, (
+                            'Duplicate Error:'
+                            'The username or email is already in use'
                         )
+                    )
 
-                        context = {
-                            'user_form': user_form,
-                            'profile_form': profile_form,
-                        }
+                    return redirect(reverse(
+                        user_profile_create, args=[is_customer]))
 
-                        # Render the view
-                        # (template defined at the top of function)
-                        return render(request, template, context)
-                    else:
-                        new_user.save()
+                context = {
+                    'user_form': user_form,
+                    'profile_form': profile_form,
+                }
 
-                        new_profile = Profile.objects.create(
-                            user=new_user,
-                            defaults={
-                                "account_type": account_level,
-                                "address_line_1": request.POST['address_line_1'],
-                                "address_line_2": request.POST['address_line_2'],
-                                "address_line_3": request.POST['address_line_3'],
-                                "town": request.POST['town'],
-                                "county": request.POST['county'],
-                                "country": request.POST['country'],
-                                "postcode": request.POST['postcode'],
-                                "phone_number": request.POST['phone_number'],
-                            }
-                        )
-                        new_profile.save()
-                        # Display a message to the user to show it has worked
-                        if is_customer is True:
-                            messages.success(
-                                request,
-                                'Customer successfully created'
-                            )
-                            return redirect(
-                                reverse('customer_view', args=[new_profile.id]))
-                        else:
-                            messages.success(
-                                request,
-                                'Staff Profile successfully created'
-                            )
-                            return redirect(
-                                reverse('profile_manage', args=[new_profile.id]))
-
+                # Render the view
+                # (template defined at the top of function)
+                return render(request, template, context)
             else:
-                messages.error(
-                    request, (
-                        'Data Error: Profile data is not valid.'
-                        'Please check the validation prompts.'
+
+                if is_customer is True:
+                    new_user.is_staff = False
+                else:
+                    new_user.is_staff = True
+
+                new_user.save()
+                new_profile = Profile.objects.create(
+                        user=new_user,
+                        account_type=account_level,
+                        address_line_1=request.POST['address_line_1'],
+                        address_line_2=request.POST['address_line_2'],
+                        address_line_3=request.POST['address_line_3'],
+                        town=request.POST['town'],
+                        county=request.POST['county'],
+                        country=request.POST['country'],
+                        postcode=request.POST['postcode'],
+                        phone_number=request.POST['phone_number'])          
+                new_profile.save()
+                # Display a message to the user to show it has worked
+                if is_customer is True:
+                    messages.success(
+                        request,
+                        'Customer successfully created'
                     )
-                )
+                    return redirect(
+                        reverse('customer_view', args=[new_profile.id]))
+                else:
+                    messages.success(
+                        request,
+                        'Staff Profile successfully created'
+                    )
+                    return redirect(
+                        reverse('profile_manage', args=[new_profile.id]))
 
         else:
             # The query is a GET. Get the data to load into fields
-            # user_form = UserForm()
-            # profile_form = ProfileForm()
+
             # Set template and context
             user_form = UserForm()
             if is_customer is True:
@@ -595,5 +513,94 @@ def user_profile_create(request, is_customer):
             # Render the view
             return render(request, template, context)
 
-# def add_customer_note(request, profile_id):
-#     if request.method == "POST":
+
+@login_required
+def customer_create(request, is_customer):
+
+    account_type = request.user.profile.get_account_type()
+
+    template = 'customers/customer_create.html'
+
+    if account_type == 'Customer':
+        messages.error(
+            request, (
+                'Permission Denied : '
+                'A customer cannot add another user/profile.')
+        )
+        return redirect('menu')
+    else:
+        if request.method == "POST":
+            user_form = UserForm(request.POST)
+            profile_form = ProfileForm(request.POST, is_customer=True)
+            account_level = 0
+
+            # If both the user form and profile form are valid.
+            if user_form.is_valid() and profile_form.is_valid():
+                #     This was the only definitive way of taking a model object
+                # and updating it where the model was an inline relation to the
+                # user AND allowed the user to update user fields themselves
+                # (first_name, last_name, email) in conjunction to additional
+                # profile details.
+                # Individually referring to each object and updating it.
+
+                # NB. Email should be readonly in the profile.
+                # If it is changed,
+                # the email is no longer validated and can cause issues
+                todays_date = date.today()
+                try:
+                    new_user = User.objects.create(
+                        username=(
+                            f"{request.POST['last_name']}"
+                            f"{todays_date.day}{todays_date.month}"),
+                        first_name=request.POST['first_name'],
+                        last_name=request.POST['last_name'],
+                        email=request.POST['email'],
+                        is_staff=False,
+                        is_superuser=False
+                    )
+                except IntegrityError:
+                    messages.error(
+                        request, (
+                            'Duplicate Error:'
+                            'The username or email is already in use'
+                        )
+                    )
+
+                    return redirect(reverse(
+                        customer_create))
+                new_user.save()
+                new_profile = Profile.objects.create(
+                        user=new_user,
+                        account_type=account_level,
+                        address_line_1=request.POST['address_line_1'],
+                        address_line_2=request.POST['address_line_2'],
+                        address_line_3=request.POST['address_line_3'],
+                        town=request.POST['town'],
+                        county=request.POST['county'],
+                        country=request.POST['country'],
+                        postcode=request.POST['postcode'],
+                        phone_number=request.POST['phone_number'])
+
+                new_profile.save()
+
+                messages.success(
+                        request,
+                        'Customer successfully created'
+                    )
+                return redirect(
+                    reverse('customer_view', args=[new_profile.id]))
+
+        else:
+            # The query is a GET. Get the data to load into fields
+
+            # Set template and context
+            user_form = UserForm()
+            profile_form = ProfileForm(is_customer=True)
+
+            context = {
+                'user_form': user_form,
+                'profile_form': profile_form,
+            }
+
+            # Render the view
+            return render(request, template, context)

@@ -11,7 +11,7 @@ from datetime import date
 # Store UTC, but interactions done with timezones (GMT/BST)
 # Create your models here.
 class Order(models.Model):
-    # profile.user.first_name
+
     null_values = [None, 'None', 'none', 'null', 'Null']
 
     profile = models.ForeignKey(

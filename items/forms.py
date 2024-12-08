@@ -169,11 +169,6 @@ class ItemCreateForm(forms.ModelForm):
                     css_id="div_id_item_type",
                     css_class="form-floating mb-3 col-12 order-2 p-0"
                 ),
-
-                # Create item_type as HTML to include data-category
-                # FloatingField(
-                #     "item_type",
-                #     wrapper_class="col-12 order-2 p-0"),
                 # Create item_serial field from model
                 FloatingField(
                     "item_serial",
@@ -186,7 +181,10 @@ class ItemCreateForm(forms.ModelForm):
 
 
 class ItemStatusForm(forms.ModelForm):
-
+    """
+    Creating the item status modal window.
+    Including Bootstrap5 toggles. Custom designed in external CSS
+    """
     class Meta:
         model = Item
         fields = ['status']
@@ -309,6 +307,9 @@ class ItemTypeForm(forms.ModelForm):
 
 
 class ItemTypeFullForm(forms.ModelForm):
+    """
+    The full form with all the fields for ItemType.
+    """
 
     class Meta:
         model = ItemType
@@ -353,6 +354,10 @@ class ItemTypeFullForm(forms.ModelForm):
 
 
 class ItemTypeCreateForm(forms.ModelForm):
+    """
+    The quick form which is also part of ItemForm for the
+    required fields.
+    """
     class Meta:
         model = ItemType
         exclude = ['meta_tags', 'stripe_pid']
@@ -370,8 +375,6 @@ class ItemTypeCreateForm(forms.ModelForm):
 
         category = self.cleaned_data['category']
         try:
-            print("CATEGORY")
-            print(isinstance(category, str))
             isinstance(category, str)
         except ValueError:
             raise forms.ValidationError("Category is not a string")

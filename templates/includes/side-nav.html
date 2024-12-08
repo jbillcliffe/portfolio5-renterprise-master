@@ -63,7 +63,7 @@
                 <!-- Show Customer List, if on the list page itself then show it as active, by
                 highlighting it with the active class and disabling it by not applying
                 its href and target value -->
-                {% if url_name == "menu" or url_name == "customer_list" or url_name == "customer_create" %}
+                {% if url_name == "menu" or url_name == "customer_list" or url_name == "customer_create" or url_name == "customer_view" %}
                     <!-- 0 will always be Customer, so they cannot see this -->
                     {% if account_level > 0 %}
                         <li class="nav-item sidebar">

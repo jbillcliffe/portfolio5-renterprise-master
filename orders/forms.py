@@ -8,14 +8,12 @@ from django_countries.fields import CountryField
 from localflavor.gb.gb_regions import GB_REGION_CHOICES
 
 from .models import Order, OrderNote
-# from profiles.models import Profile, User
-# from profiles.forms import ProfileForm, UserForm
 from items.models import ItemType, Item
 from profiles.models import Profile
 
 
 class OrderDatesForm(forms.ModelForm):
-    # Order(*, start_date, end_date)
+
     class Meta:
         model = Order
         fields = ['start_date', 'end_date']
@@ -45,7 +43,6 @@ class OrderDatesForm(forms.ModelForm):
 
 
 class OrderItemForm(forms.ModelForm):
-    # Item(*, item_type, item_serial, repair_date, status)
     class Meta:
         model = Item
         fields = ['id', 'item_type', 'item_serial', 'repair_date', 'status']
@@ -94,7 +91,6 @@ class OrderForm(forms.Form):
         self.profile_id = kwargs.pop('profile_id', None)
 
         super(OrderForm, self).__init__(*args, **kwargs)
-        print(type(self.profile_id))
 
         self.fields['profile'] = forms.IntegerField()
         self.fields['first_name'] = forms.CharField(

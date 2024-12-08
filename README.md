@@ -1,131 +1,464 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Renterprise - The "Final" Program
+<div style="width:100%; height:100px; background-color:#1D5D40; margin-left:auto;margin-right:auto;">
+<a href="https://portfolio5-renterprise-master-75a45dd58e92.herokuapp.com/" target="_self">
+            <img class="header-logo" src="readme/logo-readme-banner.png" alt="Renterprise"
+                aria-label="Renterprise CRM software home page">
+        </a>
+</div>
 
-Welcome James Billcliffe,
+***Click this banner to load the website.***
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+A final prototype for a rental booking system. 
+To create orders for customers and provide them with hired equipment. This example is based on a company hiring mobility equipment. However, the stock is based on what your provide to it. Flexibility is key to this software.
+This e-commerce site is advertising itself as software to be sold onto another business B2B. But the actual implementation of the software is B2C. Allowing the purchasing business to take payments from their customers.
 
-You can safely delete this README.md file or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **June 18, 2024**
+More people are turning to rentals as the world finances are in disarray and they can have your product at a much more manageable  cost. 
 
-## Gitpod Reminders
+This interface is developed using designs and features from [Portfolio 1](https://github.com/jbillcliffe/portfolio1-renterprise/ "Go to Portfolio 1 - Renterprise Website")[XX] and [Portfolio 3](https://github.com/jbillcliffe/portfolio3-booking-system/ "Go to Portfolio 3 - Renterprise Python Console Booking System")[XX] and [Portfolio 4](https://portfolio4-django-renterprise-00869e0146b8.herokuapp.com/ "Go to Portfolio 4 - Renterprise - The Program")[XX]
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+**This software will improve your hire bookings right from the start!**
 
-`python3 -m http.server`
+# User Experience Design
 
-A blue button should appear to click: _Make Public_,
+## Target Audience
+- Current business owners ready to make a change to their software.
+- A consumer who is ready to take on a new challenge.
 
-Another blue button should appear to click: _Open Browser_.
+## User Stories
+User stories and model structures created in [GitHub Projects](https://github.com/users/jbillcliffe/projects/7/views/1 "View GitHub Projects") [XX]
 
-To run a backend Python file, type `python3 app.py` if your Python file is named `app.py`, of course.
+![Image of GitHub projects user stories](readme/user_stories/user-stories.png)
 
-A blue button should appear to click: _Make Public_,
 
-Another blue button should appear to click: _Open Browser_.
+## Wireframe Program Flow
+Program flow wireframe was created using Figma[XX]. The image shows the processes through the stages of the software.
+Some parts are still in development. New data structure implemented compared to Portfolio 4. Although this wireframe is from the previous project.[XX].
+![Image of wireframe created for Renterprise software](readme/design/django-renterprise-flow.png)
 
-By Default, Gitpod gives you superuser security privileges. Therefore, you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+## Logo - Redocumented from Portfolio 1.
+The logo was created using the website LOGO.com[XX]. It has been pulled from my previous Renterprise project for Portfolio 1[XX].
 
-To log into the Heroku toolbelt CLI:
+### Logo Process - Redocumented from Portfolio 1[XX].
+Using their step by step builder a full brand could be created from scratch, firstly the selection of software industry was chosen as it was accurate and appropriate.
 
-1. Log in to your Heroku account and go to *Account Settings* in the menu under your avatar.
-2. Scroll down to the *API Key* and click *Reveal*
-3. Copy the key
-4. In Gitpod, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+![Logo and brand creation for Renterprise, first step](readme/design/logo-step-1.png)
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you, so do not share it. If you accidentally make it public, you can create a new one with _Regenerate API Key_.
+Next, it gave an overall palette choice, blues, greens etc. Given the fact that a product is trying to be sold, and green symbolises wealth it seemed like a logical decision.
 
-### Connecting your Mongo database
+![Logo and brand creation for Renterprise, second step](readme/design/logo-step-2.png)
 
-- **Connect to Mongo CLI on a IDE**
-- navigate to your MongoDB Clusters Sandbox
-- click **"Connect"** button
-- select **"Connect with the MongoDB shell"**
-- select **"I have the mongo shell installed"**
-- choose **mongosh (2.0 or later)** for : **"Select your mongo shell version"**
-- choose option: **"Run your connection string in your command line"**
-- in the terminal, paste the copied code `mongo "mongodb+srv://<CLUSTER-NAME>.mongodb.net/<DBname>" --apiVersion 1 --username <USERNAME>`
-  - replace all `<angle-bracket>` keys with your own data
-- enter password _(will not echo **\*\*\*\*** on screen)_
+The creator then asked for a styling of the font to be used, a modern font was the best choice as it is for a modern product.
 
-------
+![Logo and brand creation for Renterprise, third step](readme/design/logo-step-3.png)
 
-## Release History
+The final font choice for the logo was then made and it displayed the generated logo with it.
 
-We continually tweak and adjust this template to help give you the best experience. Here is the version history:
+![Logo and brand creation for Renterprise, fourth step](readme/design/logo-step-4.png)
 
-**June 18, 2024,** Add Mongo back into template
+This was then the branding provided.
 
-**June 14, 2024,** Temporarily remove Mongo until the key issue is resolved
+![Full branding theme for Renterprise](readme/design/initial-brand-board.png)
 
-**May 28 2024:** Fix Mongo and Links installs
+## Responsive
 
-**April 26 2024:** Update node version to 16
+Attempts were made to use a responsive tester from previous projects. However, due to every page requiring security clearance the page would not load.
 
-**September 20 2023:** Update Python version to 3.9.17.
+![External access failure](readme/design/responsive-security-failure.png)
 
-**September 1 2021:** Remove `PGHOSTADDR` environment variable.
+## Breakdown of Design - Redocumented from Portfolio 1[XX].
 
-**July 19 2021:** Remove `font_fix` script now that the terminal font issue is fixed.
+### Colour Theme
+Colour theme was initially chosen and subsequently revised with Coolors.[XX] 
+The overall palette was picked with the website tools which enabled complementary and contrasting colour choices based upon the initial colour from the logo.
 
-**July 2 2021:** Remove extensions that are not available in Open VSX.
+![Initial colour palette for Renterprise](readme/design/initial-colour-palette.png)
 
-**June 30 2021:** Combined the P4 and P5 templates into one file, added the uptime script. See the FAQ at the end of this file.
+# Features
 
-**June 10 2021:** Added: `font_fix` script and alias to fix the Terminal font issue
+## Existing Features
 
-**May 10 2021:** Added `heroku_config` script to allow Heroku API key to be stored as an environment variable.
+**Accounts Log In / Log Out / Sign Up**
 
-**April 7 2021:** Upgraded the template for VS Code instead of Theia.
+A user can enter the website and sign up using a quick and simple form. Although it merely grants them a customer level account at first.
 
-**October 21 2020:** Versions of the HTMLHint, Prettier, Bootstrap4 CDN and Auto Close extensions updated. The Python extension needs to stay the same version for now.
+![Sign Up form.](readme/accounts/sign-up.png)
+[Sign Up Validation](readme/accounts/sign-up-validation.png "Social media links footer")
 
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
+The user would then be requested to confirm their email address:
 
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
+![Email address confirmation](readme/accounts/verify-email-address.png)
 
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
+Which will lead to the receiving of an email. (without paying for a domain this was the only possible functioning result):
+![Message from Renterprise into an inbox](readme/accounts/received-email.png)
+![Message from Renterprise into an inbox](readme/accounts/received-email-content.png)
 
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
+Following the link inside will lead back to the website for the user to click on the button to confirm this.
+![Return to the site to verify an email address](readme/accounts/confirm-email-address.png)
+![Response from verifying an address](readme/accounts/email-confirm-success.png)
 
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
+Which, when you look at the admin panel - Sets up the user like this :
+![Create user, not staff or named](readme/accounts/sign-up-result-1.png)
+![Email Address added to accounts (it is validated)](readme/accounts/sign-up-result-2.png)
+The user can have their role set in the admin panel (ideal implementation would be on the program front end too):
+![Set user role in the admin panel](readme/accounts/admin-panel-role-set.png)
 
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+After all is done a user can log out and be returned to the home screen with no login credentials.
+![Logging out from the program](readme/accounts/admin-panel-role-set.png)
 
-------
+**Detailed Home Page**
 
-## FAQ about the uptime script
+The display will vary depending upon the user.
 
-**Why have you added this script?**
+An anonymous user, will have no sidebar, thereby forbidding access to the core of the software.
 
-It will help us to calculate how many running workspaces there are at any one time, which greatly helps us with cost and capacity planning. It will help us decide on the future direction of our cloud-based IDE strategy.
+![Home page without logging in.](readme/homepage/home-no-login.png)
 
-**How will this affect me?**
+Also to an anonymous user they will be shown an enquiry form, using mailchimp to capture an email address.
 
-For everyday usage of Gitpod, it doesn’t have any effect at all. The script only captures the following data:
+![Home page enquiry form.](readme/homepage/home-no-login-enquiry-form.png)
 
-- An ID that is randomly generated each time the workspace is started.
-- The current date and time
-- The workspace status of “started” or “running”, which is sent every 5 minutes.
+When a user is logged in, it will grant them different levels of access.
+At this stage. A customer (defined in this instance as a customer of the software, not a customer of the software seller),
+cannot view much at all on the home page. But they would be able to view their customer profile and to see orders (in the future).
 
-It is not possible for us or anyone else to trace the random ID back to an individual, and no personal data is being captured. It will not slow down the workspace or affect your work.
+Featured is a sidebar with virtually no access to anything.
 
-**So….?**
+![Restricted customer level access sidebar](readme/sidebar/basic-sidebar.png)
 
-We want to tell you this so that we are being completely transparent about the data we collect and what we do with it.
+Once logged in, much more access is granted:
 
-**Can I opt out?**
+![Restricted customer level access sidebar](readme/sidebar/full-access-sidebar.png)
 
-Yes, you can. Since no personally identifiable information is being captured, we'd appreciate it if you let the script run; however if you are unhappy with the idea, simply run the following commands from the terminal window after creating the workspace, and this will remove the uptime script:
+Available to all users (including anonymous):
+A [footer](readme/homepage/home-footer.png "Social media links footer") - With a "[Facebook](readme/homepage/home-facebook-link.png "Example of dummy facebook page in a modal window")" page link, a sofware features carousel, this improves the SEO of the software itself with strong use of alt-tags in a concentrated space.
 
-```
-pkill uptime.sh
-rm .vscode/uptime.sh
-```
 
-**Anything more?**
+**Create Item**
 
-Yes! We'd strongly encourage you to look at the source code of the `uptime.sh` file so that you know what it's doing. As future software developers, it will be great practice to see how these shell scripts work.
+Creating an item can be divided into two categories. The Item Type (stock option) and an Item (the owned stock option with a serial number)
+
+
+***Add New Item Type***
+
+A form that asks for the critical data for a type. It will also generate a suggested SKU based on name and category. Then adding a random number to keep it unique.
+The client side validation is based upon the category selection. Which will allow you to either select from a category previously used, or to create a new one. Thus giving the business as many choices as they would like.
+A category to assign it to (categories used previously will mean that it can be joined together later on). Validation occurs on all the visible fields marked with an *. It also uses Cloudinary[XX] to [allow images to be stored externally](readme/item_type/item-type-form-selected-file.png "Image display after successfully selecting file") and accessed remotely. These images are useful to provide continuity across items. When complete a the user is taken to the [newly created item type view.](readme/item_type/item-type-form-submit-to-view.png "Successful item type add goes to view")
+item-type-form-file-select
+
+***Add New Item***
+
+A form that asks for very little data, this is useful to allow quick adding of items to stock and with as few margins for error as possible.
+This security is further enhanced by form validation. A category to assign it to (categories used previously will mean that it can be joined together later on). Validation is forced fairly strongly as two of the fields are restricted to choices and these choices vary depnding on what has been selected.
+
+Item Form - Category Select
+![Restricted customer level access sidebar](readme/item/item-form-category-select.png)
+
+Item Form Type Select - This then displays the stored image
+![Restricted customer level access sidebar](readme/item/item-form-type-select.png)
+
+Item Form Complete - Entered Serial Number
+![Restricted customer level access sidebar](readme/item/item-form-complete-input.png)
+
+Item Form Submit Success - Goes to View of the Item and displays message
+![Restricted customer level access sidebar](readme/item/item-form-redirect-and-success-message.png)
 
 ---
 
-Happy coding!
+**Create Customer**
+
+An easy to understand [form](readme/customer/customer-create-validation.png "Overall view of the customer create form with a validation example"). It has required fields which implement validation where necessary and prompt the user to fill more information when required.
+Also features a drop down menu of counties across the UK supplied by django-localflavor[XX] python/django library. When complete a success message is sent to the user and the view is transferred to the customer view :
+![Customer view after creation](readme/customer/customer-view-and-create-success.png)
+
+---
+
+**Create Order**
+Uses a Bootstrap5 accordion setup to break the data into chunks. It is custom and complex behind the scenes. But what you see is a much more streamlined experience.
+If you access the "Create Order" from a customer page, it prefills all the available customer data (such as the address).
+Then final stage opens a Stripe Hosted Payments Page (Hosted Payments Page is more secure for holding card data of customers for subsequent transactions for hire.)
+![Customer Section of creating a new order](readme/order/order-accordion-customer.png)
+
+![Address Section of creating a new order](readme/order/order-accordion-address.png)
+
+![Order Section of creating a new order](readme/order/order-accordion-order.png)
+
+![Payment Section of creating a new order](readme/order/order-accordion-payment.png)
+
+![Dates Validation of creating a new order](readme/order/order-validate-before-today.png)
+
+![Dates Validation of creating a new order](readme/order/order-validate-before-start-before-end.png)
+
+---
+
+**List Displays**
+
+---
+
+***Customers***
+![Customer List View](readme/lists/customer-list.png)
+***Orders***
+![Order List View](readme/lists/order-list.png)
+***Items***
+![Item List View](readme/lists/item-list.png)
+***Item Types***
+![Item Type List View](readme/lists/item-type-list.png)
+***Staff***
+![Staff Profile List View](readme/lists/staff-profile-list.png)
+
+
+# Testing
+---
+
+## Linting
+---
+
+Given the framework involved. Using a standard linter was not strictly the best option. I did manage to install a a django specific linter called djLint which worked within the IDE, this was also combined with Flake8 and it also worked with the html templates too. No python files have any poorly formated areas of code. 
+Except for in renterprise.settings where :
+- Some setting strings are too long, but cannot be broken up and this would render them unusable.
+- In the templates. Intially, I had some inline styles, now wherever possile they are part of the css style sheet.
+- No errors arrive through the linter/template analysis.
+- Migration files also appear. Which are also negligible here.
+
+
+## Manual Testing
+---
+
+This section is broken down into the different areas of the program and to how it is expected to function.
+
+### Main Menu
+---
+
+- [x] Log out?     
+- [x] Force log in?  
+- [x] Register?            
+- [x] Functioning nav buttons?
+- [x] Header logo back to home?
+- [x] Social Media links? (One dummy one to load FB modal, others load the social media home page)
+
+### Admin
+---
+
+- [x]  Able to edit existing entries?         
+- [x]  Can only access as a user?              
+- [x]  Force login if trying to access via url?   
+
+### Create Customer
+---
+
+- [x]  Create customer fields valid where needs to be?           
+- [x]  Validate clearly states where to edit?             
+- [x]  Feedback on submission?                   
+- [x]  Navigate to created customer on submission?        
+- [x]  Drop down for counties for future filtering?                          
+- [x]  Return to customer list button?  
+
+### View Customer
+---
+
+- [x]  All fields clearly visible?
+- [x]  Seperation of data to maximise use of space
+- [x]  Side bar shows correct options?<br>
+        1. [x] Back to customer list<br>
+        2. [x] Display Name<br>
+        3. [x] Customer Notes<br>
+        4. [x] Customer Orders<br>
+        5. [x] New Order<br>
+- [ ]  Status buttons restrictons if archived/deceased?
+- [ ]  Status button updates customer?
+These are wants for the future. But would not affect the core usability of the program
+
+### Customer List
+---
+
+- [x]  Pagination?
+- [x]  List has clickable element to go to customer?
+- [ ]  Hide archived customers?
+- [ ]  Show customers who are deceased clearly?
+Customers cannot be hidden at this time, so this cannot be tested 
+
+### Create Order
+---
+
+- [x]  Form presented in stages?
+- [x]  Collection after delivery?
+- [x]  Item has to be selected before moving forward to price?
+- [x]  Default pricing inserted when item selected (can be changed)?
+- [x]  Hide create order button until all is valid? (not hidden, but validation stops it acting)
+- [x]  Only show valid orderable items for time period?
+- [x]  Paginate items if necessary? (Not required. This was changed to an auto stock assigner!)
+- [x]  Create first invoice on submission?
+- [x]  Navigate to order view when submitted successfully.
+
+### View Order
+---
+
+- [x]  Display all data clearly?
+- [x]  Display item image?
+- [x]  Sidebar correct?<br>
+        1. [x] Home<br>
+        2. [x] Customer List (back to)<br>
+        3. [x] Display name<br>
+        4. [x] Display order number<br>
+        5. [x] Order Notes (active when on list screen)<br>
+        6. [x] Customer orders (to order list)<br>
+- [x]  Invoice window shows all invoices?
+- [x]  Paginate invoices?
+- [x]  View/Edit invoices? (They can be paid or unpaid. Greater flexibility in future works.)
+
+### Items List 
+---
+
+- [x] Show list of items?
+- [x] Paginate list of items?
+- [x] Clearly show status of items?
+- [x] Sidebar correct?<br>
+        1. [x] Home<br>
+        2. [x] Item List (active when on list)<br>
+        3. [x] New Item (active when creating item)<br>
+        4. [x] New Item Type (active when creating item type)<br>
+- [x] Can click an item to view it?
+
+### Item View
+---
+
+- [x] Show data clearly?
+- [x] Show item image?
+- [x] Return to item list button?
+- [x] Sidebar correct?<br>
+        1. [x] Home<br>
+        2. [x] Item List (active when on list)<br>
+        3. [x] Current status display<br> (on image)
+        4. [x] Edit status buttons, do not show button for current status<br> (under image)
+- [x] Status buttons pop up modal to confirm. (changed to switches in a modal to be selected)
+- [x] Status change reloads window, showing new status
+
+### New Item
+---
+
+- [x] Validate form fields?
+- [x] Clearly display where data is required?
+- [x] On save go to item view of the item made?
+
+### New Item Type
+---
+
+- [x]  Validate fields?
+- [x]  Allow empty image (will save as placeholder)?
+- [x]  Clearly show where data required
+- [x]  Return to items list on save
+- []  Show previous categories 
+This would be in a future release
+
+
+# Deployment
+
+To deploy this project:
+
+- Fork and clone this repository to your local machine.
+- Create a new Heroku app.
+- In the Heroku dashboard, navigate to the app's settings and set the buildpacks to Python and NodeJS in that order.
+- Connect your Heroku app to the repository by linking it to your forked copy of the repository.
+- Click on the "Deploy" button in the Heroku dashboard.
+- After following these steps, the app is successfully deployed to Heroku.
+
+- NB. You would need your own Credentials from Google to operate your own google spreadsheets. Also a creds.json file would need to be implemented into your own code and added to the .gitignore.
+- This creds file would then be copied and pasted into a VALUE in the Heroku App Settings.
+
+[LIVE RENTERPRISE SOFTWARE](https://portfolio5-renterprise-master-75a45dd58e92.herokuapp.com/ "Go to Renterprise")
+
+# Technologies Used
+
+## Languages
+
+- HTML5
+- CSS3
+- Python 3
+- Django Templates
+- Javascript/jQuery
+- XML
+
+# Bugs
+- Documented in here : [Bugs Files](readme/bugs/ "Link to the bugzone")
+
+## Relevant Help Links
+1. Back to customers etc.
+https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates
+
+2. How to toggle class
+//https://www.w3schools.com/howto/howto_js_toggle_class.asp
+
+3. get_context help :
+https://stackoverflow.com/questions/37370534/django-listview-where-can-i-declare-variables-that-i-want-to-have-on-template
+
+5. Bootstrap kept overriding button style when it is unwanted.
+Have to use javascript to submit the form and keep FloatingField styles
+- A request to crispy forms to remove default bootstrap styling on form buttons.
+- It was not ideal to work around. However, it was by creating the button in raw HTML
+(customers/forms.py) lines 50/51
+https://github.com/django-crispy-forms/django-crispy-forms/issues/158
+
+6. Adding pagination to a non-class ListView
+https://www.geeksforgeeks.org/how-to-add-pagination-in-django-project/
+
+7. def invoice_create<br>
+**Bug zone**<br>wsgirequest' object has no attribute 'amount_paid'<br>
+Change to same type as status change, to implement as posting form
+is causing problems. So values will be sent by URL.
+the form created by JS. JS dynamically validates the fields
+prior to submission.<br>
+<b>Main fix was in the end dynamically and manipulating javascript to create the form for the modal window and functions associated with it.</b>
+
+8. Best practice for django constants :
+https://stackoverflow.com/questions/12822847/best-practice-for-python-django-constants
+
+
+## Frameworks, Libraries & Programs Used
+
+- Font Awesome[^5]
+- Gitpod[^14]
+- Figma[^1]
+- Heroku[^7]
+- Django Frameworks[^13]
+
+# Technologies Used
+
+## Python Libraries :
+**Sourced from PyPI**[^8]
+[^101]: django-localflavor is a package that offers additional functionality for particular countries or cultures : https://pypi.org/project/django-localflavor/
+[^102]: django-crispy-forms is a package that allows greater form manipulation and quick template tag insertion :
+https://django-crispy-forms.readthedocs.io/en/latest/
+[^103]: django-summernote is a "WYSIWYG" text editor. Allows for rich text field entries.:
+https://pypi.org/project/django-summernote/
+[^104]: djlint a django template formatting analyser: https://open-vsx.org/extension/monosans/djlint
+[^105]: Flake8 : https://marketplace.visualstudio.com/items?itemName=ms-python.flake8
+bleach - an HTML sanitising library
+cloudinary - an image hosting service to allow uploads and downloads
+dj3-cloudinary-storage - part of the above package for hosting images
+crispy-bootstrap5 - a bootstrap 5 styling for django-crispy-forms
+gunicorn- Gunicorn is a Python WSGI HTTP Server for UNIX
+psycopg2 - Implementation of a PostgreSQL adapter for Python
+pylint-django - a python linter that incorporates django frameworks structure.
+whitenoise - implified static file serving for Python web apps
+
+*NB. There are other libraries but they were installed as part of others.
+
+## Website Tutorials/References
+- W3Schools[^10]
+- Stack Overflow[^11]
+- Pycode[^12]
+
+# References 
+[^1]: Figma is a free website for designing storyboards and wireframes : https://www.figma.com/
+[^2]: LOGO website used for creating a logo and branding from scratch for free : https://app.logo.com/
+[^3]: Coolors website for creating free colour themes : https://www.coolors.com/
+[^4]: Renterprise Portfolio 1 - My own web design I created as part of my first project for Code Institute. This software is an extension of the idea of Renterprise: https://github.com/jbillcliffe/portfolio1-renterprise/
+[^5]: Renterprise Portfolio 3 - My own python console program created as part of my third project for Code Institute. This software is an extension of the idea of Renterprise: https://github.com/jbillcliffe/portfolio3-booking-system/
+[^6]: GitHub projects - A way of creating workflows for a project and being able to manage across teams.: https://github.com/users/jbillcliffe/projects/4
+[^7]: Heroku - A place to host projects. In this case to host the python terminal. : https://www.heroku.com
+[^8]: PyPI - the package index. Containg a whole wealth of python libraries to plug in: https://pypi.org/
+[^10]: W3Schools- Invaluable for providing details on elements and their attributes and so much HTML/CSS information : https://www.w3schools.com/
+[^11]: Stack Overflow - One of the most important resources for developers : https://stackoverflow.com/
+[^12]: How to do correct formatting for PEP8 : https://peps.python.org/pep-0008/
+[^13]: Django Frameworks. The framework that allows the operation of this as an MVC model : https://www.djangoproject.com/
+[^14]: Gitpod, a cloud based IDE for developing the web application : https://www.gitpod.io
+[^15]: Font Awesome - A great source of free icons to use in many formats : https://www.fontawesome.com

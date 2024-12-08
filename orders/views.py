@@ -103,7 +103,7 @@ def order_view(request, profile_id, order_id):
     # Determine number of pages in query
     page_number_extra = request.GET.get("page-extra")
     page_obj_extra = order_notes_list.get_page(page_number_extra)
-    
+
     if request.user.profile.get_account_type == 'Customer':
         json_item_list = ""
         json_item_type_list = ""
@@ -137,7 +137,6 @@ def order_view(request, profile_id, order_id):
 
     template = 'orders/order_view.html'
     context = {
-        # 'order_view_form': order_view_form,
         'order': order,
         'account_type': account_type,
         'tab_return': tab_return,
@@ -145,8 +144,6 @@ def order_view(request, profile_id, order_id):
         'order_item_form': item_form,
         'order_note_form': order_note_form,
         'profile_id': profile_id,
-        # 'item_type'
-        # 'profile'
         'json_item_list': json_item_list,
         'json_order_list': json_order_list,
         'json_item_type_list': json_item_type_list,
@@ -161,20 +158,16 @@ def order_edit(request, profile_id, order_id, order_note):
 
     account_type = request.user.profile.get_account_type()
     get_order = Order.objects.get(pk=order_id)
-    print(account_type)
 
     if account_type == "Customer":
         messages.error(
             request,
             "Permission Denied : A customer cannot modify an order")
     else:
-        print(request.POST)
         if request.method == "POST":
 
             tab_return = request.GET['tab']
-            
             if tab_return == "notes":
-                print(request.POST)
 
                 new_order_note = OrderNote.objects.create(
                     note=request.POST['note'],
@@ -182,10 +175,6 @@ def order_edit(request, profile_id, order_id, order_note):
                     created_by=request.user,
                     created_on=datetime.now())
                 new_order_note.save()
-
-                print(new_order_note.id)
-                print(new_order_note.note)
-                print(new_order_note.created_by)
 
                 messages.success(
                     request,
@@ -198,7 +187,6 @@ def order_edit(request, profile_id, order_id, order_note):
                 return redirect(final_url)
 
             elif tab_return == "despatches":
-                print("GOT TAB")
                 form = OrderDatesForm(request.POST, instance=get_order)
                 form.save()
 
@@ -209,7 +197,6 @@ def order_edit(request, profile_id, order_id, order_note):
                     created_by=request.user
                 )
                 save_order_note.save()
-                print("saved stuff")
                 messages.success(
                     request,
                     "Order Edited : Date(s) changed for this order")
@@ -233,9 +220,6 @@ def order_edit(request, profile_id, order_id, order_note):
                 invoice_id = request.GET['invoice']
                 status = request.GET['status']
 
-                print(status)
-                print(invoice_id)
-
                 if status == "unpaid":
                     invoice = Invoice.objects.get(pk=invoice_id)
                     invoice.status = False
@@ -256,7 +240,6 @@ def order_edit(request, profile_id, order_id, order_note):
                             f" been been marked as unpaid!"
                         )
                     )
-                    print("UNPAID")
                 elif status == "paid":
                     invoice = Invoice.objects.get(pk=invoice_id)
                     invoice.status = True
@@ -277,7 +260,6 @@ def order_edit(request, profile_id, order_id, order_note):
                             f" been been marked as paid!"
                         )
                     )
-                    print("PAID")
                 elif status == "deleted":
                     invoice = Invoice.objects.get(pk=invoice_id)
                     invoice.delete()
@@ -294,7 +276,6 @@ def order_edit(request, profile_id, order_id, order_note):
                         request,
                         f"INVOICE DELETED : {invoice_id} has been deleted!"
                     )
-                    print("DELETED")
                 else:
                     # error message
                     messages.error(
@@ -346,10 +327,6 @@ def order_create(request, profile_id=None):
                 'item', 'start_date', 'end_date'],
             cls=DjangoJSONEncoder)
 
-        print("WHY AM I NOT A POST")
-        # It is a get request from form so return an empty
-        # form
-
         template = 'orders/order_create.html'
         context = {
             'order_form': order_form,
@@ -382,8 +359,6 @@ def payment_create(request, invoice_id):
     if stripe_profile.stripe_id:
         stripe_customer = stripe.Customer.retrieve(
             stripe_profile.stripe_id)
-        print("--- Stripe previous customer --- ")
-        print(stripe_customer)
     else:
         stripe_customer = stripe.Customer.create(
             name=stripe_profile.get_full_name,
@@ -414,9 +389,6 @@ def payment_create(request, invoice_id):
         stripe_profile.stripe_id = stripe_customer.id
 
         stripe_profile.save()
-        print("--- Stripe new customer --- ")
-        print(stripe_customer)
-
     stripe_success_url = (
         f"https://{request.META['HTTP_HOST']}"
         f"/orders/payment/success/?session={store_key}")
@@ -554,8 +526,6 @@ def order_create_checkout(request):
     # Using a hosted payment page. Greater security provided
     # Check session data required
     local_key = get_order_form_data(request)
-    print("KEY")
-    print(local_key)
     storage_update = SessionStore(session_key=local_key)
     stripe_order = storage_update["new_order"]
     stripe_order_id = storage_update["new_order_id"]
@@ -576,8 +546,6 @@ def order_create_checkout(request):
     if update_profile_stripe.stripe_id:
         stripe_customer = stripe.Customer.retrieve(
             update_profile_stripe.stripe_id)
-        print("--- Stripe previous customer --- ")
-        print(stripe_customer)
     else:
         stripe_customer = stripe.Customer.create(
             name=stripe_order["full_name"],
@@ -608,15 +576,8 @@ def order_create_checkout(request):
         update_profile_stripe.stripe_id = stripe_customer.id
 
         update_profile_stripe.save()
-        print("--- Stripe new customer --- ")
-        print(stripe_customer)
     # KEY HERE
     # ------------------------------------------------------
-
-    # stripe_order = request.session["new_order"]
-    # stripe_order_id = request.session["new_order_id"]
-    # stripe_order_item_id = request.session["new_item_id"]
-    # stripe_order_profile_id = request.session['new_profile_id']
     # These will be in a modal.
     stripe_success_url = (
         f"https://{request.META['HTTP_HOST']}"
@@ -697,15 +658,6 @@ def order_create_success(request):
         format_end_date = datetime.strptime(
             retrieve_session["new_order"]["end_date"],
             "%Y-%m-%d").date()
-        print(f"pre income add : {Decimal(get_item.income)}")
-        print(
-            f"pre income add cost: "
-            f"{Decimal(retrieve_session["new_order"]["cost_initial"])}")
-        trace_test = (
-            Decimal(get_item.income) +
-            Decimal(retrieve_session["new_order"]["cost_initial"]))
-        print(trace_test)
-        print(f"post income add : {trace_test}")
 
         # https://www.geeksforgeeks.org/how-to-add-days-to-a-date-in-python/
         next_rental_date = format_start_date + timedelta(days=7)
@@ -718,8 +670,6 @@ def order_create_success(request):
 
         template = 'orders/order_create_success.html'
         context = {
-            # 'stripe_session': stripe_session,
-            # 'stripe_customer': stripe_customer,
             'item_ordered': get_item,
             'new_start_date': format_start_date,
             'new_end_date': format_end_date,
@@ -763,13 +713,6 @@ def order_create_cancel(request):
             retrieve_session["checkout_session"])
         stripe_customer = stripe.Customer.retrieve(
             stripe_session.customer)
-        print("ORDERCREATECANCEL")
-        print("STRIPESESSION: ")
-        print(stripe_session)
-        print("CUSTOMERSESSION: ")
-        print(stripe_customer)
-        # print("LOCALSESSION:  ")
-        # print(request.session['new_order'])
         template = 'orders/order_create_cancel.html'
         context = {
             'stripe_session': stripe_session,
@@ -822,9 +765,6 @@ def get_order_form_data(request):
         'invoice_notes': request.POST['invoice_notes'],
     }
 
-    print(" --- FORM DATA --- ")
-    print(form_data)
-
     if form_data['profile'] == "None":
 
         # Programmatically Creating a user object :
@@ -851,9 +791,6 @@ def get_order_form_data(request):
                 "is_staff": False,
             }
         )
-
-        print(" --- USER DATA --- ")
-        print(f"Created? - {user_created} : {new_user}")
         # If it found a user it will check there is also no profile
         #
         # If it did not, it will create a new one because there cannot
@@ -876,19 +813,12 @@ def get_order_form_data(request):
                 "phone_number": form_data['phone_number'],
             }
         )
-        print(" --- PROFILE DATA --- ")
-        print(f"Created? - {profile_created} : {new_profile}")
+
         form_data['profile'] = new_profile.id
         # The "new_profile" profile object will be an instance of a
         # pre-existing or new user from these two queries.
-        # print("Profile - From None")
-        # print(new_profile)
     else:
-        # print("Profile - From Form")
         new_profile = Profile.objects.get(pk=form_data['profile'])
-        print(" --- EXISTING PEOFILE DATA FROM CUSTOMER PAGE --- ")
-        print(new_profile)
-
     session_store_data["new_profile_id"] = new_profile.id
 
     # Create a model object from some of the form data and save()
@@ -907,8 +837,6 @@ def get_order_form_data(request):
     )
 
     new_order.save()
-    print(" --- NEW ORDER DATA --- ")
-    print(new_order)
 
     session_store_data["new_order_id"] = new_order.id
     session_store_data["new_item_id"] = new_item.id
@@ -927,8 +855,6 @@ def get_order_form_data(request):
     if form_data['invoice_notes']:
         invoice_note_list.append(form_data['invoice_notes'])
     invoice_note_final = ' '.join(invoice_note_list)
-    print(" --- FINAL INVOICE NOTES --- ")
-    print(invoice_note_final)
 
     new_invoice = Invoice.objects.create(
         order=new_order,
@@ -941,9 +867,6 @@ def get_order_form_data(request):
         created_by=request.user
     )
     new_invoice.save()
-    print(" --- NEW INVOICE DATA --- ")
-    print(new_invoice)
-
     session_store_data["new_invoice_id"] = new_invoice.id
     session_store_data["new_order"] = form_data
     session_store_data.create()
