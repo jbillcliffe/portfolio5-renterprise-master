@@ -30,9 +30,9 @@
                 {% endblocktrans %}</p>
         {% endif %}
     {% else %}
-            <p>{% blocktrans %}This email confirmation link expired or is invalid. Please 
-                <a href="{% url 'account_email' %}">issue a new email confirmation request</a>.
-            {% endblocktrans %}</p>
+            <p>{% blocktrans %}This email confirmation link expired or is invalid. Please{% endblocktrans %}
+                <a href="{% url 'account_email' %}">{% trans "issue a new email confirmation request." %}</a>
+            </p>
     {% endif %}
 
 {% endblock inner_content %}
