@@ -2,10 +2,12 @@ asgiref==3.8.1
 boto3==1.35.48
 botocore==1.35.48
 click==8.1.7
+cloudinary==1.41.0
 colorama==0.4.6
 crispy-bootstrap5==2024.10
 cssbeautifier==1.15.1
 dj-database-url==2.3.0
+dj3-cloudinary-storage==0.0.6
 Django==5.1.2
 django-allauth==0.63.6
 django-bootstrap5==24.3
