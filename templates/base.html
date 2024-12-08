@@ -72,10 +72,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="id-modal-body">
-                        <!-- id-modal-body.innerText-->
                     </div>
                     <div class="modal-footer justify-content-center" id="id-modal-footer">
-                        <!-- id-modal-footer.innerText-->
                     </div>
                 </div>
             </div>
@@ -108,7 +106,7 @@
             {% if user.is_authenticated %}
                 {% include "includes/side-nav.html" %}
             {% endif %}
-            <div class="app-container">
+            <div class="app-container {% if user.is_authenticated %}{% else %}mx-auto{% endif %}">
                 <!-- div app container holds this loading overlay designed to fit the "app" area-->
                 <!-- d-none for now-->
                 <div class="app-loading-overlay"></div>
